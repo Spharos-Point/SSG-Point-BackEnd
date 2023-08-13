@@ -1,13 +1,13 @@
-## ✅ FEATUR
-Feature 작업 사항을 입력해주세요.
+## :memo: what type of PR is this? 
+
+- [ ] New features
+- [x] Bug Fix
+- [ ] ETC(please write somethings..)
+      
+## :speech_balloon: Description
 
 
-## Description
-설명을 작성하세요.
+## :camera: Screenshot
 
-## Todo
-- [ ] todo
-- [ ] todo
 
-## ETC
-기타사항
+## :newspaper: Reference
