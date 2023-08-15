@@ -1,0 +1,18 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: SSGPOINT_APP
+
+  jpa:
+    hibernate:          # update : ??? ??? ????
+      ddl-auto: create  # create : ?? ??? ???? ? ???, ?? ??? ?? ??
+      format_sql: true
+    show-sql: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3307/ssgpoint
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
