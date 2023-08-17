@@ -3,6 +3,7 @@ package com.spharos.pointapp.user.application;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.UserGetDto;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
+import com.spharos.pointapp.user.dto.UserUpdateDto;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class UserServiceImple implements UserService{
 
         User user = User.builder()
                 .loginId(userSignUpDto.getLoginId())
-                .UUID(uuidString)
+                .uuid(uuidString)
                 .userName(userSignUpDto.getName())
                 .password(userSignUpDto.getPassword())
                 .email(userSignUpDto.getEmail())
@@ -36,6 +37,30 @@ public class UserServiceImple implements UserService{
                 .build();
         userRepository.save(user);
     }
+
+    @Override
+    public void updateUser(UserUpdateDto userUpdateDto, String uuid) throws Exception {
+        log.info("{}", uuid);
+
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("{}", user);
+        userRepository.save(
+                User.builder()
+                        .id(user.getId())
+                        .loginId(user.getLoginId())
+                        .address(userUpdateDto.getAddress())
+                        .pointPassword(user.getPointPassword())
+                        .userName(user.getUserName())
+                        .status(user.getStatus())
+                        .uuid(user.getUuid())
+                        .phone(user.getPhone())
+                        .email(userUpdateDto.getEmail())
+                        .password(user.getPassword())
+                        .build()
+        );
+        log.info("{}", user);
+    }
+
 
     @Override
     public UserGetDto getUserByLoginId(String loginId) {
@@ -54,7 +79,7 @@ public class UserServiceImple implements UserService{
 
     @Override
     public UserGetDto getUserByUUID(String UUID) {
-        User user = userRepository.findByUUID(UUID);
+        User user = userRepository.findByUuid(UUID).get();
         log.info("user is : {}" , user);
         UserGetDto userGetDto = UserGetDto.builder()
                 .loginId(user.getLoginId())

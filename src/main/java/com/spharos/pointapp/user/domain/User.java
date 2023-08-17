@@ -1,23 +1,21 @@
 package com.spharos.pointapp.user.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false, length = 100, name = "UUID")
-    private String UUID; // todo: UUID
+    private String uuid; // todo: UUID
     @Column(nullable = false, length = 30, name = "login_id")
     private String loginId;
     @Column(nullable = false, length = 100, name = "user_name")
@@ -35,6 +33,8 @@ public class User {
     @Column(length = 100, name = "point_password")
     private String pointPassword; // todo: Hashing
 
+
+    //todo: 수정일자, 생성일자
     public void hashPassword(String password) {
         this.password = password;
 //        this.password = new BCryptPasswordEncoder().encode(password); // todo: Hashing - spring security
