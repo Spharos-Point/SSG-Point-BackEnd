@@ -48,7 +48,7 @@ public class User implements UserDetails {
     //todo: 수정일자, 생성일자
     public void hashPassword(String password) {
     //      this.password = password;
-        this.password = new BCryptPasswordEncoder().encode(password); // todo: Hashing - spring security
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     // 정해진 코드 이계정이 가지고 있는 권한을 제공
