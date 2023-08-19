@@ -8,11 +8,11 @@ import com.spharos.pointapp.user.dto.UserUpdateDto;
 import java.util.List;
 public interface UserService {
     void createUser(UserSignUpDto userSignUpDto);
-    void updateUser(UserUpdateDto userUpdateDto, String uuid) throws Exception;
+    void updateUser(UserUpdateDto userUpdateDto, String uuid);
 
     UserGetDto getUserByLoginId(String loginId);
     UserGetDto getUserByUUID(String uuid);
-    List<UserGetDto> getAllUsers();
 
+    List<UserGetDto> getAllUsers();
 }
 

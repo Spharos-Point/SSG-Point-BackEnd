@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserGetOut {
+public class UserGetOutVo {
 
     private String loginId;
     private String userName;

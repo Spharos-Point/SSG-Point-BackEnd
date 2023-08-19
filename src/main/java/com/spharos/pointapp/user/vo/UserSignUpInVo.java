@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class UserSignUpIn {
+public class UserSignUpInVo {
 
     private String loginId;
     private String password;

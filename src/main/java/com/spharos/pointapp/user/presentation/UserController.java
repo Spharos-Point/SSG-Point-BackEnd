@@ -1,19 +1,14 @@
 package com.spharos.pointapp.user.presentation;
 
 import com.spharos.pointapp.user.application.UserService;
-import com.spharos.pointapp.user.dto.UserGetDto;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
 import com.spharos.pointapp.user.dto.UserUpdateDto;
-import com.spharos.pointapp.user.infrastructure.UserRepository;
-import com.spharos.pointapp.user.vo.UserGetOut;
-import com.spharos.pointapp.user.vo.UserSignUpIn;
-import com.spharos.pointapp.user.vo.UserUpdate;
-import jakarta.servlet.http.HttpSession;
+import com.spharos.pointapp.user.vo.UserSignUpInVo;
+import com.spharos.pointapp.user.vo.UserUpdateInfoVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,15 +21,15 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/member")
-    public void createUser(@RequestBody UserSignUpIn userSignUpIn) {
-        log.info("INPUT Object Data is : {}" , userSignUpIn);
+    public void createUser(@RequestBody UserSignUpInVo userSignUpInVo) {
+        log.info("INPUT Object Data is : {}" , userSignUpInVo);
         UserSignUpDto userSignUpDto = UserSignUpDto.builder()
-                .loginId(userSignUpIn.getLoginId())
-                .password(userSignUpIn.getPassword())
-                .name(userSignUpIn.getName())
-                .email(userSignUpIn.getEmail())
-                .phone(userSignUpIn.getPhone())
-                .address(userSignUpIn.getAddress())
+                .loginId(userSignUpInVo.getLoginId())
+                .password(userSignUpInVo.getPassword())
+                .name(userSignUpInVo.getName())
+                .email(userSignUpInVo.getEmail())
+                .phone(userSignUpInVo.getPhone())
+                .address(userSignUpInVo.getAddress())
                 .build();
         userService.createUser(userSignUpDto);
     }
@@ -53,11 +48,9 @@ public class UserController {
 //        return ResponseEntity.ok(userGetOut);
 //    }
 
-
-
     // 유저 정보 수정
     @PutMapping("/member")
-    public void updateUser(@RequestBody UserUpdate userUpdate, @RequestHeader HttpHeaders httpHeaders) throws Exception{
+    public void updateUser(@RequestBody UserUpdateInfoVo userUpdate, @RequestHeader HttpHeaders httpHeaders) throws Exception{
 
         log.info("{}",httpHeaders.get("authorization"));
         ModelMapper modelMapper = new ModelMapper();
@@ -65,6 +58,17 @@ public class UserController {
                 modelMapper.map(userUpdate, UserUpdateDto.class),
                 httpHeaders.get("authorization").toString().substring(8).replace("]",""));
     }
+
+//
+//    //  유저 탈퇴
+//    @PutMapping("/member")
+//    public void deleteUser(@RequestBody UserUpdateInfoVo userUpdateInfoVo, @RequestHeader HttpHeaders httpHeaders) throws Exception{
+//
+//        log.info("{}",httpHeaders.get("authorization"));
+//        ModelMapper modelMapper = new ModelMapper();
+//        userService.updateUser(
+//                modelMapper.map(userUpdateInfoVo, UserUpdateDto.class),
+//    }
 
     // point pw 변경
 
