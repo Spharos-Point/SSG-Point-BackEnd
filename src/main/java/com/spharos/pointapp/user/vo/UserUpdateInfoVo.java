@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class UserUpdate {
+public class UserUpdateInfoVo {
 
     private String email;
     private String address;
