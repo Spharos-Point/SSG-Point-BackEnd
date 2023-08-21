@@ -1,15 +1,13 @@
 package com.spharos.pointapp.user.application;
 
 import com.spharos.pointapp.user.domain.User;
-import com.spharos.pointapp.user.dto.UserGetDto;
-import com.spharos.pointapp.user.dto.UserSignUpDto;
-import com.spharos.pointapp.user.dto.UserUpdateDto;
+import com.spharos.pointapp.user.dto.*;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,12 +36,10 @@ public class UserServiceImple implements UserService{
         userRepository.save(user);
     }
 
+
     @Override
     public void updateUser(UserUpdateDto userUpdateDto, String uuid) {
-        log.info("{}", uuid);
-
         User user = userRepository.findByUuid(uuid).get();
-        log.info("{}", user);
         userRepository.save(
                 User.builder()
                         .id(user.getId())
@@ -59,6 +55,34 @@ public class UserServiceImple implements UserService{
                         .build()
         );
         log.info("{}", user);
+    }
+    //todo: 비밀번호 인증 실패 예외처리
+    @Override
+    public void updateUserPw(UserUpdatePwDto updatePwDto, String uuid) {
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // 사용자가 입력한 현재 비밀번호와 DB에 저장된 시큐리티 패스워드를 비교
+        if (!new BCryptPasswordEncoder().matches(updatePwDto.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        // 새로운 비밀번호와 새로운 비밀번호 확인이 일치하는지 검증
+        if (!updatePwDto.getNewPassword().equals(updatePwDto.getConfirmPassword())) {
+            throw new IllegalArgumentException("New passwords do not match");
+        }
+
+        // 새로운 비밀번호를 시큐리티 패스워드 인코더로 암호화하여 저장
+        user.hashPassword(updatePwDto.getNewPassword());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateUserPointPw(UserUpdatePointPwDto updatePointPwDto, String uuid) {
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.updateUserPointPw(String.valueOf(updatePointPwDto));
+        userRepository.save(user);
     }
 
 
@@ -92,6 +116,4 @@ public class UserServiceImple implements UserService{
         return userGetDto;
     }
 
-    @Override
-    public List<UserGetDto> getAllUsers() { return null; }
 }

@@ -34,4 +34,5 @@ public class AuthenticationController {
         log.info("userlogin is : {}" , authenticationRequest);
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
+
 }

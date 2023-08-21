@@ -51,7 +51,11 @@ public class User implements UserDetails {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-    // 정해진 코드 이계정이 가지고 있는 권한을 제공
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    // 정해진 코드 이 계정이 가지고 있는 권한을 제공
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(roll.name()));
@@ -63,7 +67,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return loginId; }
+    public String getUsername() { return uuid; }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -83,5 +87,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    // 포인트 패스워드 변경
+    public void updateUserPointPw(String pointPassword) {
+        this.pointPassword = pointPassword;
     }
 }

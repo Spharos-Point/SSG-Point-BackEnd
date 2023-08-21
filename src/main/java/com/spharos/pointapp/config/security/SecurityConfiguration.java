@@ -52,7 +52,7 @@ public class SecurityConfiguration {
 //           .and()
 //           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //           .and()
-//           .authenticationProvider(authendicationProvider)
+//           .authenticationProvider(authenticationProvider)
 //           .addFilterBefore((Filter) jwtTokenProvider, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

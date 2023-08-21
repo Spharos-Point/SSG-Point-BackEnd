@@ -44,7 +44,7 @@ public class JwtTokenProvider {
             Map<String, Objects> extractClaims,
             UserDetails userDetails
     ) {
-        log.info("generateToken", extractClaims, userDetails);
+        log.info("generateToken {}, {} ", extractClaims, userDetails);
         return Jwts.builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
