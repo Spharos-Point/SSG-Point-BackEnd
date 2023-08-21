@@ -16,12 +16,13 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer customerId;
     private Long adminId;
-    @Column(nullable = true)
-    private byte categoryId;
     private String title;
     private String context;
     private String phone;
     private String answer;
     private String writeDatetime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CustomerCategory customerCategory;
 
 }
