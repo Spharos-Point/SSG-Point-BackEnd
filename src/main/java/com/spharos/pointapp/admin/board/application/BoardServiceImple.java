@@ -33,7 +33,7 @@ public class BoardServiceImple implements BoardService{
                             .context(boardCreateDto.getContext())
                             .build()
             );
-            boardListRepository.save(
+            BoardList save = boardListRepository.save(
                     BoardList.builder()
                             .board(board)
                             .administrator(administrator)

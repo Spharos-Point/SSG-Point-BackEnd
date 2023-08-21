@@ -41,7 +41,7 @@ public class UserServiceImple implements UserService{
     public UserGetDto getUserByLoginId(String loginId) {
 
         User user = userRepository.findByLoginId(loginId);
-        log.info("user is : {}" , user);
+        log.info("administrator is : {}" , user);
         UserGetDto userGetDto = UserGetDto.builder()
                 .loginId(user.getLoginId())
                 .userName(user.getUserName())
@@ -55,7 +55,7 @@ public class UserServiceImple implements UserService{
     @Override
     public UserGetDto getUserByUUID(String UUID) {
         User user = userRepository.findByUUID(UUID);
-        log.info("user is : {}" , user);
+        log.info("administrator is : {}" , user);
         UserGetDto userGetDto = UserGetDto.builder()
                 .loginId(user.getLoginId())
                 .userName(user.getUserName())
