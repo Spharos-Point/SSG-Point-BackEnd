@@ -59,8 +59,8 @@ public class UserServiceImple implements UserService{
     //todo: 비밀번호 인증 실패 예외처리
     @Override
     public void updateUserPw(UserUpdatePwDto updatePwDto, String uuid) {
-        User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("{}", user);
 
         // 사용자가 입력한 현재 비밀번호와 DB에 저장된 시큐리티 패스워드를 비교
         if (!new BCryptPasswordEncoder().matches(updatePwDto.getPassword(), user.getPassword())) {

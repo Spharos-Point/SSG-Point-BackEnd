@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false, length = 100, name = "UUID")
+    @Column(nullable = false, length = 100, name = "uuid")
     private String uuid; // todo: UUID
     @Column(nullable = false, length = 30, name = "login_id")
     private String loginId;
@@ -89,9 +89,9 @@ public class User implements UserDetails {
         return true;
     }
 
-
     // 포인트 패스워드 변경
     public void updateUserPointPw(String pointPassword) {
         this.pointPassword = pointPassword;
     }
+
 }

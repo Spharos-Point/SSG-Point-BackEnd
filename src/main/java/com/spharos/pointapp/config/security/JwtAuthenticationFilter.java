@@ -1,5 +1,7 @@
 package com.spharos.pointapp.config.security;
 
+import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -51,7 +54,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 해당되는 uuid가 있고 시큐리티를 통해 생성된 uuid인 경우 즉, 토큰이 맞는경우
         if (loginId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(loginId);
+            User user = userRepository.findByUuid(loginId).get();
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(user.getLoginId());
             log.info("userDetails : {}", userDetails);
 
             // 유효값 확인 즉, 정상 토큰인지 확인하여 승인하는 작업, 복붙해서 사용하는 코드
