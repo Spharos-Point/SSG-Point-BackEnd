@@ -1,13 +1,13 @@
 package com.spharos.pointapp.event.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
-
-@Setter
 @Getter
+@Setter
 @ToString
-public class EventCreateDto {
+public class EventGetDto {
 
     private String eventName;
     private String eventDesc;
