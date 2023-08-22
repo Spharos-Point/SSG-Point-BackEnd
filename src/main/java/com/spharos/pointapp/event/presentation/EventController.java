@@ -41,8 +41,8 @@ public class EventController {
     }
 
 
-    @GetMapping("/event")
-    public EventGetOut getEventByEventId(@RequestParam(name = "eventId", defaultValue = "")  Long eventId) {
+    @GetMapping("/event/{eventId}")
+    public EventGetOut getEventByEventId(@PathVariable("eventId")  Long eventId) {
         log.info("{}", eventId);
         ModelMapper mapper = new ModelMapper();
         EventGetDto eventGetDto = eventService.getEvent(eventId);
