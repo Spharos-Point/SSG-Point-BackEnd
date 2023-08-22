@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -33,16 +32,17 @@ public class EventController {
 
     }
 
-    @PutMapping("/event/{eventId}")
-    public void updateEvent(@PathVariable Long eventId, @RequestBody EventUpdate eventUpdate) {
-        log.info("{}", eventId);
+    @PutMapping("/event")
+    public void updateEvent(@RequestBody EventUpdate eventUpdate) {
+        log.info("{}", eventUpdate);
         ModelMapper mapper = new ModelMapper();
         EventUpdateDto eventUpdateDto = mapper.map(eventUpdate, EventUpdateDto.class);
-        eventService.updateEvent(eventUpdateDto, eventId);
+        eventService.updateEvent(eventUpdateDto, eventUpdate.getEventId());
     }
 
-    @GetMapping("/event/{eventId}")
-    public EventGetOut getEventByEventId(@PathVariable Long eventId) {
+
+    @GetMapping("/event")
+    public EventGetOut getEventByEventId(@RequestParam(name = "eventId", defaultValue = "")  Long eventId) {
         log.info("{}", eventId);
         ModelMapper mapper = new ModelMapper();
         EventGetDto eventGetDto = eventService.getEvent(eventId);
@@ -61,5 +61,10 @@ public class EventController {
                 )
         );
         return eventGetOutList;
+    }
+
+    @DeleteMapping("/event")
+    private void deleteEvent(@RequestParam(name = "eventId", defaultValue = "")  Long eventId) {
+        eventService.deleteEvent(eventId);
     }
 }

@@ -19,7 +19,7 @@ public interface EventService {
     List<EventGetDto> getEvents();
 
 //    이벤트 삭제
-//    EventCreateDto deleteEvent(Long eventId);
+    void deleteEvent(Long eventId);
 
 }
 

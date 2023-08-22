@@ -44,6 +44,7 @@ public class EventServiceImpl implements EventService{
         Event event = eventRepository.findById(eventId).get();
         eventRepository.save(
           Event.builder()
+                  .Id(eventId)
                   .eventName(eventUpdateDto.getEventName())
                   .eventDesc(eventUpdateDto.getEventDesc())
                   .eventType(eventUpdateDto.getEventType())
@@ -86,6 +87,11 @@ public class EventServiceImpl implements EventService{
         );
         log.info("{}", eventGetDtoList);
         return eventGetDtoList;
+    }
+
+    @Override
+    public void deleteEvent(Long eventId) {
+        eventRepository.deleteById(eventId);
     }
 
 
