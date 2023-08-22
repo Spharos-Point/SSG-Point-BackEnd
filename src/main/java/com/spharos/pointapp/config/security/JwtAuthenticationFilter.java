@@ -1,7 +1,5 @@
 package com.spharos.pointapp.config.security;
 
-import com.spharos.pointapp.user.domain.User;
-import com.spharos.pointapp.user.infrastructure.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
-    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -40,22 +37,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // authHeader = baerer token 있음
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String loginId;
+        final String uuid;
         // 즉, 넘어오지 않아 토큰값이 없거나 bearer로 시작하는 값이 없는경우
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
         jwt = authHeader.substring(7);
-        loginId = jwtTokenProvider.getLoginId(jwt);
+        uuid = jwtTokenProvider.getUuid(jwt);
         log.info("jwt doFilterInternal : {}", jwt);
-        log.info("loginId doFilterInternal : {}", loginId);
+        log.info("loginId doFilterInternal : {}", uuid);
         log.info("SecurityContextHolder.getContext(): {}", SecurityContextHolder.getContext().getAuthentication());
 
         // 해당되는 uuid가 있고 시큐리티를 통해 생성된 uuid인 경우 즉, 토큰이 맞는경우
-        if (loginId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepository.findByUuid(loginId).get();
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(user.getLoginId());
+        if (uuid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(uuid);
             log.info("userDetails : {}", userDetails);
 
             // 유효값 확인 즉, 정상 토큰인지 확인하여 승인하는 작업, 복붙해서 사용하는 코드

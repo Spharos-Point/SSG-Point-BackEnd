@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUpdatePointPwDto {
-    private String pointPassword;
-    private String confirmPointPassword;
+    private String newPointPassword;
 
 }

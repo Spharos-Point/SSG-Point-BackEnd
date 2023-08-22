@@ -42,7 +42,7 @@ public class User implements UserDetails {
     private String pointPassword; // todo: Hashing
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true, length = 10, name = "roll")
+    @Column(nullable = false, length = 10, name = "roll")
     private Roll roll;
 
     //todo: 수정일자, 생성일자
@@ -51,8 +51,8 @@ public class User implements UserDetails {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-    public void updatePassword(String newPassword) {
-        this.password = newPassword;
+    public void hashPointPassword(String pointPassword) {
+        this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
     }
 
     // 정해진 코드 이 계정이 가지고 있는 권한을 제공

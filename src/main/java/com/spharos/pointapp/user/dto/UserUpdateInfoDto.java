@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateDto {
+public class UserUpdateInfoDto {
     private String address;
     private String email;
 }

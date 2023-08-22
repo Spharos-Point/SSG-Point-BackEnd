@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private static ModelMapper modelMapper;
 
     @PostMapping("/member/join")
     public void createUser(@RequestBody UserSignUpInVo userSignUpInVo) {
@@ -50,46 +49,63 @@ public class UserController {
 
     // 유저 정보 업데이트
     @PutMapping("/myinfo/changeInfo")
-    public void updateUser(@RequestBody UserUpdateInfoVo userUpdate, @RequestHeader HttpHeaders httpHeaders) throws Exception{
+    public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
+                               @RequestHeader HttpHeaders httpHeaders) {
 
-        log.info("{}",httpHeaders.get("authorization"));
-        userService.updateUser(
-                modelMapper.map(userUpdate, UserUpdateDto.class),
-                httpHeaders.get("authorization").toString().substring(8).replace("]",""));
+        ModelMapper modelMapper = new ModelMapper();
+        String uuid = httpHeaders.getFirst("uuid");
+
+        UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
+        userService.updateUserInfo(userUpdateInfoDto, uuid);
     }
 
-    @PutMapping("/api/v1/chagngPw")
+    // 유저 패스워드 변경
+    @PutMapping("/changePw")
     public void updateUserPw(@RequestBody UserUpdatePwVo userUpdatePwVo,
                              @RequestHeader HttpHeaders httpHeaders) {
 
+        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
-        log.info("uuid {}",uuid);
-        log.info("chage pw");
-        // 사용자 UUID를 사용하여 비밀번호 변경 처리
         UserUpdatePwDto updatePwDto = modelMapper.map(userUpdatePwVo, UserUpdatePwDto.class);
         userService.updateUserPw(updatePwDto, uuid);
     }
 
-//    //   유저 비밀번호 수정
-//    @PutMapping("/member")
-//    public void updateUserPw(@RequestBody UserUpdatePwVo userUpdatePwVo,
-//                             @RequestHeader("Authorization") String authorizationHeader,
-//                             @RequestHeader("uuid") String userUuid) {
-//        // JWT 토큰 추출
-//        String jwtToken = authorizationHeader.replace("Bearer ", "");
-//        ModelMapper modelMapper = new ModelMapper();
-//        // 토큰을 사용하여 비밀번호 변경 처리
-//        UserUpdatePwDto updatePwDto = modelMapper.map(userUpdatePwVo, UserUpdatePwDto.class);
-//        userService.updateUserPw(updatePwDto, userUuid);
+    // 유저 포인트 패스워드 변경
+    @PutMapping("/changePointPw")
+    public void updateUserPointPw(@RequestBody UserUpdatePointPwVo userUpdatePointPwVo,
+                                  @RequestHeader HttpHeaders httpHeaders) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        String uuid = httpHeaders.getFirst("uuid");
+
+        UserUpdatePointPwDto updatePointPwDto = modelMapper.map(userUpdatePointPwVo, UserUpdatePointPwDto.class);
+        userService.updateUserPointPw(updatePointPwDto, uuid);
+    }
+
+    // 유저 탈퇴
+//    @GetMapping("/Leave")
+//    public void UserLeave(@RequestBody UserLeaveVo userLeaveVo,
+//                          @RequestHeader HttpHeaders httpHeaders) {
+//        String uuid = httpHeaders.getFirst("uuid");
+//
+//        userService.userLeave(userLeaveVo.getPassword(), uuid);
+//        return ResponseEntity.ok(UserLeaveVo);
+//
 //    }
 
-    // 포인트 비번 수정
-//    @PutMapping("/myinfo/changePointPw")
-//    public void modifyUserPointPw(@RequestBody UserUpdatePointPwVo userUpdatePointPwInVo) {
-//        ModelMapper modelMapper = new ModelMapper();
-//        UserUpdatePointPwDto updatePointPwDto = modelMapper.map(userUpdatePointPwInVo, UserUpdatePointPwDto.class);
-//        userService.updateUserPointPw(updatePointPwDto,userUpdatePointPwInVo.getUuid());
+//    @GetMapping("/api/{UUID}")
+//    public ResponseEntity<UserGetOut> getUserByUUID(@PathVariable String UUID) {
+//        UserGetDto userGetDto = userService.getUserByUUID(UUID);
+//        UserGetOut userGetOut = UserGetOut.builder()
+//                .loginId(userGetDto.getLoginId())
+//                .userName(userGetDto.getUserName())
+//                .email(userGetDto.getEmail())
+//                .phone(userGetDto.getPhone())
+//                .address(userGetDto.getAddress())
+//                .build();
+//        log.info("OUTPUT userGetOut is : {}" , userGetOut);
+//        return ResponseEntity.ok(userGetOut);
 //    }
 
 }

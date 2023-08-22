@@ -10,6 +10,5 @@ import lombok.*;
 public class UserUpdatePwDto {
     private String password;
     private String newPassword;
-    private String confirmPassword;
 
 }
