@@ -23,6 +23,7 @@ public class EventController {
 
     private final EventService eventService;
 
+//    이벤트 생성
     @PostMapping("/event")
     public void createEvent(@RequestBody EventCreate eventCreate) {
         log.info("{}", eventCreate);
@@ -32,6 +33,7 @@ public class EventController {
 
     }
 
+//    이벤트 수정 API 정의서에 event?eventid=1의 형식으로 사용
     @PutMapping("/event")
     public void updateEvent(@RequestBody EventUpdate eventUpdate) {
         log.info("{}", eventUpdate);
@@ -40,7 +42,7 @@ public class EventController {
         eventService.updateEvent(eventUpdateDto, eventUpdate.getEventId());
     }
 
-
+//     이벤트 개별 조회
     @GetMapping("/event/{eventId}")
     public EventGetOut getEventByEventId(@PathVariable("eventId")  Long eventId) {
         log.info("{}", eventId);
@@ -49,6 +51,7 @@ public class EventController {
         return mapper.map(eventGetDto, EventGetOut.class);
     }
 
+//    이벤트 전체 조회
     @GetMapping("/event/all")
     private List<EventGetOut> getAllEvents() {
         ModelMapper mapper = new ModelMapper();
@@ -63,6 +66,7 @@ public class EventController {
         return eventGetOutList;
     }
 
+//    이벤트 삭제
     @DeleteMapping("/event")
     private void deleteEvent(@RequestParam(name = "eventId", defaultValue = "")  Long eventId) {
         eventService.deleteEvent(eventId);
