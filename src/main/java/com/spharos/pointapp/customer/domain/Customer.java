@@ -1,5 +1,6 @@
 package com.spharos.pointapp.customer.domain;
 
+import com.spharos.pointapp.category.domain.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,6 @@ public class Customer {
     private String writeDatetime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private CustomerCategory customerCategory;
+    private Category category;
 
 }
