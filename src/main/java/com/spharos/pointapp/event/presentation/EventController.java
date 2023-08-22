@@ -3,8 +3,10 @@ package com.spharos.pointapp.event.presentation;
 import com.spharos.pointapp.event.application.EventService;
 import com.spharos.pointapp.event.dto.EventCreateDto;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventUpdateDto;
 import com.spharos.pointapp.event.vo.EventCreate;
 import com.spharos.pointapp.event.vo.EventGetOut;
+import com.spharos.pointapp.event.vo.EventUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -20,6 +23,7 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+
     @PostMapping("/event")
     public void createEvent(@RequestBody EventCreate eventCreate) {
         log.info("{}", eventCreate);
@@ -27,6 +31,14 @@ public class EventController {
         EventCreateDto eventCreateDto = mapper.map(eventCreate, EventCreateDto.class);
         eventService.createEvent(eventCreateDto);
 
+    }
+
+    @PutMapping("/event/{eventId}")
+    public void updateEvent(@PathVariable Long eventId, @RequestBody EventUpdate eventUpdate) {
+        log.info("{}", eventId);
+        ModelMapper mapper = new ModelMapper();
+        EventUpdateDto eventUpdateDto = mapper.map(eventUpdate, EventUpdateDto.class);
+        eventService.updateEvent(eventUpdateDto, eventId);
     }
 
     @GetMapping("/event/{eventId}")
