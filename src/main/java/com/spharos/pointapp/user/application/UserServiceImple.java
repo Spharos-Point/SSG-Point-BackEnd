@@ -36,7 +36,6 @@ public class UserServiceImple implements UserService{
         userRepository.save(user);
     }
 
-
     @Override
     public void updateUserInfo(UserUpdateInfoDto userUpdateInfoDto, String uuid) {
         User user = userRepository.findByUuid(uuid).get();
@@ -81,9 +80,6 @@ public class UserServiceImple implements UserService{
         userRepository.save(user);
     }
 
-
-
-
     @Override
     public UserGetDto getUserByLoginId(String loginId) {
 
@@ -113,20 +109,4 @@ public class UserServiceImple implements UserService{
                 .build();
         return userGetDto;
     }
-//    @Override
-//    public UserLeaveDto leaveUser(UserLeaveDto userLeaveDto, String uuid) {
-//        User user = userRepository.findByUuid(uuid).orElseThrow(
-//                () -> {
-//                    return new IllegalArgumentException("해당 유저가 없습니다.");
-//                }
-//        );          log.info("user is : {}" , user);
-//
-//        // 사용자가 입력한 현재 패스워드와 DB에 저장된 시큐리티 패스워드를 비교
-//        if (!new BCryptPasswordEncoder().matches(userLeaveDto.getPassword(), user.getPassword())) {
-//            throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
-//        } else {
-//            return UserLeaveDto;
-//        }
-//
-//    }
 }

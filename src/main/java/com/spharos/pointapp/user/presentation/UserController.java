@@ -1,14 +1,16 @@
 package com.spharos.pointapp.user.presentation;
 
-
 import com.spharos.pointapp.user.application.UserService;
+import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.*;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.user.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-
+    private final UserRepository userRepository;
     @PostMapping("/member/join")
     public void createUser(@RequestBody UserSignUpInVo userSignUpInVo) {
         log.info("INPUT Object Data is : {}" , userSignUpInVo);
@@ -32,20 +34,6 @@ public class UserController {
                 .build();
         userService.createUser(userSignUpDto);
     }
-
-//    @GetMapping("/api/{UUID}")
-//    public ResponseEntity<UserGetOut> getUserByUUID(@PathVariable String UUID) {
-//        UserGetDto userGetDto = userService.getUserByUUID(UUID);
-//        UserGetOut userGetOut = UserGetOut.builder()
-//                .loginId(userGetDto.getLoginId())
-//                .userName(userGetDto.getUserName())
-//                .email(userGetDto.getEmail())
-//                .phone(userGetDto.getPhone())
-//                .address(userGetDto.getAddress())
-//                .build();
-//        log.info("OUTPUT userGetOut is : {}" , userGetOut);
-//        return ResponseEntity.ok(userGetOut);
-//    }
 
     // 유저 정보 업데이트
     @PutMapping("/myinfo/changeInfo")
@@ -83,16 +71,21 @@ public class UserController {
         userService.updateUserPointPw(updatePointPwDto, uuid);
     }
 
-    // 유저 탈퇴
-//    @GetMapping("/Leave")
-//    public void UserLeave(@RequestBody UserLeaveVo userLeaveVo,
-//                          @RequestHeader HttpHeaders httpHeaders) {
-//        String uuid = httpHeaders.getFirst("uuid");
-//
-//        userService.userLeave(userLeaveVo.getPassword(), uuid);
-//        return ResponseEntity.ok(UserLeaveVo);
-//
-//    }
+
+    // 유저 탈퇴 패스워드 확인
+    @PostMapping("/leave")
+    public ResponseEntity<Boolean> leave(@RequestBody UserLeaveVo userLeaveVo,
+                                             @RequestHeader HttpHeaders httpHeaders) {
+
+        String uuid = httpHeaders.getFirst("uuid");
+        User user = userRepository.findByUuid(uuid).get();
+
+        if (!new BCryptPasswordEncoder().matches(userLeaveVo.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
+        } else {
+            return ResponseEntity.ok(true);
+        }
+    }
 
 //    @GetMapping("/api/{UUID}")
 //    public ResponseEntity<UserGetOut> getUserByUUID(@PathVariable String UUID) {

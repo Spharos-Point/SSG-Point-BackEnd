@@ -7,7 +7,6 @@ public interface UserService {
     void updateUserInfo(UserUpdateInfoDto userUpdateInfoDto, String uuid);
     void updateUserPw(UserUpdatePwDto userUpdatePwDto, String uuid);
     void updateUserPointPw(UserUpdatePointPwDto userUpdatePointPwDto, String uuid);
-//    void userLeave(UserLeaveDto userLeaveDto, String uuid);
     UserGetDto getUserByLoginId(String loginId);
     UserGetDto getUserByUUID(String uuid);
 
