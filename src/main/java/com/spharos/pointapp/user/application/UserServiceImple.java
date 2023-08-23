@@ -3,6 +3,7 @@ package com.spharos.pointapp.user.application;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.UserGetDto;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
+import com.spharos.pointapp.user.dto.UserUpdateDto;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,8 @@ public class UserServiceImple implements UserService{
 
         User user = User.builder()
                 .loginId(userSignUpDto.getLoginId())
-                .UUID(uuidString)
-                .userName(userSignUpDto.getName())
+                .uuid(uuidString)
+                .name(userSignUpDto.getName())
                 .password(userSignUpDto.getPassword())
                 .email(userSignUpDto.getEmail())
                 .phone(userSignUpDto.getPhone())
@@ -38,13 +39,37 @@ public class UserServiceImple implements UserService{
     }
 
     @Override
+    public void updateUser(UserUpdateDto userUpdateDto, String uuid) {
+        log.info("{}", uuid);
+
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("{}", user);
+        userRepository.save(
+                User.builder()
+                        .id(user.getId())
+                        .loginId(user.getLoginId())
+                        .address(userUpdateDto.getAddress())
+                        .pointPassword(user.getPointPassword())
+                        .name(user.getUsername())
+                        .status(user.getStatus())
+                        .uuid(user.getUuid())
+                        .phone(user.getPhone())
+                        .email(userUpdateDto.getEmail())
+                        .password(user.getPassword())
+                        .build()
+        );
+        log.info("{}", user);
+    }
+
+
+    @Override
     public UserGetDto getUserByLoginId(String loginId) {
 
-        User user = userRepository.findByLoginId(loginId);
-        log.info("administrator is : {}" , user);
+        User user = userRepository.findByLoginId(loginId).get();
+        log.info("user is : {}" , user);
         UserGetDto userGetDto = UserGetDto.builder()
                 .loginId(user.getLoginId())
-                .userName(user.getUserName())
+                .userName(user.getUsername())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .address(user.getAddress())
@@ -53,12 +78,13 @@ public class UserServiceImple implements UserService{
     }
 
     @Override
-    public UserGetDto getUserByUUID(String UUID) {
-        User user = userRepository.findByUUID(UUID);
-        log.info("administrator is : {}" , user);
+    public UserGetDto getUserByUUID(String uuid) {
+        User user = userRepository.findByUuid(uuid).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 없습니다.")
+        );        log.info("user is : {}" , user);
         UserGetDto userGetDto = UserGetDto.builder()
                 .loginId(user.getLoginId())
-                .userName(user.getUserName())
+                .userName(user.getUsername())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .address(user.getAddress())
