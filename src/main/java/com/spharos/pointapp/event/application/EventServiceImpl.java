@@ -3,9 +3,9 @@ package com.spharos.pointapp.event.application;
 import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.dto.EventCreateDto;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventUpdateDto;
 import com.spharos.pointapp.event.infrastructure.EventListRepository;
 import com.spharos.pointapp.event.infrastructure.EventRepository;
-import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,7 @@ public class EventServiceImpl implements EventService{
     private final EventRepository eventRepository;
     private final EventListRepository eventListRepository;
 
+//    이벤트 생성
     @Override
     public void createEvent(EventCreateDto eventCreateDto) {
         eventRepository.save(
@@ -36,6 +37,32 @@ public class EventServiceImpl implements EventService{
         );
     }
 
+    //    이벤트 수정
+    public void updateEvent(EventUpdateDto eventUpdateDto, Long eventId) {
+        log.info("{}", eventId);
+
+        Event event = eventRepository.findById(eventId).get();
+        eventRepository.save(
+          Event.builder()
+                  .Id(eventId)
+                  .eventName(eventUpdateDto.getEventName())
+                  .eventDesc(eventUpdateDto.getEventDesc())
+                  .eventType(eventUpdateDto.getEventType())
+                  .prizeType(eventUpdateDto.getPrizeType())
+                  .build()
+        );
+        log.info("{}", event);
+    }
+
+
+//    이벤트 삭제
+//    @Override
+//    public EventCreateDto deleteEvent(Long eventId) {
+//        return null;
+//}
+
+
+    //    이벤트 개별 조회
     @Override
     public EventGetDto getEvent(Long eventId) {
         Event event = eventRepository.findById(eventId).get();
@@ -46,6 +73,7 @@ public class EventServiceImpl implements EventService{
         return eventGetDto;
     }
 
+//    이벤트 전체 조회
     @Override
     public List<EventGetDto> getEvents() {
         List<Event> eventList = eventRepository.findAll();
@@ -59,6 +87,11 @@ public class EventServiceImpl implements EventService{
         );
         log.info("{}", eventGetDtoList);
         return eventGetDtoList;
+    }
+
+    @Override
+    public void deleteEvent(Long eventId) {
+        eventRepository.deleteById(eventId);
     }
 
 
