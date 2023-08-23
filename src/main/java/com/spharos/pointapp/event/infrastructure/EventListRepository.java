@@ -10,4 +10,6 @@ import java.util.List;
 public interface EventListRepository extends JpaRepository<EventList, Long> {
     @Query(value = "select * from event_list e LEFT JOIN user u on e.user_id = u.id where uuid = :uuid", nativeQuery = true)
     List<EventList> findAllByUuid(@Param("uuid")String uuid);
+
+    List<EventList> findByUserId(Long userId);
 }
