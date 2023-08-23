@@ -1,6 +1,6 @@
-package com.spharos.pointapp.admin.board.infrastructure;
+package com.spharos.pointapp.board.infrastructure;
 
-import com.spharos.pointapp.admin.board.domain.BoardList;
+import com.spharos.pointapp.board.domain.BoardList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BoardListRepository extends JpaRepository<BoardList, Long> {

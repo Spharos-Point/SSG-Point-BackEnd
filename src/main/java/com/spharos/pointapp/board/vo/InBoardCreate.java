@@ -1,4 +1,4 @@
-package com.spharos.pointapp.admin.board.vo;
+package com.spharos.pointapp.board.vo;
 
 import lombok.Getter;
 

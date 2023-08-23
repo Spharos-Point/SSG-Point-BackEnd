@@ -1,4 +1,4 @@
-package com.spharos.pointapp.admin.board.domain;
+package com.spharos.pointapp.board.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +19,7 @@ public class Board{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Integer categoryId;
     private String title;
     private String context;
 

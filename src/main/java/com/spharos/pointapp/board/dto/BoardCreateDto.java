@@ -1,4 +1,4 @@
-package com.spharos.pointapp.admin.board.dto;
+package com.spharos.pointapp.board.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

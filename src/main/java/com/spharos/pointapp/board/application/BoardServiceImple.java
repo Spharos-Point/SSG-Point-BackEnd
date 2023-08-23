@@ -1,12 +1,12 @@
-package com.spharos.pointapp.admin.board.application;
+package com.spharos.pointapp.board.application;
 
 import com.spharos.pointapp.admin.administrator.domain.Administrator;
 import com.spharos.pointapp.admin.administrator.infrastructure.AdministratorRepository;
-import com.spharos.pointapp.admin.board.domain.Board;
-import com.spharos.pointapp.admin.board.domain.BoardList;
-import com.spharos.pointapp.admin.board.dto.BoardCreateDto;
-import com.spharos.pointapp.admin.board.infrastructure.BoardListRepository;
-import com.spharos.pointapp.admin.board.infrastructure.BoardRepository;
+import com.spharos.pointapp.board.domain.Board;
+import com.spharos.pointapp.board.domain.BoardList;
+import com.spharos.pointapp.board.dto.BoardCreateDto;
+import com.spharos.pointapp.board.infrastructure.BoardListRepository;
+import com.spharos.pointapp.board.infrastructure.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class BoardServiceImple implements BoardService{
                             .context(boardCreateDto.getContext())
                             .build()
             );
-            boardListRepository.save(
+            BoardList save = boardListRepository.save(
                     BoardList.builder()
                             .board(board)
                             .administrator(administrator)

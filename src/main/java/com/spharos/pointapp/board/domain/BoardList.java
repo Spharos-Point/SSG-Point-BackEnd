@@ -1,4 +1,4 @@
-package com.spharos.pointapp.admin.board.domain;
+package com.spharos.pointapp.board.domain;
 
 import com.spharos.pointapp.admin.administrator.domain.Administrator;
 import jakarta.persistence.*;

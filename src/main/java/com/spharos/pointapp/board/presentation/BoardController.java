@@ -1,9 +1,9 @@
-package com.spharos.pointapp.admin.board.presentation;
+package com.spharos.pointapp.board.presentation;
 
 
-import com.spharos.pointapp.admin.board.application.BoardService;
-import com.spharos.pointapp.admin.board.dto.BoardCreateDto;
-import com.spharos.pointapp.admin.board.vo.InBoardCreate;
+import com.spharos.pointapp.board.application.BoardService;
+import com.spharos.pointapp.board.dto.BoardCreateDto;
+import com.spharos.pointapp.board.vo.InBoardCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
