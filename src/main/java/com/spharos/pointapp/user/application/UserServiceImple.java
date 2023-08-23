@@ -58,7 +58,7 @@ public class UserServiceImple implements UserService{
     }
 
     @Override
-    public void updateUserPw(UserUpdatePwDto updatePwDto, String uuid)  {
+    public void updateUserPwd(UserUpdatePwdDto updatePwDto, String uuid)  {
         User user = userRepository.findByUuid(uuid).get();
 
         // 사용자가 입력한 현재 패스워드와 DB에 저장된 시큐리티 패스워드를 비교
@@ -72,11 +72,29 @@ public class UserServiceImple implements UserService{
     }
 
     @Override
-    public void updateUserPointPw(UserUpdatePointPwDto userUpdatePointPwDto, String uuid) {
+    public void updateUserPointPwd(UserUpdatePointPwdDto userUpdatePointPwdDto, String uuid) {
         User user = userRepository.findByUuid(uuid).get();
 
         // 새로운 포인트 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
-        user.hashPointPassword(userUpdatePointPwDto.getNewPointPassword());
+        user.hashPointPassword(userUpdatePointPwdDto.getNewPointPassword());
+        userRepository.save(user);
+    }
+
+    @Override
+    public Boolean userLeavePwd(String password, String uuid) {
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("user : {}",user );
+        if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void userLeaveOnline(String uuid) {
+        User user = userRepository.findByUuid(uuid).get();
+        user.leaveOnlineStatus();
         userRepository.save(user);
     }
 

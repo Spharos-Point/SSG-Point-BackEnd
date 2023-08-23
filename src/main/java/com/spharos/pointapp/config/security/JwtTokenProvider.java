@@ -24,7 +24,6 @@ public class JwtTokenProvider {
 
     private final Environment env;
 
-
     public String getUuid(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -44,7 +43,7 @@ public class JwtTokenProvider {
             Map<String, Objects> extractClaims,
             UserDetails userDetails
     ) {
-        log.info("generateToken {}, {} ", extractClaims, userDetails);
+        log.info("generateToken {} ", userDetails);
         return Jwts.builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
@@ -84,6 +83,4 @@ public class JwtTokenProvider {
         byte[] keyBytes = Decoders.BASE64.decode(env.getProperty("JWT.SECRET_KEY"));
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-
 }

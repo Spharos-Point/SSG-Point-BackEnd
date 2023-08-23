@@ -55,6 +55,10 @@ public class User implements UserDetails {
         this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
     }
 
+    public void leaveOnlineStatus() {
+        this.status = 0;
+    }
+
     // 정해진 코드 이 계정이 가지고 있는 권한을 제공
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

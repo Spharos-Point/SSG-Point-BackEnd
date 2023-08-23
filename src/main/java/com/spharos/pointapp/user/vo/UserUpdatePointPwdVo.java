@@ -1,10 +1,9 @@
 package com.spharos.pointapp.user.vo;
 
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-public class UserUpdatePointPwVo {
+public class UserUpdatePointPwdVo {
     private String newPointPassword;
 
 }

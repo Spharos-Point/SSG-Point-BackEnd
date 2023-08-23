@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class UserUpdatePwVo {
+public class UserUpdatePwdVo {
     private String password;
     private String newPassword;
 }

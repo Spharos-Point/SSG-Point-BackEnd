@@ -4,9 +4,11 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdatePointPwDto {
-    private String newPointPassword;
+public class UserUpdatePwdDto {
+    private String password;
+    private String newPassword;
 
 }
