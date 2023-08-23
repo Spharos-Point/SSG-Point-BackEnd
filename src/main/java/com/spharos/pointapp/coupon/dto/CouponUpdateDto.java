@@ -2,13 +2,12 @@ package com.spharos.pointapp.coupon.dto;
 
 import lombok.*;
 
-@Setter
 @Getter
-@ToString
-@Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CouponCreateDto {
+@ToString
+public class CouponUpdateDto {
     private String couponName;
     private String couponDesc;
     private String usePlace;
