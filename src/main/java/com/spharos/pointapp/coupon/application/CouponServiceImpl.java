@@ -44,7 +44,7 @@ public class CouponServiceImpl implements CouponService {
     public void updateCoupon(CouponUpdateDto couponUpdateDto, Long couponId) {
         CouponType couponType = new CouponTypeConverter().convertToEntityAttribute(couponUpdateDto.getCouponType());
         couponRepository.save(Coupon.builder()
-                .Id(couponId)
+                .id(couponId)
                 .couponName(couponUpdateDto.getCouponName())
                 .couponDesc(couponUpdateDto.getCouponDesc())
                 .usePlace(couponUpdateDto.getUsePlace())
@@ -74,23 +74,22 @@ public class CouponServiceImpl implements CouponService {
 @Override
 @Convert(converter = CouponTypeConverter.class)
 public List<CouponGetDto> getCouponByUser(Long userId) {
-    List<CouponList> couponListList = couponListRepository.findByUserId(userId);
-    List<CouponGetDto> couponGetDtoList = couponListList.stream().map(coupon -> {
-//        Coupon coupon = couponListEntry.getCoupon();
-        CouponType couponType = new CouponTypeConverter().convertToEntityAttribute(coupon.getCouponType().getCode());
-
+    List<CouponList> couponListList = couponListRepository.findAllByUserId(userId);
+    List<CouponGetDto> couponGetDtoList = couponListList.stream().map(item -> {
+        Coupon coupon = couponRepository.findById(item.getId()).orElseThrow();
+        String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
         return CouponGetDto.builder()
                 .couponName(coupon.getCouponName())
                 .couponDesc(coupon.getCouponDesc())
                 .usePlace(coupon.getUsePlace())
                 .couponNum(coupon.getCouponNum())
-                .couponType(couponType.getValue())
+                .couponType(couponType)
                 .couponValue(coupon.getCouponValue())
                 .build();
     }).toList();
 
     log.info("Coupon List is : {}", couponListList);
-    return ;
+    return couponGetDtoList;
 }
 
 //    쿠폰 삭제

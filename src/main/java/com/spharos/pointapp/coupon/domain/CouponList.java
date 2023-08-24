@@ -16,15 +16,15 @@ public class CouponList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User User;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
-    private Coupon Coupon;
+    private Coupon coupon;
 
     @Column(nullable = false, name = "coupon_stat", columnDefinition = "boolean default false")
     private Boolean couponStat;

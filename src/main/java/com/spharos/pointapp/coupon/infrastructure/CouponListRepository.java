@@ -11,8 +11,9 @@ import java.util.List;
 
 public interface CouponListRepository extends JpaRepository<CouponList, Long>{
 
-//    @Query(value = "select * from coupon_list c LEFT JOIN user u on c.user_id = u.id where uuid = :uuid", nativeQuery = true)
-//    List<CouponList> findAllByUuid(@Param("uuid")String uuid);
-
-    List<CouponList> findByUserId(Long userId);
+    List<CouponList> findAllByUserId(Long userId);
+    @Query(value = "select * from coupon_list c Left Join User u on c.user_id = u.id where u.uuid= :uuid", nativeQuery = true)
+    List<CouponList> findAllByUuid(
+            @Param("uuid")
+            String uuid);
 }
