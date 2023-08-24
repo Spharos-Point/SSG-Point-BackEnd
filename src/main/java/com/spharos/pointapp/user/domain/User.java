@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false, length = 100, name = "UUID")
+    @Column(nullable = false, length = 100, name = "uuid")
     private String uuid; // todo: UUID
     @Column(nullable = false, length = 30, name = "login_id")
     private String loginId;
@@ -42,7 +42,7 @@ public class User implements UserDetails {
     private String pointPassword; // todo: Hashing
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true, length = 10, name = "roll")
+    @Column(nullable = false, length = 10, name = "roll")
     private Roll roll;
 
     //todo: 수정일자, 생성일자
@@ -51,7 +51,15 @@ public class User implements UserDetails {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-    // 정해진 코드 이계정이 가지고 있는 권한을 제공
+    public void hashPointPassword(String pointPassword) {
+        this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
+    }
+
+    public void leaveOnlineStatus() {
+        this.status = 0;
+    }
+
+    // 정해진 코드 이 계정이 가지고 있는 권한을 제공
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(roll.name()));
@@ -63,7 +71,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return loginId; }
+    public String getUsername() { return uuid; }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -84,4 +92,10 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // 포인트 패스워드 변경
+    public void updateUserPointPw(String pointPassword) {
+        this.pointPassword = pointPassword;
+    }
+
 }
