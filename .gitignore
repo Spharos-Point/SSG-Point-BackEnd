@@ -40,7 +40,7 @@ out/
 application.yml/
 
 ### build gradle ###
-build.gradle
+build.gradle/
 =======
 ### yml
 .yml/
