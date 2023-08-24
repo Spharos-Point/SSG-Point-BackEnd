@@ -34,10 +34,14 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-*.vscode
+.vscode/
+
+<<<<<<< HEAD
+### yml ###
+application.yml
 
 ### build gradle ###
 build.gradle
-
+=======
 ### yml
-*.yml
+.yml/
