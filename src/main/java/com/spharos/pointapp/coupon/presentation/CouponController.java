@@ -2,15 +2,21 @@ package com.spharos.pointapp.coupon.presentation;
 
 import com.spharos.pointapp.coupon.application.CouponService;
 import com.spharos.pointapp.coupon.dto.CouponCreateDto;
+import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.vo.CouponCreate;
+import com.spharos.pointapp.coupon.vo.CouponGetOut;
 import com.spharos.pointapp.coupon.vo.CouponUpdate;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
+import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.event.vo.EventUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,5 +55,24 @@ public class CouponController {
     private void deleteCoupon(@RequestParam(name = "couponId", defaultValue = "") Long couponId) {
         couponService.deleteCoupon(couponId);
     }
+
+//    쿠폰 조회
+    @GetMapping("/couponPage")
+    private List<CouponGetOut> getAllCoupons() {
+        ModelMapper mapper = new ModelMapper();
+        List<CouponGetDto> couponGetDtoList = couponService.getCoupons();
+        log.info("{}", couponGetDtoList);
+        List<CouponGetOut> couponGetOutList = new ArrayList<>();
+        couponGetDtoList.forEach(
+                couponGetDto -> couponGetOutList.add(
+                        mapper.map(couponGetDto, CouponGetOut.class)
+                )
+        );
+        return couponGetOutList;
+    }
+
+//    @GetMapping("/benefits/myCoupon")
+//    private List<couponGetDtoList>
+
 
 }
