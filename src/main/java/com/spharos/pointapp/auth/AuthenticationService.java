@@ -8,10 +8,9 @@ import com.spharos.pointapp.user.dto.UserSignUpDto;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -23,7 +22,6 @@ public class AuthenticationService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
         UUID uuid = UUID.randomUUID();
@@ -45,32 +43,43 @@ public class AuthenticationService {
         user.hashPassword(user.getPassword());
         userRepository.save(user);
 
-
         return AuthenticationResponse.builder()
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException{
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) throws AuthenticationException {
         log.info("userlogin is : {}" , authenticationRequest);
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getLoginId(),
-                            authenticationRequest.getPassword()
-                    )
-            );
 
-            User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
-            log.info("{}", user);
+        User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow(() -> new RuntimeException("User not found"));
+        // 입력한 비밀번호를 미리 암호화
+
+        if (new BCryptPasswordEncoder().matches(authenticationRequest.getPassword(), user.getPassword())) {
+            // 패스워드 일치하여 로그인 성공
             String JwtToken = jwtTokenProvider.generateToken(user);
-            log.info("{}", JwtToken);
-            return AuthenticationResponse.builder()
+            log.info("JwtToken is : {}" , JwtToken);
+            return  AuthenticationResponse.builder()
                     .token(JwtToken)
                     .build();
-        } catch (AuthenticationException ex) {
-            log.error("로그인 정보가 일치하지 않습니다.");
-            throw new BadCredentialsException("Authentication failed", ex);
+        } else {
+            // 패스워드 불일치로 인한 로그인 실패
+            throw new BadCredentialsException("로그인 정보가 일치하지 않습니다.");
         }
-
     }
+
+//    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+//        log.info("userlogin is : {}" , authenticationRequest);
+//
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        authenticationRequest.getLoginId(),
+//                        authenticationRequest.getPassword()
+//                )/
+//        );
+//
+//        User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
+//        String JwtToken = jwtTokenProvider.generateToken(user);
+//        return AuthenticationResponse.builder()
+//                .token(JwtToken)
+//                .build();
+//    }
 }
