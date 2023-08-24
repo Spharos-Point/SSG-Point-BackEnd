@@ -21,7 +21,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return loginId -> userRepository.findByUuid(loginId)
+        return loginId -> userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found : {}" + loginId));
     }
     // 정해진 코드, 패스워드를 만들 때 encoder를 하겠다.
