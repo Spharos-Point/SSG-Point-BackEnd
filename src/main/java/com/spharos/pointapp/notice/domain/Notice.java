@@ -21,7 +21,7 @@ public class Notice {
     @Column(nullable = false, length = 100 , name = "context")
     private String context;
 
-//    public void wirteNotice(String title, String context){
+//    public void Notice(String title, String context){
 //        this.title = title;
 //        this.context = context;
 //    }

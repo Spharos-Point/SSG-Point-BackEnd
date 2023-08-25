@@ -2,6 +2,7 @@ package com.spharos.pointapp.notice.application;
 
 import com.spharos.pointapp.notice.domain.Notice;
 import com.spharos.pointapp.notice.dto.NoticeCreateDto;
+import com.spharos.pointapp.notice.infrastructure.NoticeListRepository;
 import com.spharos.pointapp.notice.infrastructure.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NoticeServiceImple implements NoticeService{
     private final NoticeRepository noticeRepository;
+    private final NoticeListRepository noticeListRepository;
 
-
+// 공지사항 생성
     @Override
     public void createNotice(NoticeCreateDto noticeCreateDto) {
         noticeRepository.save(
@@ -23,18 +25,8 @@ public class NoticeServiceImple implements NoticeService{
                         .build());
     }
 
+    // 공지사항 삭제
+    @Override
+    public void deleteNotice(Long noticeId) { noticeRepository.deleteById(noticeId);}
     }
-//        Administrator administrator = administratorRepository.findByLoginId(noticeCreateDto.getTitle());
-//        Notice notice = new Notice();
-//        if(administrator==null) {
-//            log.error("Not found Admin");
-//        } else {
-//            notice = noticeRepository.save(
-//                    Notice.builder()
-//                            .title(notice.getTitle())
-//                            .context(notice.getContext())
-//                            .build()
-//            );
-//        }
-//    }
 

@@ -6,10 +6,7 @@ import com.spharos.pointapp.notice.vo.NoticeCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class NoticeController {
     private final NoticeService noticeService;
-
+// 공지사항 생성
     @PostMapping("/notice")
     public void createNotice(@RequestBody NoticeCreate noticeCreate) {
         NoticeCreateDto noticeCreateDto = NoticeCreateDto.builder()
@@ -26,6 +23,13 @@ public class NoticeController {
                 .build();
         noticeService.createNotice(noticeCreateDto);
     }
+    //공지사항 삭제
+    @DeleteMapping("/notice")
+    private void deleteNotice(@RequestParam(name = "noticeId", defaultValue = "") Long noticeId) {
+        noticeService.deleteNotice(noticeId);
+    }
+
+
 }
 
 //        log.info("{}", noticeCreate);
