@@ -23,5 +23,4 @@ public class Category {
 
     @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY)
     private List<Category> childCategory;
-
 }
