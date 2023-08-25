@@ -1,12 +1,15 @@
 package com.spharos.pointapp.notice.presentation;
 
 import com.spharos.pointapp.notice.application.NoticeService;
+import com.spharos.pointapp.notice.domain.NoticeList;
 import com.spharos.pointapp.notice.dto.NoticeCreateDto;
 import com.spharos.pointapp.notice.vo.NoticeCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class NoticeController {
         NoticeCreateDto noticeCreateDto = NoticeCreateDto.builder()
                 .title(noticeCreate.getTitle())
                 .context(noticeCreate.getContext())
+                .adminId(noticeCreate.getAdminId())
                 .build();
         noticeService.createNotice(noticeCreateDto);
     }
@@ -27,6 +31,11 @@ public class NoticeController {
     @DeleteMapping("/notice")
     private void deleteNotice(@RequestParam(name = "noticeId", defaultValue = "") Long noticeId) {
         noticeService.deleteNotice(noticeId);
+    }
+
+    @GetMapping("/notice")
+    private List<NoticeList> getNotice() {
+        return noticeService.getNotice();
     }
 
 

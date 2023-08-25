@@ -17,10 +17,15 @@ public class NoticeList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @Column(nullable = true, name = "can_view", columnDefinition = "boolean default true")
+    private Boolean canView;
+
+    @ManyToOne
     @JoinColumn(name = "admin_id")
     private Administrator administrator;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "notice_id")
     private Notice notice;
+
 }

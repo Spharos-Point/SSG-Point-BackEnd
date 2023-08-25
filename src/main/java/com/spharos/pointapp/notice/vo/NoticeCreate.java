@@ -12,4 +12,5 @@ import lombok.*;
 public class NoticeCreate {
     private String title;
     private String context;
+    private String adminId;
 }

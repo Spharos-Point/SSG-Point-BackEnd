@@ -12,7 +12,7 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:mysql://localhost:3307/ssgpoint
+    url: jdbc:mysql://localhost:3307/ssgpoint-team3
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
