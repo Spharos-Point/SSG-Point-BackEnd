@@ -24,8 +24,7 @@ public class JwtTokenProvider {
 
     private final Environment env;
 
-
-    public String getLoginId(String token) {
+    public String getUuid(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -44,7 +43,7 @@ public class JwtTokenProvider {
             Map<String, Objects> extractClaims,
             UserDetails userDetails
     ) {
-        log.info("generateToken", extractClaims, userDetails);
+        log.info("generateToken {} ", userDetails);
         return Jwts.builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
@@ -56,7 +55,7 @@ public class JwtTokenProvider {
 
     //토큰 유효성 검사
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String uuid = getLoginId(token);
+        final String uuid = getUuid(token);
         // 뽑아온 UUID와 받은 UUID가 같고 유효기간이 지나지 않았다면
         return (uuid.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
@@ -84,6 +83,4 @@ public class JwtTokenProvider {
         byte[] keyBytes = Decoders.BASE64.decode(env.getProperty("JWT.SECRET_KEY"));
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-
 }

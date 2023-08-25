@@ -17,7 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
+### IntelliJ IDEA ###`
 .idea
 *.iws
 *.iml
@@ -36,12 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-<<<<<<< HEAD
 ### yml ###
 application.yml
-
-### build gradle ###
-build.gradle
-=======
-### yml
-.yml/

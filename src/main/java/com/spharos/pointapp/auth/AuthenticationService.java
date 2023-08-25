@@ -10,7 +10,9 @@ import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -44,29 +46,32 @@ public class AuthenticationService {
         user.hashPassword(user.getPassword());
         userRepository.save(user);
 
-        String JwtToken = jwtTokenProvider.generateToken(user);
-        log.info("JwtToken is : {}" , JwtToken);
+
         return AuthenticationResponse.builder()
-                .token(JwtToken)
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getLoginId(),
-                        authenticationRequest.getPassword()
-                )
-        );
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException{
+        log.info("userlogin is : {}" , authenticationRequest);
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getLoginId(),
+                            authenticationRequest.getPassword()
+                    )
+            );
 
-        User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
-        String JwtToken = jwtTokenProvider.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(JwtToken)
-                .build();
+            User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
+            log.info("{}", user);
+            String JwtToken = jwtTokenProvider.generateToken(user);
+            log.info("{}", JwtToken);
+            return AuthenticationResponse.builder()
+                    .token(JwtToken)
+                    .build();
+        } catch (AuthenticationException ex) {
+            log.error("로그인 정보가 일치하지 않습니다.");
+            throw new BadCredentialsException("Authentication failed", ex);
+        }
+
     }
-
 }
-
-
-

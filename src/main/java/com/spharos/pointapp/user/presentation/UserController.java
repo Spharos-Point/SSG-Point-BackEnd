@@ -1,26 +1,37 @@
 package com.spharos.pointapp.user.presentation;
 
 import com.spharos.pointapp.user.application.UserService;
-import com.spharos.pointapp.user.dto.UserSignUpDto;
-import com.spharos.pointapp.user.dto.UserUpdateDto;
-import com.spharos.pointapp.user.vo.UserSignUpInVo;
-import com.spharos.pointapp.user.vo.UserUpdateInfoVo;
+import com.spharos.pointapp.user.dto.*;
+import com.spharos.pointapp.user.vo.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/member")
+    @Operation(summary = "회원 추가 요청", description = "회원을 등록합니다.", tags = { "User Controller" })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = UserGetOutVo.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @PostMapping("/member/join")
     public void createUser(@RequestBody UserSignUpInVo userSignUpInVo) {
         log.info("INPUT Object Data is : {}" , userSignUpInVo);
         UserSignUpDto userSignUpDto = UserSignUpDto.builder()
@@ -34,6 +45,78 @@ public class UserController {
         userService.createUser(userSignUpDto);
     }
 
+    // 유저 정보 업데이트
+    @PutMapping("/myinfo/changeInfo")
+    public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
+                               @RequestHeader HttpHeaders httpHeaders) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        String uuid = httpHeaders.getFirst("uuid");
+
+        UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
+        userService.updateUserInfo(userUpdateInfoDto, uuid);
+    }
+
+    // 유저 패스워드 변경
+    @PutMapping("/changePwd")
+    public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo,
+                             @RequestHeader HttpHeaders httpHeaders) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        String uuid = httpHeaders.getFirst("uuid");
+
+        UserUpdatePwdDto updatePwDto = modelMapper.map(userUpdatePwdVo, UserUpdatePwdDto.class);
+        userService.updateUserPwd(updatePwDto, uuid);
+    }
+
+    // 유저 포인트 패스워드 변경
+    @PutMapping("/changePointPwd")
+    public void updateUserPointPwd(@RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo,
+                                  @RequestHeader HttpHeaders httpHeaders) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        String uuid = httpHeaders.getFirst("uuid");
+
+        UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
+        userService.updateUserPointPwd(updatePointPwDto, uuid);
+    }
+
+
+    // 유저 탈퇴 패스워드 확인
+    @PostMapping("/leavePwd")
+    public ResponseEntity<Boolean> leavePwd(@RequestBody UserLeavePwdVo userLeavePwdVo,
+                                             @RequestHeader HttpHeaders httpHeaders) {
+        String uuid = httpHeaders.getFirst("uuid");
+
+        if (!userService.userLeavePwd(userLeavePwdVo.getPassword(), uuid)) {
+            return ResponseEntity.ok(false);
+        } else {
+            return ResponseEntity.ok(true);
+        }
+    }
+
+    // 유저 탈퇴 상태 변경
+    @PutMapping("/leaveOnline")
+    public void leaveOnilne(@RequestHeader HttpHeaders httpHeaders) {
+        String uuid = httpHeaders.getFirst("uuid");
+        userService.userLeaveOnline(uuid);
+    }
+
+//     유저 탈퇴 패스워드 확인
+//    @PostMapping("/leave")
+//    public ResponseEntity<Boolean> leave(@RequestBody UserLeaveVo userLeaveVo,
+//                                         @RequestHeader HttpHeaders httpHeaders) {
+//
+//        String uuid = httpHeaders.getFirst("uuid");
+//        User user = userRepository.findByUuid(uuid).get();
+//
+//        if (!new BCryptPasswordEncoder().matches(userLeaveVo.getPassword(), user.getPassword())) {
+//            throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
+//        } else {
+//            return ResponseEntity.ok(true);
+//        }
+//    }
+
 //    @GetMapping("/api/{UUID}")
 //    public ResponseEntity<UserGetOut> getUserByUUID(@PathVariable String UUID) {
 //        UserGetDto userGetDto = userService.getUserByUUID(UUID);
@@ -46,72 +129,6 @@ public class UserController {
 //                .build();
 //        log.info("OUTPUT userGetOut is : {}" , userGetOut);
 //        return ResponseEntity.ok(userGetOut);
-//    }
-
-    // 유저 정보 수정
-    @PutMapping("/member")
-    public void updateUser(@RequestBody UserUpdateInfoVo userUpdate, @RequestHeader HttpHeaders httpHeaders) throws Exception{
-
-        log.info("{}",httpHeaders.get("authorization"));
-        ModelMapper modelMapper = new ModelMapper();
-        userService.updateUser(
-                modelMapper.map(userUpdate, UserUpdateDto.class),
-                httpHeaders.get("authorization").toString().substring(8).replace("]",""));
-    }
-
-//
-//    //  유저 탈퇴
-//    @PutMapping("/member")
-//    public void deleteUser(@RequestBody UserUpdateInfoVo userUpdateInfoVo, @RequestHeader HttpHeaders httpHeaders) throws Exception{
-//
-//        log.info("{}",httpHeaders.get("authorization"));
-//        ModelMapper modelMapper = new ModelMapper();
-//        userService.updateUser(
-//                modelMapper.map(userUpdateInfoVo, UserUpdateDto.class),
-//    }
-
-    // point pw 변경
-
-//    //비밀번호 확인 처리 요청
-//    @PostMapping("/checkPw")
-//    public String checkPw(@RequestBody String pw, HttpSession session) throws Exception {
-//
-//        log.info("비밀번호 확인 요청 발생");
-//
-//        String result = null;
-//
-//        UsersVO dbUser = (UsersVO)session.getAttribute("login");
-//
-//        if(encoder.matches(pw, User.getpassWord())) {
-//            result = "pwConfirmOK";
-//        } else {
-//            result = "pwConfirmNO";
-//        }
-//
-//        return result;
-//
-//    }
-
-
-
-    //비밀번호 변경 요청
-//    @PostMapping("/pw-change")
-//    public String pwChange(@RequestBody UsersVO user, HttpSession session) throws Exception {
-//
-//        log.info("비밀번호 변경 요청 발생!!!");
-//
-//        //비밀번호 변경
-//        usersService.modifyPw(user);
-//
-//        //비밀번호 변경 성공시 로그인 세션 객체 다시 담음
-//        LoginVO modifyUser = new LoginVO();
-//        modifyUser.setEmail(user.getEmail());
-//
-//        UsersVO mUser = usersService.login(modifyUser);
-//        log.info("회원정보 불러오기 : " + mUser);
-//        session.setAttribute("login", mUser);
-//
-//        return "changeSuccess";
 //    }
 
 }
