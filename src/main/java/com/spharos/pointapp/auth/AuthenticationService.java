@@ -2,6 +2,8 @@ package com.spharos.pointapp.auth;
 import com.spharos.pointapp.auth.vo.AuthenticationRequest;
 import com.spharos.pointapp.auth.vo.AuthenticationResponse;
 import com.spharos.pointapp.config.security.JwtTokenProvider;
+import com.spharos.pointapp.pointcard.domain.PointCard;
+import com.spharos.pointapp.pointcard.infrastructure.PointCardRepository;
 import com.spharos.pointapp.user.domain.Roll;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
@@ -14,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -26,6 +29,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final PointCardRepository pointCardRepository;
 
     /**
      * 1. 시큐리티 아이디 생성
@@ -57,7 +61,7 @@ public class AuthenticationService {
 
 
         String pointBardCode = pointCardBarcodeGenerator(user);
-//        String validateBarcode = validateBarcode(pointBardCode);
+        String validateBarcode = validateBarcode(pointBardCode);
 
         return AuthenticationResponse.builder()
                 .build();
@@ -77,22 +81,20 @@ public class AuthenticationService {
         String full_barcode = prefix_barcode +String.format("%04d", random.nextInt(1000));
         return full_barcode;
     }
+//    3. 바코드 유효성 검사
+    private String validateBarcode(String checkBarcode) {
+        Optional<PointCard> byBarCode = pointCardRepository.findByBarCode(checkBarcode);
+        // DB에 없다면 무한 반복
+        if (byBarCode.isPresent()) {
+            String substring = checkBarcode.substring(12, 15);
+            int endbarcode = Integer.parseInt(substring) + 1;
 
-////    3. 바코드 유효성 검사
-//    private String validateBarcode(String checkBarcode) {
-//        Optional<User> byBarCode = userRepository.findByBarCode(checkBarcode);
-//        if (byBarCode.isPresent()) {
-//            //중복인경우
-//            String substring = checkBarcode.substring(4, 7);
-//            int plus = Integer.parseInt(substring) + 1;
-//
-//            String barcode = checkBarcode.substring(0, 4) + String.format("%03d", plus) + checkBarcode.substring(7);
-//            return validateBarcode(barcode); // 중복된 경우 재귀 호출하여 검사
-//            //return barcode;
-//        } else {
-//            return checkBarcode;
-//        }
-//    }
+            String barcode = checkBarcode.substring(0, 12) + String.format("%04d", endbarcode);
+            return validateBarcode(barcode);
+        } else {
+            return checkBarcode;
+        }
+    }
 //    4. 로그인 기능
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException{
         log.info("userlogin is : {}" , authenticationRequest);
