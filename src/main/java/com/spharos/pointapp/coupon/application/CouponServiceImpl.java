@@ -81,7 +81,7 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
         return CouponGetDto.builder()
                 .couponName(coupon.getCouponName())
                 .couponDesc(coupon.getCouponDesc())
-                .usePlace(coupon.getUsePlace())
+                .(coupon.store.getstoreList())
                 .couponNum(coupon.getCouponNum())
                 .couponType(couponType)
                 .couponValue(coupon.getCouponValue())

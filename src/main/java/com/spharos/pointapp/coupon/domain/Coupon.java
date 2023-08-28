@@ -1,7 +1,9 @@
 package com.spharos.pointapp.coupon.domain;
 
+import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.catalina.Store;
 
 @Entity
 @Getter
@@ -21,8 +23,9 @@ public class Coupon {
     @Column(nullable = false, length = 300, name = "coupon_desc")
     private String couponDesc;
 
-    @Column(nullable = false, length = 45, name = "use_place")
-    private String usePlace;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "use_place")
+    private Store store;
 
     @Column(nullable = false, length = 100, name = "coupon_num")
     private String couponNum;
