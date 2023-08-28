@@ -45,16 +45,27 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 10, name = "roll")
     private Roll roll;
 
+    /**
+     *
+     * 1. 해쉬 패스워드 생성
+     * 2. 해쉬 포인트 패스워드 생성
+     * 3. 유저 상태 변경
+     * 4. ETC 시큐리티
+     */
+
     //todo: 수정일자, 생성일자
+//    1. 해쉬 패스워드
     public void hashPassword(String password) {
     //      this.password = password;
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
+//    2. 해쉬 포인트 패스워드
     public void hashPointPassword(String pointPassword) {
         this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
     }
 
+//    3. 유저 상태 변경
     public void leaveOnlineStatus() {
         this.status = 0;
     }
@@ -71,7 +82,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return uuid; }
+    public String getUsername() { return loginId; }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -91,11 +102,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    // 포인트 패스워드 변경
-    public void updateUserPointPw(String pointPassword) {
-        this.pointPassword = pointPassword;
     }
 
 }

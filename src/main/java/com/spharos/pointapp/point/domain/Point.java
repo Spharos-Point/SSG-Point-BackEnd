@@ -1,6 +1,5 @@
 package com.spharos.pointapp.point.domain;
 
-import com.spharos.pointapp.user.domain.Roll;
 import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Point {
 
     @Id

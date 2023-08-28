@@ -2,6 +2,7 @@ package com.spharos.pointapp.config.security;
 
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return loginId -> userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found : {}" + loginId));
+                .orElseThrow(() -> new UsernameNotFoundException("userDetailsService not found : {}" + loginId));
     }
     // 정해진 코드, 패스워드를 만들 때 encoder를 하겠다.
     @Bean
@@ -42,6 +43,11 @@ public class ApplicationConfig {
     //패스워드 처리를 BCrypt로 한다.
     private PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }

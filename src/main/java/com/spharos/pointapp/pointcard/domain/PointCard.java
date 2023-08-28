@@ -1,10 +1,14 @@
 package com.spharos.pointapp.pointcard.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Builder
+@Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class PointCard {
 
     @Id
@@ -14,4 +18,5 @@ public class PointCard {
     private String barcode;
     @Column(nullable = false, length = 100, name = "uuid")
     private String uuid;
+
 }

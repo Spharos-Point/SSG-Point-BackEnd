@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     /**
      *
@@ -48,7 +49,6 @@ public class UserController {
     public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
                                @RequestHeader HttpHeaders httpHeaders) {
 
-        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
         UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
@@ -60,7 +60,6 @@ public class UserController {
     public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo,
                              @RequestHeader HttpHeaders httpHeaders) {
 
-        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
         UserUpdatePwdDto updatePwDto = modelMapper.map(userUpdatePwdVo, UserUpdatePwdDto.class);
@@ -72,7 +71,6 @@ public class UserController {
     public void updateUserPointPwd(@RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo,
                                   @RequestHeader HttpHeaders httpHeaders) {
 
-        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
         UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
@@ -100,22 +98,7 @@ public class UserController {
         userService.userLeaveOnline(uuid);
     }
 
-    // 6. 시큐리티x 회원가입
-    @PostMapping("/member/join")
-    public void createUser(@RequestBody UserSignUpInVo userSignUpInVo) {
-        log.info("INPUT Object Data is : {}" , userSignUpInVo);
-        UserSignUpDto userSignUpDto = UserSignUpDto.builder()
-                .loginId(userSignUpInVo.getLoginId())
-                .password(userSignUpInVo.getPassword())
-                .name(userSignUpInVo.getName())
-                .email(userSignUpInVo.getEmail())
-                .phone(userSignUpInVo.getPhone())
-                .address(userSignUpInVo.getAddress())
-                .build();
-        userService.createUser(userSignUpDto);
-    }
-
-    // 강사님 코드 uuid로 조회
+//     강사님 코드 uuid로 조회
 //    @GetMapping("/api/{UUID}")
 //    public ResponseEntity<UserGetOut> getUserByUUID(@PathVariable String UUID) {
 //        UserGetDto userGetDto = userService.getUserByUUID(UUID);

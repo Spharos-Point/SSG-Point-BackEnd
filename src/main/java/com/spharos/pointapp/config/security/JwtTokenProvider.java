@@ -24,11 +24,12 @@ public class JwtTokenProvider {
 
     private final Environment env;
 
+//    토큰에서 uuid 클레임을 추출하여 반환
     public String getUuid(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    //extractAllClaims를 통해 토큰의 정보를 풀고 빌드를 위한 객체
+//    extractAllClaims를 통해 토큰의 정보를 풀고 빌드를 위한 객체
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -60,10 +61,11 @@ public class JwtTokenProvider {
         return (uuid.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+//    만료 비교
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new java.util.Date());
     }
-
+//  JWT 토큰에서 만료 시간 클레임을 추출하여 반환합니다.
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }

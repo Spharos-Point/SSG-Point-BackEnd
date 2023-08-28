@@ -1,7 +1,5 @@
 package com.spharos.pointapp.admin.administrator.dto;
 
-import com.spharos.pointapp.admin.administrator.domain.Roll;
-import com.spharos.pointapp.user.dto.UserSignUpDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
