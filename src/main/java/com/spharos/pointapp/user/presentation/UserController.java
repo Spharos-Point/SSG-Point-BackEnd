@@ -22,6 +22,18 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
+
+    /**
+     *
+     * 1. 유저 정보 업데이트
+     * 2. 유저 패스워드 변경
+     * 3. 유저 포인트 패스워드 변경
+     * 4. 유저 탈퇴 패스워드 확인
+     * 5. 유저 탈퇴 상태 변경
+     * 6. 시큐리티x 회원가입
+     *
+     */
 
     @Operation(summary = "회원 추가 요청", description = "회원을 등록합니다.", tags = { "User Controller" })
     @ApiResponses({
@@ -31,50 +43,34 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-    @PostMapping("/member/join")
-    public void createUser(@RequestBody UserSignUpInVo userSignUpInVo) {
-        log.info("INPUT Object Data is : {}" , userSignUpInVo);
-        UserSignUpDto userSignUpDto = UserSignUpDto.builder()
-                .loginId(userSignUpInVo.getLoginId())
-                .password(userSignUpInVo.getPassword())
-                .name(userSignUpInVo.getName())
-                .email(userSignUpInVo.getEmail())
-                .phone(userSignUpInVo.getPhone())
-                .address(userSignUpInVo.getAddress())
-                .build();
-        userService.createUser(userSignUpDto);
-    }
 
-    // 유저 정보 업데이트
+    // 1. 유저 정보 업데이트
     @PutMapping("/myinfo/changeInfo")
     public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
                                @RequestHeader HttpHeaders httpHeaders) {
 
-        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
         UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
         userService.updateUserInfo(userUpdateInfoDto, uuid);
     }
 
-    // 유저 패스워드 변경
+    // 2. 유저 패스워드 변경
     @PutMapping("/changePwd")
     public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo,
                              @RequestHeader HttpHeaders httpHeaders) {
 
-        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
         UserUpdatePwdDto updatePwDto = modelMapper.map(userUpdatePwdVo, UserUpdatePwdDto.class);
         userService.updateUserPwd(updatePwDto, uuid);
     }
 
-    // 유저 포인트 패스워드 변경
+    // 3. 유저 포인트 패스워드 변경
     @PutMapping("/changePointPwd")
     public void updateUserPointPwd(@RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo,
                                   @RequestHeader HttpHeaders httpHeaders) {
 
-        ModelMapper modelMapper = new ModelMapper();
         String uuid = httpHeaders.getFirst("uuid");
 
         UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
@@ -82,7 +78,7 @@ public class UserController {
     }
 
 
-    // 유저 탈퇴 패스워드 확인
+    // 4. 유저 탈퇴 패스워드 확인
     @PostMapping("/leavePwd")
     public ResponseEntity<Boolean> leavePwd(@RequestBody UserLeavePwdVo userLeavePwdVo,
                                              @RequestHeader HttpHeaders httpHeaders) {
@@ -95,28 +91,14 @@ public class UserController {
         }
     }
 
-    // 유저 탈퇴 상태 변경
+    // 5. 유저 탈퇴 상태 변경
     @PutMapping("/leaveOnline")
     public void leaveOnilne(@RequestHeader HttpHeaders httpHeaders) {
         String uuid = httpHeaders.getFirst("uuid");
         userService.userLeaveOnline(uuid);
     }
 
-//     유저 탈퇴 패스워드 확인
-//    @PostMapping("/leave")
-//    public ResponseEntity<Boolean> leave(@RequestBody UserLeaveVo userLeaveVo,
-//                                         @RequestHeader HttpHeaders httpHeaders) {
-//
-//        String uuid = httpHeaders.getFirst("uuid");
-//        User user = userRepository.findByUuid(uuid).get();
-//
-//        if (!new BCryptPasswordEncoder().matches(userLeaveVo.getPassword(), user.getPassword())) {
-//            throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
-//        } else {
-//            return ResponseEntity.ok(true);
-//        }
-//    }
-
+//     강사님 코드 uuid로 조회
 //    @GetMapping("/api/{UUID}")
 //    public ResponseEntity<UserGetOut> getUserByUUID(@PathVariable String UUID) {
 //        UserGetDto userGetDto = userService.getUserByUUID(UUID);
