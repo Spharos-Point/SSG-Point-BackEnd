@@ -5,7 +5,7 @@ public class PointCardCreateInVo {
     private Integer number;
     private Integer cvc;
     private String pointCardType;
-    private String affiliate;
+    private String issuer;
 
 
 }

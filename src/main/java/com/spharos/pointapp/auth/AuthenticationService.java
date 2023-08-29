@@ -72,6 +72,7 @@ public class AuthenticationService {
 
         PointCard pointCard = PointCard.builder()
                 .barcode(validatedBarcode)
+                .issuer("신세계포인트닷컴")
                 .uuid(uuidString)
                 .build();
 
