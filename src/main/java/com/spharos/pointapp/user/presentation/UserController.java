@@ -47,9 +47,7 @@ public class UserController {
     // 1. 유저 정보 업데이트
     @PutMapping("/myinfo/changeInfo")
     public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
-                               @RequestHeader HttpHeaders httpHeaders) {
-
-        String uuid = httpHeaders.getFirst("uuid");
+                               @RequestParam("uuid") String uuid) {
 
         UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
         userService.updateUserInfo(userUpdateInfoDto, uuid);
@@ -58,9 +56,7 @@ public class UserController {
     // 2. 유저 패스워드 변경
     @PutMapping("/changePwd")
     public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo,
-                             @RequestHeader HttpHeaders httpHeaders) {
-
-        String uuid = httpHeaders.getFirst("uuid");
+                              @RequestParam("uuid") String uuid) {
 
         UserUpdatePwdDto updatePwDto = modelMapper.map(userUpdatePwdVo, UserUpdatePwdDto.class);
         userService.updateUserPwd(updatePwDto, uuid);
@@ -69,9 +65,7 @@ public class UserController {
     // 3. 유저 포인트 패스워드 변경
     @PutMapping("/changePointPwd")
     public void updateUserPointPwd(@RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo,
-                                  @RequestHeader HttpHeaders httpHeaders) {
-
-        String uuid = httpHeaders.getFirst("uuid");
+                                   @RequestParam("uuid") String uuid) {
 
         UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
         userService.updateUserPointPwd(updatePointPwDto, uuid);
@@ -81,8 +75,7 @@ public class UserController {
     // 4. 유저 탈퇴 패스워드 확인
     @PostMapping("/leavePwd")
     public ResponseEntity<Boolean> leavePwd(@RequestBody UserLeavePwdVo userLeavePwdVo,
-                                             @RequestHeader HttpHeaders httpHeaders) {
-        String uuid = httpHeaders.getFirst("uuid");
+                                            @RequestParam("uuid") String uuid) {
 
         if (!userService.userLeavePwd(userLeavePwdVo.getPassword(), uuid)) {
             return ResponseEntity.ok(false);
@@ -93,8 +86,7 @@ public class UserController {
 
     // 5. 유저 탈퇴 상태 변경
     @PutMapping("/leaveOnline")
-    public void leaveOnilne(@RequestHeader HttpHeaders httpHeaders) {
-        String uuid = httpHeaders.getFirst("uuid");
+    public void leaveOnilne(@RequestParam("uuid") String uuid) {
         userService.userLeaveOnline(uuid);
     }
 

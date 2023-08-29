@@ -72,7 +72,7 @@ public class AuthenticationService {
 
         PointCard pointCard = PointCard.builder()
                 .barcode(validatedBarcode)
-                .issuer("신세계포인트닷컴")
+                .partnerName("신세계포인트닷컴")
                 .uuid(uuidString)
                 .build();
 
@@ -92,7 +92,7 @@ public class AuthenticationService {
         String sum_barcode = prefix_barcode+id;
         Random random = new Random();
 
-        String full_barcode = sum_barcode +String.format("%04d", random.nextInt(1000));
+        String full_barcode = sum_barcode + String.format("%04d", random.nextInt(1000));
         log.info("full_barcode is : {}" , full_barcode);
 
         return full_barcode;
