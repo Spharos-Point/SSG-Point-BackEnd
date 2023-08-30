@@ -1,5 +1,7 @@
 package com.spharos.pointapp.coupon.vo;
 
+import com.spharos.pointapp.partner.domain.Partner;
+import com.spharos.pointapp.partner.domain.PartnerName;
 import lombok.*;
 
 @Getter
@@ -9,7 +11,7 @@ public class CouponUpdate {
     private Long couponId;
     private String couponName;
     private String couponDesc;
-    private String usePlace;
+    private Partner partner;
     private String couponNum;
     private String couponType;
     private Integer couponValue;

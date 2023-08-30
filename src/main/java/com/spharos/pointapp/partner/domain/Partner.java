@@ -1,4 +1,4 @@
-package com.spharos.pointapp.store.domain;
+package com.spharos.pointapp.partner.domain;
 
 
 import jakarta.persistence.*;
@@ -10,13 +10,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Store {
+public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-
-    @Column(nullable = false, name = "use_place")
-    @Convert(converter = StoreListConverter.class)
-    private StoreList storeList;
+    @Column(nullable = false, name = "partner_name")
+    @Convert(converter = PartnerNameConverter.class)
+    private PartnerName partnerName;
 }

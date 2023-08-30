@@ -1,10 +1,10 @@
-package com.spharos.pointapp.store.domain;
+package com.spharos.pointapp.partner.domain;
 
 import com.spharos.pointapp.coupon.domain.CodeValue;
 import lombok.Getter;
 
 @Getter
-public enum StoreList implements CodeValue {
+public enum PartnerName implements CodeValue {
     EMART("1", "이마트"),
     SSGDEPART("2", "신세계백화점"),
     SSGCOM("3","신세계닷컴"),
@@ -28,7 +28,7 @@ public enum StoreList implements CodeValue {
     private String code;
     private String value;
 
-    StoreList(String code, String value) {
+    PartnerName(String code, String value) {
         this.code = code;
         this.value = value;
     }

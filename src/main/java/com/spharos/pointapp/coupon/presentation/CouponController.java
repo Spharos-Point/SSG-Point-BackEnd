@@ -10,9 +10,13 @@ import com.spharos.pointapp.coupon.vo.CouponUpdate;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
 import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.event.vo.EventUpdate;
+import com.spharos.pointapp.partner.domain.Partner;
+import com.spharos.pointapp.partner.domain.PartnerName;
+import com.spharos.pointapp.partner.infrastructure.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,15 +29,27 @@ import java.util.List;
 public class CouponController {
 
     private final CouponService couponService;
+    private final PartnerRepository partnerRepository;
+
+    @Autowired
+    public CouponController(PartnerRepository partnerRepository, CouponService couponService) {
+        this.partnerRepository = partnerRepository;
+        this.couponService = couponService;
+    }
 
 //    쿠폰 생성
     @PostMapping("/coupon")
     public void createCoupon(@RequestBody CouponCreate couponCreate) {
         log.info("INPUT Object Data is : {}" , couponCreate);
+//        Long partnerId = partnerRepository.findByPartnerName(couponCreate.getPartnerId());
+
+        Partner partner = partnerRepository.findById(couponCreate.getPartnerId())
+                .orElseThrow(() -> new IllegalArgumentException("Partner not found with ID: " + couponCreate.getPartnerId()));
+
         CouponCreateDto couponCreateDto = CouponCreateDto.builder()
                 .couponName(couponCreate.getCouponName())
                 .couponDesc(couponCreate.getCouponDesc())
-                .usePlace(couponCreate.getUsePlace())
+                .partner(partner)
                 .couponNum(couponCreate.getCouponNum())
                 .couponType(couponCreate.getCouponType())
                 .couponValue(couponCreate.getCouponValue())

@@ -6,12 +6,13 @@ import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
+import com.spharos.pointapp.partner.domain.Partner;
+import com.spharos.pointapp.partner.domain.PartnerName;
 import jakarta.persistence.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +24,18 @@ public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final CouponListRepository couponListRepository;
 
+
+
 //    쿠폰 생성
     @Override
     @Convert(converter = CouponTypeConverter.class)
     public void createCoupon(CouponCreateDto couponCreateDto) {
         CouponType couponType = new CouponTypeConverter().convertToEntityAttribute(couponCreateDto.getCouponType());
+
         couponRepository.save(Coupon.builder()
                 .couponName(couponCreateDto.getCouponName())
                 .couponDesc(couponCreateDto.getCouponDesc())
-                .usePlace(couponCreateDto.getUsePlace())
+                .partner(couponCreateDto.getPartner())
                 .couponNum(couponCreateDto.getCouponNum())
                 .couponType(couponType)
                 .couponValue(couponCreateDto.getCouponValue())
@@ -47,7 +51,7 @@ public class CouponServiceImpl implements CouponService {
                 .id(couponId)
                 .couponName(couponUpdateDto.getCouponName())
                 .couponDesc(couponUpdateDto.getCouponDesc())
-                .usePlace(couponUpdateDto.getUsePlace())
+                .partner(partner)
                 .couponNum(couponUpdateDto.getCouponNum())
                 .couponType(couponType)
                 .couponValue(couponUpdateDto.getCouponValue())
@@ -81,7 +85,7 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
         return CouponGetDto.builder()
                 .couponName(coupon.getCouponName())
                 .couponDesc(coupon.getCouponDesc())
-                .(coupon.store.getstoreList())
+                .partnerId(coupon.getPartner().getId())
                 .couponNum(coupon.getCouponNum())
                 .couponType(couponType)
                 .couponValue(coupon.getCouponValue())

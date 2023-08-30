@@ -1,9 +1,9 @@
 package com.spharos.pointapp.coupon.domain;
 
-import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.catalina.Store;
+import com.spharos.pointapp.partner.domain.Partner;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Getter
@@ -24,8 +24,8 @@ public class Coupon {
     private String couponDesc;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "use_place")
-    private Store store;
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
 
     @Column(nullable = false, length = 100, name = "coupon_num")
     private String couponNum;
