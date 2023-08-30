@@ -36,12 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-<<<<<<< HEAD
 ### yml ###
 application.yml
-
-### build gradle ###
-build.gradle
-=======
-### yml
-.yml/

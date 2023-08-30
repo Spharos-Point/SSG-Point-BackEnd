@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(uuid);
             log.info("userDetails : {}", userDetails);
 
-            // 유효값 확인 즉, 정상 토큰인지 확인하여 승인하는 작업, 복붙해서 사용하는 코드
+            // 유효값 확인 즉, 정상 토큰인지 확인하여 승인하는 작업, 복붙 코드
             if(jwtTokenProvider.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
