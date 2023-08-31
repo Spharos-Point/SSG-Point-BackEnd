@@ -1,7 +1,6 @@
 package com.spharos.pointapp.partner.dto;
 
 
-import com.spharos.pointapp.partner.domain.PartnerName;
 import lombok.*;
 
 @Getter

@@ -15,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Random;
@@ -23,7 +24,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
 public class AuthenticationService {
 
     private final UserRepository userRepository;
@@ -39,6 +39,7 @@ public class AuthenticationService {
      */
 
 //    1. 시큐리티 로그인
+    @Transactional(readOnly = false)
     public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();

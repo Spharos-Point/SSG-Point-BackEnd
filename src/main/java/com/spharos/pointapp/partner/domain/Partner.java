@@ -16,6 +16,5 @@ public class Partner {
     private Long Id;
 
     @Column(nullable = false, name = "partner_name")
-    @Convert(converter = PartnerNameConverter.class)
-    private PartnerName partnerName;
+    private String partnerName;
 }

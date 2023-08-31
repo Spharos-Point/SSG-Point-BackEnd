@@ -54,14 +54,6 @@ public class EventServiceImpl implements EventService{
         log.info("{}", event);
     }
 
-
-//    이벤트 삭제
-//    @Override
-//    public EventCreateDto deleteEvent(Long eventId) {
-//        return null;
-//}
-
-
     //    이벤트 개별 조회
     @Override
     public EventGetDto getEvent(Long eventId) {
@@ -89,6 +81,7 @@ public class EventServiceImpl implements EventService{
         return eventGetDtoList;
     }
 
+//    이벤트 삭제
     @Override
     public void deleteEvent(Long eventId) {
         eventRepository.deleteById(eventId);

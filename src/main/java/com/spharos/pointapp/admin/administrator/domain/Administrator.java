@@ -1,17 +1,14 @@
 package com.spharos.pointapp.admin.administrator.domain;
 
-import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 public class Administrator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
