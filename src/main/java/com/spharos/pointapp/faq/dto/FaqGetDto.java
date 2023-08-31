@@ -1,13 +1,13 @@
 package com.spharos.pointapp.faq.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
-public class FaqUpdateDto {
+public class FaqGetDto {
 
     private String title;
     private String context;
