@@ -14,14 +14,14 @@ spring:
   datasource:
     master:
       hikari:
-        jdbc-url: jdbc:mysql://localhost:3310/ssgpoint
+        jdbc-url: jdbc:mysql://localhost:3310/ssgpoint_team3
         read-only: false
         username: root
         password: 1234
         driver-class-name: com.mysql.cj.jdbc.Driver
     slave:
       hikari:
-        jdbc-url: jdbc:mysql://localhost:3311/ssgpoint
+        jdbc-url: jdbc:mysql://localhost:3311/ssgpoint_team3
         read-only: true
         username: root
         password: 1234

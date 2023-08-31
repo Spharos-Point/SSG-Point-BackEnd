@@ -48,10 +48,10 @@ public class CouponServiceImpl implements CouponService {
     public void updateCoupon(CouponUpdateDto couponUpdateDto, Long couponId) {
         CouponType couponType = new CouponTypeConverter().convertToEntityAttribute(couponUpdateDto.getCouponType());
         couponRepository.save(Coupon.builder()
-                .id(couponId)
+                .Id(couponId)
                 .couponName(couponUpdateDto.getCouponName())
                 .couponDesc(couponUpdateDto.getCouponDesc())
-                .partner(partner)
+                .partner(couponUpdateDto.getPartner())
                 .couponNum(couponUpdateDto.getCouponNum())
                 .couponType(couponType)
                 .couponValue(couponUpdateDto.getCouponValue())

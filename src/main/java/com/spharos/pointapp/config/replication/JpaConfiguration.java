@@ -36,8 +36,8 @@ public class JpaConfiguration {
                 "com.spharos.pointapp.category.domain",
                 "com.spharos.pointapp.coupon.domain",
                 "com.spharos.pointapp.customer.domain",
-                "com.shparos.pointapp.event.domain",
-                "com.shparos.pointapp.partner.domain",
+                "com.spharos.pointapp.event.domain",
+                "com.spharos.pointapp.partner.domain",
                 "com.spharos.pointapp.pointcard.domain"
 
         );

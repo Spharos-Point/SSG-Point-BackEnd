@@ -3,7 +3,6 @@ package com.spharos.pointapp.coupon.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import com.spharos.pointapp.partner.domain.Partner;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Getter
