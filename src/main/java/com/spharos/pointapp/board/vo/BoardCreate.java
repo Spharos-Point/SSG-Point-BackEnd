@@ -1,13 +1,15 @@
-package com.spharos.pointapp.notice.dto;
+package com.spharos.pointapp.board.vo;
 
 import lombok.*;
 
 @Getter
+@Builder
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class NoticeUpdateDto {
+public class BoardCreate {
     private String title;
     private String context;
+    private String loginId;
 }

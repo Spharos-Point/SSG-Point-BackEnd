@@ -2,14 +2,16 @@ package com.spharos.pointapp.notice.presentation;
 
 import com.spharos.pointapp.notice.application.NoticeService;
 import com.spharos.pointapp.notice.dto.NoticeCreateDto;
+import com.spharos.pointapp.notice.dto.NoticeGetDto;
 import com.spharos.pointapp.notice.vo.NoticeCreate;
+import com.spharos.pointapp.notice.vo.NoticeGetOut;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,10 +28,21 @@ public class NoticeController {
                 .build();
         noticeService.createNotice(noticeCreateDto);
     }
+
+    // notice 조회
+    @GetMapping("/notice")
+    public List<NoticeGetOut> getAllNotices() {
+        ModelMapper mapper = new ModelMapper();
+        List<NoticeGetDto> noticeGetDtoList = noticeService.getNotices();
+        log.info("{}", noticeGetDtoList);
+        List<NoticeGetOut> noticeGetOutList = new ArrayList<>();
+        noticeGetDtoList.forEach(
+                noticeGetDto -> noticeGetOutList.add(
+                        mapper.map(noticeGetDto, NoticeGetOut.class)
+                )
+        );
+        return noticeGetOutList;
+    }
 }
 
-//        log.info("{}", noticeCreate);
-//        ModelMapper mapper = new ModelMapper();
-//        NoticeCreateDto noticeCreateDto = mapper.map(noticeCreate, NoticeCreateDto.class);
-//        noticeService.writeNotice(noticeCreateDto);
 

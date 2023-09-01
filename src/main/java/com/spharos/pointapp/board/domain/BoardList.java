@@ -18,7 +18,11 @@ public class BoardList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "administrator_id")
     private Administrator administrator;
+//    @Column(name = "administrator_id")
+//    private Long administratorId;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="board_id")
     private Board board;
 }
