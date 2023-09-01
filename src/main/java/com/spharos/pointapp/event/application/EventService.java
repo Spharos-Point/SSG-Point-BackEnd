@@ -1,7 +1,9 @@
 package com.spharos.pointapp.event.application;
 
+import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.event.dto.EventCreateDto;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventListGetDto;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public interface EventService {
 
     //    이벤트 삭제
     void deleteEvent(Long eventId);
+
+//    사용자가 참여한 이벤트
+    List<EventListGetDto> getEventByUser(Long userId);
 
 }
 

@@ -11,12 +11,12 @@ import com.spharos.pointapp.event.dto.EventUpdateDto;
 import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.event.vo.EventUpdate;
 import com.spharos.pointapp.partner.domain.Partner;
-import com.spharos.pointapp.partner.domain.PartnerName;
 import com.spharos.pointapp.partner.infrastructure.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class CouponController {
 
         Partner partner = partnerRepository.findById(couponCreate.getPartnerId())
                 .orElseThrow(() -> new IllegalArgumentException("Partner not found with ID: " + couponCreate.getPartnerId()));
-
+        log.info("Partner {}", partner);
         CouponCreateDto couponCreateDto = CouponCreateDto.builder()
                 .couponName(couponCreate.getCouponName())
                 .couponDesc(couponCreate.getCouponDesc())
@@ -68,13 +68,13 @@ public class CouponController {
 
 //    쿠폰 삭제
     @DeleteMapping("/coupon")
-    private void deleteCoupon(@RequestParam(name = "couponId", defaultValue = "") Long couponId) {
+    public void deleteCoupon(@RequestParam(name = "couponId", defaultValue = "") Long couponId) {
         couponService.deleteCoupon(couponId);
     }
 
-//    쿠폰 조회
+//    쿠폰 전체 조회
     @GetMapping("/couponPage")
-    private List<CouponGetOut> getAllCoupons() {
+    public List<CouponGetOut> getAllCoupons() {
         ModelMapper mapper = new ModelMapper();
         List<CouponGetDto> couponGetDtoList = couponService.getCoupons();
         log.info("{}", couponGetDtoList);
@@ -87,8 +87,20 @@ public class CouponController {
         return couponGetOutList;
     }
 
-//    @GetMapping("/benefits/myCoupon")
-//    private List<couponGetDtoList>
-
+//    사용자가 보유한 쿠폰 조회
+    @Transactional(readOnly = true)
+    @GetMapping("/benefits/myCoupon/{userId}")
+    public List<CouponGetOut> getCouponByUser(@PathVariable("userId") Long userId) {
+        log.info("{}", userId);
+        ModelMapper mapper = new ModelMapper();
+        List<CouponGetDto> couponGetDtoList = couponService.getCouponByUser(userId);
+        List<CouponGetOut> couponGetOutList = new ArrayList<>();
+        couponGetDtoList.forEach(
+                couponGetDto -> couponGetOutList.add(
+                        mapper.map(couponGetDto, CouponGetOut.class)
+                )
+        );
+        return couponGetOutList;
+    }
 
 }

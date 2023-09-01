@@ -7,7 +7,6 @@ import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
 import com.spharos.pointapp.partner.domain.Partner;
-import com.spharos.pointapp.partner.domain.PartnerName;
 import jakarta.persistence.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class CouponServiceImpl implements CouponService {
     @Convert(converter = CouponTypeConverter.class)
     public void createCoupon(CouponCreateDto couponCreateDto) {
         CouponType couponType = new CouponTypeConverter().convertToEntityAttribute(couponCreateDto.getCouponType());
-
+        log.info("CouponType :{}", couponType);
         couponRepository.save(Coupon.builder()
                 .couponName(couponCreateDto.getCouponName())
                 .couponDesc(couponCreateDto.getCouponDesc())
@@ -79,6 +78,7 @@ public class CouponServiceImpl implements CouponService {
 @Convert(converter = CouponTypeConverter.class)
 public List<CouponGetDto> getCouponByUser(Long userId) {
     List<CouponList> couponListList = couponListRepository.findAllByUserId(userId);
+    log.info("{}", couponListList);
     List<CouponGetDto> couponGetDtoList = couponListList.stream().map(item -> {
         Coupon coupon = couponRepository.findById(item.getId()).orElseThrow();
         String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
@@ -86,13 +86,14 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
                 .couponName(coupon.getCouponName())
                 .couponDesc(coupon.getCouponDesc())
                 .partnerId(coupon.getPartner().getId())
+                .partnerName(coupon.getPartner().getPartnerName())
                 .couponNum(coupon.getCouponNum())
                 .couponType(couponType)
                 .couponValue(coupon.getCouponValue())
                 .build();
     }).toList();
 
-    log.info("Coupon List is : {}", couponListList);
+    log.info("Coupon List is : {}", couponGetDtoList);
     return couponGetDtoList;
 }
 

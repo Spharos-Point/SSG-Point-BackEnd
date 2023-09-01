@@ -11,7 +11,7 @@ import lombok.ToString;
 public class CouponGetOut {
     private String couponName;
     private String couponDesc;
-    private Partner partner;
+    private String partnerName;
     private String couponNum;
     private String couponType;
     private Integer couponValue;

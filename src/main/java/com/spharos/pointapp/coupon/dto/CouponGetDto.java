@@ -13,6 +13,7 @@ public class CouponGetDto {
     private String couponName;
     private String couponDesc;
     private Long partnerId;
+    private String partnerName;
     private String couponNum;
     private String couponType;
     private Integer couponValue;

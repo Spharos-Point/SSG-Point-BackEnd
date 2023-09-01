@@ -11,7 +11,7 @@ public class CouponUpdate {
     private Long couponId;
     private String couponName;
     private String couponDesc;
-    private Partner partner;
+    private Long partnerId;
     private String couponNum;
     private String couponType;
     private Integer couponValue;

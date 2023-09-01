@@ -3,13 +3,16 @@ package com.spharos.pointapp.event.presentation;
 import com.spharos.pointapp.event.application.EventService;
 import com.spharos.pointapp.event.dto.EventCreateDto;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventListGetDto;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
 import com.spharos.pointapp.event.vo.EventCreate;
 import com.spharos.pointapp.event.vo.EventGetOut;
+import com.spharos.pointapp.event.vo.EventListRes;
 import com.spharos.pointapp.event.vo.EventUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -71,4 +74,37 @@ public class EventController {
     private void deleteEvent(@RequestParam(name = "eventId", defaultValue = "")  Long eventId) {
         eventService.deleteEvent(eventId);
     }
+
+//    사용자가 참여한 이벤트 조회
+    @Transactional(readOnly = true)
+    @GetMapping("/benefits/myEvent/{userId}")
+    public List<EventListRes> getEventByUser(@PathVariable("userId") Long userId) {
+        log.info("{}", userId);
+        List<EventListGetDto> eventLiatGetDtoList = eventService.getEventByUser(userId);
+        ModelMapper mapper = new ModelMapper();
+        log.info("{}", eventLiatGetDtoList);
+//        List<EventListRes> eventListResList = new ArrayList<>();
+//            eventLiatGetDtoList.forEach(
+//                eventListGetDtoItem ->
+//                     eventListResList.add(
+//                             EventListRes.builder()
+//                            .id(eventListGetDtoItem.getId())
+//                            .userId(eventListGetDtoItem.getUserId())
+//                            .eventId(eventListGetDtoItem.getEventId())
+//                            .prize(eventListGetDtoItem.getPrize())
+//                            .build())
+//            );
+        List<EventListRes> eventListResList = eventLiatGetDtoList.stream().map(
+                item -> {
+                    EventListRes eventListRes = mapper.map(item, EventListRes.class);
+                    return eventListRes;
+                }
+        ).toList();
+
+
+
+        return eventListResList;
+    }
+
+
 }
