@@ -15,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Random;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
+//@Transactional(readOnly = true)
 public class AuthenticationService {
 
     private final UserRepository userRepository;
@@ -106,6 +107,7 @@ public class AuthenticationService {
         if (byBarCode.isPresent()) {
             String substring = checkBarcode.substring(12, 15);
             int endbarcode = Integer.parseInt(substring) + 1;
+            //endbarcode 길이가 5자리라면?
 
             String barcode = checkBarcode.substring(0, 12) + String.format("%04d", endbarcode);
             return validateBarcode(barcode);

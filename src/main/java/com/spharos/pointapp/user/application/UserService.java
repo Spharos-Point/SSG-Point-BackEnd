@@ -11,6 +11,6 @@ public interface UserService {
     void updateUserPointPwd(UserUpdatePointPwdDto userUpdatePointPwdDto, String uuid);
     Boolean userLeavePwd(String password, String uuid);
     void userLeaveOnline(String uuid);
-
+//    void validateLoginInd(String loginId);
 }
 

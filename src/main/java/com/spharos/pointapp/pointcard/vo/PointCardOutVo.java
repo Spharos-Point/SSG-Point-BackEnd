@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PointCardOutVo {
 
-    private String cardNum;
+    private String barcode;
     private String partnerName;
+    private String createAt;
 
 }

@@ -19,6 +19,8 @@ public class PointCard extends BaseTimeEntity {
     private String barcode;
     @Column(nullable = false, length = 20, name = "partner_name")
     private String partnerName;
+    @Column(length = 20, name = "registered_store")
+    private String registeredStore;
     @Column(nullable = false, length = 100, name = "uuid")
     private String uuid;
 

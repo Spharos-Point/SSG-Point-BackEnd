@@ -1,58 +1,58 @@
-//package com.spharos.pointapp.pointcard.application;
-//
-//import com.spharos.pointapp.pointcard.dto.PointCardCreateDto;
-//import com.spharos.pointapp.pointcard.dto.PointCardOutDto;
-//import com.spharos.pointapp.pointcard.infrastructure.PointCardRepository;
-//import jakarta.transaction.Transactional;
-//import lombok.RequiredArgsConstructor;
-//import org.modelmapper.ModelMapper;
-//import org.springframework.stereotype.Service;
-//
-//import javax.swing.plaf.OptionPaneUI;
-//import java.util.List;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class PointCardServiceImple implements PointCardService {
-//
-//    private final PointCardRepository pointCardRepository;
-//    private final ModelMapper modelMapper;
-//
-//
-//    /**
-//     *
-//     * 1. 포인트 카드 생성
-//     *
-//     */
-//
-//    @Override
-//    public void createPointCard(PointCardCreateDto pointCardCreateDto, String uuid) {
-//        String uuidString = uuid.toString();
-//
-////        User user = User.builder()
-////                .loginId(userSignUpDto.getLoginId())
-////                .uuid(uuidString)
-////                .name(userSignUpDto.getName())
-////                .password(userSignUpDto.getPassword())
-////                .email(userSignUpDto.getEmail())
-////                .phone(userSignUpDto.getPhone())
-////                .address(userSignUpDto.getAddress())
-////                .status(1)
-////                .build();
-////        userRepository.save(user);
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = True)
-//    public PointCardOutDto getPointcardByUser() {
-//        ModelMapper modelMapper = new ModelMapper();
-//        List<PointCardOutDto> pointCars = PointCardRepository.findbyUuid(uuid);
-//        List<UserGetDto> userGetDtos = users.stream().map(
-//                user -> modelMapper.map(user, UserGetDto.class)
-//        ).toList();
-//        return userGetDtos;
-//
-//
-//    }
-//
-//}
+package com.spharos.pointapp.pointcard.application;
+
+import com.spharos.pointapp.pointcard.domain.PointCard;
+import com.spharos.pointapp.pointcard.dto.PointCardCreateDto;
+import com.spharos.pointapp.pointcard.dto.PointCardOutDto;
+import com.spharos.pointapp.pointcard.infrastructure.PointCardRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+//@Transactional(readOnly = true)
+public class PointCardServiceImple implements PointCardService {
+
+    private final PointCardRepository pointCardRepository;
+    private final ModelMapper modelMapper;
+
+
+    /**
+     *
+     * 1. 포인트 카드 생성
+     * 2. 포인트 카드 조회
+     *
+     */
+
+//    1. 포인트 카드 생성
+    @Override
+//    @Transactional(readOnly = false)
+    public void createPointCard(PointCardCreateDto pointCardCreateDto) {
+
+        PointCard pointcard = PointCard.builder()
+                .partnerName(pointCardCreateDto.getPartnerName())
+                .uuid(pointCardCreateDto.getUuid())
+                .barcode(pointCardCreateDto.getBarcode())
+                .registeredStore(pointCardCreateDto.getRegisteredStore())
+                .build();
+        pointCardRepository.save(pointcard);
+    }
+
+//    2. 포인트 카드 조회
+    @Override
+    public List<PointCardOutDto> getPointCardByUser(String uuid) {
+
+        List<PointCard> pointCards = pointCardRepository.findByUuid(uuid);
+
+        List<PointCardOutDto> pointCardOutDto = pointCards.stream().map(
+                pointCard -> modelMapper.map(pointCard, PointCardOutDto.class)
+        ).toList();
+        return pointCardOutDto;
+
+
+    }
+
+}
