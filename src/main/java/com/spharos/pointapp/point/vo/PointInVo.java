@@ -1,13 +1,12 @@
 package com.spharos.pointapp.point.vo;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class PointInVo {
 
     private Integer point;
     private String pointType;
     private Boolean used;
-    private String loginId;
 
 }
