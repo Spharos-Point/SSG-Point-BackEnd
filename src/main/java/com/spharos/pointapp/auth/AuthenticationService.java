@@ -1,4 +1,5 @@
 package com.spharos.pointapp.auth;
+
 import com.spharos.pointapp.auth.vo.AuthenticationRequest;
 import com.spharos.pointapp.auth.vo.AuthenticationResponse;
 import com.spharos.pointapp.config.security.JwtTokenProvider;
