@@ -1,11 +1,15 @@
 package com.spharos.pointapp.pointcard.vo;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@ToString
+@Getter
 public class PointCardCreateInVo {
 
-    private Integer number;
+    private String barcode;
     private Integer cvc;
-    private String pointCardType;
-    private String issuer;
-
+    private String partnerName;
+    private String registeredStore;
 
 }

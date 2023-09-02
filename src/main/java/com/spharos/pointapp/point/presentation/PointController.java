@@ -34,31 +34,28 @@ public class PointController {
 
 
 
-//포인트 생성
+//  1. 포인트 생성
     @PostMapping("/point")
     void addPoint(@RequestBody PointInVo pointInVo,
-                  @RequestHeader("Authorization") String token ) {
+                  @RequestHeader("uuid") String uuid ) {
         log.info("INPUT Object Data is : {}" , pointInVo);
         PointAddDto pointAddDto = PointAddDto.builder()
                 .pointType(pointInVo.getPointType())
                 .point(pointInVo.getPoint())
                 .used(pointInVo.getUsed())
-                .loginId(pointInVo.getLoginId())
+                .uuid(uuid)
                 .build();
-        pointService.createPoint(pointAddDto);
+        pointService.createPoint(pointAddDto, uuid);
     }
 
-    @GetMapping("/point/{userId}")
-    public List<PointOutVo> getPointByUser(@PathVariable Long userId) {
-        log.info("INPUT userId is : {}" , userId);
-        List<PointGetDto> pointListByUser = pointService.getPointByUser(userId);
-        List<PointOutVo> pointOutList = pointListByUser.stream().map(pointGetDto -> {
-            return PointOutVo.builder()
-                    .pointType(pointGetDto.getPointType())
-                    .point(pointGetDto.getPoint())
-                    .used(pointGetDto.getUsed())
-                    .build();
-        }).toList();
+    @GetMapping("/pointRead")
+    public List<PointOutVo> getPointByUser(@RequestHeader("uuid") String uuid) {
+        List<PointGetDto> pointListByUser = pointService.getPointByUser(uuid);
+        List<PointOutVo> pointOutList = pointListByUser.stream().map(pointGetDto -> PointOutVo.builder()
+                .pointType(pointGetDto.getPointType())
+                .point(pointGetDto.getPoint())
+                .used(pointGetDto.getUsed())
+                .build()).toList();
         log.info("OUTPUT pointOutList is : {}" , pointOutList);
         return pointOutList;
     }
