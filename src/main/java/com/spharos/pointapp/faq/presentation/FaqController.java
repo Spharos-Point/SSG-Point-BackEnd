@@ -21,7 +21,7 @@ public class FaqController {
 
     private final FaqService faqService;
 
-//    faq 생성
+    //    faq 생성
     @PostMapping("/faq")
     public void createFaq(@RequestBody FaqCreate faqCreate) {
         FaqCreateDto faqCreateDto = FaqCreateDto.builder()
@@ -31,7 +31,7 @@ public class FaqController {
         faqService.createFaq(faqCreateDto);
     }
 
-//    faq 조회
+    //    faq 조회
     @GetMapping("/fqg")
     public List<FaqGetOut> getAllFaqs() {
         ModelMapper mapper = new ModelMapper();

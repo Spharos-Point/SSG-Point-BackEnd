@@ -11,4 +11,3 @@ public class NoticeGetOut {
     private String title;
     private String context;
 }
-

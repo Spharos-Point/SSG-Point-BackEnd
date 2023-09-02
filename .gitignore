@@ -37,4 +37,9 @@ out/
 .vscode/
 
 ### yml ###
-application.yml
+*.yml
+
+### Replica ###
+master/
+slave/
+replication/
