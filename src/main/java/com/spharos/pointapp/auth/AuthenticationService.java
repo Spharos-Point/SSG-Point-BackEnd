@@ -51,10 +51,10 @@ public class AuthenticationService {
                 .loginId(userSignUpDto.getLoginId())
                 .uuid(uuidString)
                 .roll(Roll.USER)
-                .name(userSignUpDto.getName())
+                .userName(userSignUpDto.getName())
                 .password(userSignUpDto.getPassword())
                 .email(userSignUpDto.getEmail())
-                .phone(userSignUpDto.getPhone())
+                .phoneNumber(userSignUpDto.getPhone())
                 .address(userSignUpDto.getAddress())
                 .status(1)
                 .build();

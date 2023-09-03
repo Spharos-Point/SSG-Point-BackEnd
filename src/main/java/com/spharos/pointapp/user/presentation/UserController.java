@@ -51,6 +51,7 @@ public class UserController {
 
         UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
         userService.updateUserInfo(userUpdateInfoDto, uuid);
+
     }
 
     // 2. 유저 패스워드 변경
@@ -90,7 +91,6 @@ public class UserController {
         userService.userLeaveOnline(uuid);
     }
 
-
     // 6. 회원가입 시 로그인 중복 확인
     @GetMapping("/validateLoginId/{loginId}")
     public ResponseEntity<String> validateLogin(@PathVariable String loginId) {
@@ -99,6 +99,18 @@ public class UserController {
             return ResponseEntity.ok("아이디 사용 가능합니다.");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 존재하는 아이디입니다.");
+        }
+    }
+
+    // 7. 휴대폰 번호로 유저 조회
+    @GetMapping("/search/NameAndPhoneNum")
+    public ResponseEntity<String> searchingPhoneNum(@RequestParam("userName") String userName,
+                                                    @RequestParam("phoneNumber") String phoneNumber) {
+        String loginId = userService.getUserByNameAndPhoneNumber(userName, phoneNumber);
+        if (loginId != null) {
+            return ResponseEntity.ok(loginId);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입력하신 정보로 가입된 신세계포인트 회원이 없습니다.");
         }
     }
 

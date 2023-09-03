@@ -1,6 +1,7 @@
 package com.spharos.pointapp.user.dto;
 
 import lombok.*;
+
 @Builder
 @Getter
 @Setter
