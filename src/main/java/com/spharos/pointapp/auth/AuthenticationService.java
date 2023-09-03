@@ -44,7 +44,7 @@ public class AuthenticationService {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
 
-        log.info("userSignUpDto is : {}" , userSignUpDto);
+        log.info("userSignUpDto is : {}", userSignUpDto);
 
         User user = User.builder()
                 .loginId(userSignUpDto.getLoginId())
@@ -59,8 +59,7 @@ public class AuthenticationService {
                 .build();
         user.hashPassword(user.getPassword());
         userRepository.save(user);
-
-        // 바코드 생성 및 저장
+//         바코드 생성 및 저장
         createAndSavePointCard(user, uuidString);
 
         return AuthenticationResponse.builder()
@@ -73,14 +72,14 @@ public class AuthenticationService {
 
         PointCard pointCard = PointCard.builder()
                 .barcode(validatedBarcode)
-                .issuer("신세계포인트닷컴")
+                .partnerName("신세계포인트닷컴")
                 .uuid(uuidString)
                 .build();
 
         return pointCardRepository.save(pointCard);
     }
 
-//    2. 바코드 생성 (9350 + id값(8자리) + 랜덤 4자리)
+    //    2. 바코드 생성 (9350 + id값(8자리) + 랜덤 4자리)
     private String pointCardBarcodeGenerator(User user) {
         String fixedPrefix = "935000000000";
         Long id = user.getId();
@@ -88,20 +87,21 @@ public class AuthenticationService {
     }
 
     private String generatePointCardBarcode(String prefix, Long id) {
-        int length_id = (int)(Math.log10(id)+1);
-        String prefix_barcode = prefix.substring(0, prefix.length()-length_id);
-        String sum_barcode = prefix_barcode+id;
+        int length_id = (int) (Math.log10(id) + 1);
+        String prefix_barcode = prefix.substring(0, prefix.length() - length_id);
+        String sum_barcode = prefix_barcode + id;
         Random random = new Random();
 
-        String full_barcode = sum_barcode +String.format("%04d", random.nextInt(1000));
-        log.info("full_barcode is : {}" , full_barcode);
+        String full_barcode = sum_barcode + String.format("%04d", random.nextInt(1000));
+        log.info("full_barcode is : {}", full_barcode);
 
         return full_barcode;
     }
-//    3. 바코드 유효성 검사
+
+    //    3. 바코드 유효성 검사
     private String validateBarcode(String checkBarcode) {
         Optional<PointCard> byBarCode = pointCardRepository.findByBarcode(checkBarcode);
-        log.info("byBarCode is : {}" , byBarCode);
+        log.info("byBarCode is : {}", byBarCode);
 
         // DB에 없다면 무한 반복
         if (byBarCode.isPresent()) {
@@ -111,19 +111,20 @@ public class AuthenticationService {
             String barcode = checkBarcode.substring(0, 12) + String.format("%04d", endbarcode);
             return validateBarcode(barcode);
         } else {
-            log.info("checkBarcode is : {}" , checkBarcode);
+            log.info("checkBarcode is : {}", checkBarcode);
 
             return checkBarcode;
         }
     }
-//    4. 로그인 기능
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException{
-        log.info("userlogin is : {}" , authenticationRequest);
 
-            User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
-            log.info("{}", user);
-            String JwtToken = jwtTokenProvider.generateToken(user);
-            log.info("{}", JwtToken);
+    //    4. 로그인 기능
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException {
+        log.info("userlogin is : {}", authenticationRequest);
+
+        User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
+        log.info("{}", user);
+        String JwtToken = jwtTokenProvider.generateToken(user);
+        log.info("{}", JwtToken);
 
         try {
             authenticationManager.authenticate(
@@ -141,4 +142,5 @@ public class AuthenticationService {
         }
 
     }
+
 }

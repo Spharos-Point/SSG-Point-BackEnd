@@ -1,9 +1,6 @@
 package com.spharos.pointapp.board.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,10 +17,12 @@ public class Board{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer categoryId;
+    @Column(nullable = false, length = 45 , name = "title")
     private String title;
+    @Column(nullable = false, length = 500 , name = "context")
     private String context;
 
-    public void writeBoard(String title, String context){
+    public void createBoard(String title, String context){
         this.title = title;
         this.context = context;
     }

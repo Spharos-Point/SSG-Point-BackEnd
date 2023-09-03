@@ -7,7 +7,7 @@ import com.spharos.pointapp.point.dto.PointGetDto;
 import java.util.List;
 
 public interface PointService {
-    void createPoint(PointAddDto pointAddDto);
-    List<PointGetDto> getPointByUser(Long userId);
+    void createPoint(PointAddDto pointAddDto, String uuid);
+    List<PointGetDto> getPointByUser(String uuid);
     List<Point> getAllPoint();
 }

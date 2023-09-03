@@ -11,7 +11,9 @@ public enum PointType implements CodeValue{
     ROULETTE("RL", "룰렛"),
     CONVERT("CN", "전환"),
     AFFILIATE("AF", "제휴사"),
-    RECEIPT("RE", "영수증");
+    RECEIPT("RE", "영수증"),
+
+    EXTINCTION("EX", "소멸");
 
     private String code;
     private String value;

@@ -1,6 +1,5 @@
 package com.spharos.pointapp.customer.application;
 
-import com.spharos.pointapp.customer.domain.Customer;
 import com.spharos.pointapp.customer.dto.CustomerWriteDto;
 import com.spharos.pointapp.customer.infrastructure.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomerServicelmple implements CustomerService {
+public class CustomerServiceImple implements CustomerService {
 
     private final CustomerRepository customerRepository;
 

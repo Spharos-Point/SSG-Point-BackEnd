@@ -12,12 +12,14 @@ import jakarta.persistence.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+//@Transactional(readOnly = true)
 public class PointServiceImple implements PointService{
 
     private final PointRepository pointRepository;
@@ -34,36 +36,32 @@ public class PointServiceImple implements PointService{
      * 7. 영수중 포인트 적립
      */
 
-//    포인트 생성
+//    1. 포인트 생성
     @Override
     @Convert(converter = PointTypeConverter.class)
-    public void createPoint(PointAddDto pointAddDto) {
+    public void createPoint(PointAddDto pointAddDto, String uuid) {
 
 //      계산을 위해 유저 정보 가져오기
+        log.info("PointAddDto is : {}" , pointAddDto);
+        User user = userRepository.findByUuid(uuid).orElseThrow(() ->
+                new IllegalArgumentException("해당하는 uuid가 없습니다. " + uuid));
 
-        User getUser = userRepository.findByLoginId(pointAddDto.getLoginId()).get();
-        log.info("user is : {}" , getUser);
-        if(getUser == null){
-            log.info("user is null");
-            return;
-        }
 //      포인트 타입 설정
         PointType pointType = new PointTypeConverter().convertToEntityAttribute(pointAddDto.getPointType());
-
 
         pointRepository.save(Point.builder()
                 .point(pointAddDto.getPoint())
                 .totalPoint(pointAddDto.getPoint())
-                .pointType(pointType)
-                .user(getUser)
                 .used(pointAddDto.getUsed())
+                .pointType(pointType)
+                .user(user)
                 .build());
     }
 
     @Override
     @Convert(converter = PointTypeConverter.class)
-    public List<PointGetDto> getPointByUser(Long userId) {
-        List<Point> pointList = pointRepository.findByUserId(userId);
+    public List<PointGetDto> getPointByUser(String uuid) {
+        List<Point> pointList = pointRepository.findByUser_Uuid(uuid);
         List<PointGetDto> pointGetDtoList = pointList.stream().map(point -> {
                     PointType pointType = new PointTypeConverter().convertToEntityAttribute(point.getPointType().getCode());
                     return PointGetDto.builder()

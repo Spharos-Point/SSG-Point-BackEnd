@@ -5,12 +5,12 @@ import com.spharos.pointapp.admin.administrator.domain.Roll;
 import com.spharos.pointapp.admin.administrator.dto.AdministratorCreateDto;
 import com.spharos.pointapp.admin.administrator.infrastructure.AdministratorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class AdministratorServiceImple implements AdministratorService{
     private final AdministratorRepository administratorRepository;
     @Override

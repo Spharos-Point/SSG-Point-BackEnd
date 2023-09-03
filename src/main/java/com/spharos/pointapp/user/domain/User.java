@@ -1,6 +1,8 @@
 package com.spharos.pointapp.user.domain;
 
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,8 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
-public class User implements UserDetails {
+@Transactional
+public class User extends BaseTimeEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
