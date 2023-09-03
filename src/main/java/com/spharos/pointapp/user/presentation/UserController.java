@@ -26,12 +26,13 @@ public class UserController {
 
     /**
      *
-     * 1. 유저 정보 업데이트
-     * 2. 유저 패스워드 변경
+     * 1. 유저 정보 변경
+     * 2. 윺저 패스워드 변경
      * 3. 유저 포인트 패스워드 변경
      * 4. 유저 탈퇴 패스워드 확인
-     * 5. 유저 탈퇴 상태 변경
+     * 5. 유저 탈퇴 (상태변경)
      * 6. 회원가입 시 로그인 중복 확인
+     * 7. 유저 휴대폰 번호, 유저 네임 으로 조회
      *
      */
 
@@ -44,7 +45,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    // 1. 유저 정보 업데이트
+    //  1. 유저 정보 업데이트
     @PutMapping("/myinfo/changeInfo")
     public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
                                @RequestHeader("uuid") String uuid) {
@@ -54,7 +55,7 @@ public class UserController {
 
     }
 
-    // 2. 유저 패스워드 변경
+    //  2. 유저 패스워드 변경
     @PutMapping("/changePwd")
     public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo,
                               @RequestHeader("uuid") String uuid) {
@@ -63,7 +64,7 @@ public class UserController {
         userService.updateUserPwd(updatePwDto, uuid);
     }
 
-    // 3. 유저 포인트 패스워드 변경
+    //  3. 유저 포인트 패스워드 변경
     @PutMapping("/changePointPwd")
     public void updateUserPointPwd(@RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo,
                                    @RequestHeader("uuid") String uuid) {
@@ -73,7 +74,7 @@ public class UserController {
     }
 
 
-    // 4. 유저 탈퇴 패스워드 확인
+    //  4. 유저 탈퇴 패스워드 확인
     @PostMapping("/leavePwd")
     public ResponseEntity<Boolean> leavePwd(@RequestBody UserLeavePwdVo userLeavePwdVo,
                                             @RequestHeader("uuid") String uuid) {
@@ -85,13 +86,13 @@ public class UserController {
         }
     }
 
-    // 5. 유저 탈퇴 상태 변경
+    //  5. 유저 탈퇴(상태변경)
     @PutMapping("/leaveOnline")
     public void leaveOnilne(@RequestHeader("uuid") String uuid) {
         userService.userLeaveOnline(uuid);
     }
 
-    // 6. 회원가입 시 로그인 중복 확인
+    //  6. 회원가입 시 로그인 중복 확인
     @GetMapping("/validateLoginId/{loginId}")
     public ResponseEntity<String> validateLogin(@PathVariable String loginId) {
         boolean isLoginValid = userService.validateLoginInd(loginId);
@@ -102,7 +103,7 @@ public class UserController {
         }
     }
 
-    // 7. 휴대폰 번호로 유저 조회
+    //  7. 유저 휴대폰 번호, 유저 네임 으로 조회
     @GetMapping("/search/NameAndPhoneNum")
     public ResponseEntity<String> searchingPhoneNum(@RequestParam("userName") String userName,
                                                     @RequestParam("phoneNumber") String phoneNumber) {
