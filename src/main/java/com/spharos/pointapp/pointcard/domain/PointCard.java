@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 public class PointCard extends BaseTimeEntity {
 
     @Id
