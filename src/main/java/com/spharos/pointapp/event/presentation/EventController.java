@@ -101,8 +101,6 @@ public class EventController {
                 }
         ).toList();
 
-
-
         return eventListResList;
     }
 
