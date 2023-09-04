@@ -17,7 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
+### IntelliJ IDEA ###`
 .idea
 *.iws
 *.iml
@@ -37,4 +37,9 @@ out/
 .vscode/
 
 ### yml ###
-application.yml
+*.yml
+
+### Replica ###
+master/
+slave/
+replication/
