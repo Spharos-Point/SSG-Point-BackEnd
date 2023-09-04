@@ -1,5 +1,6 @@
 package com.spharos.pointapp.user.application;
 
+import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.*;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
@@ -19,6 +20,7 @@ import java.util.Optional;
 //@Transactional(readOnly = true)
 public class UserServiceImple implements UserService{
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      *
@@ -34,7 +36,8 @@ public class UserServiceImple implements UserService{
 
     //  1. 유저 정보 변경
     @Override
-    public void updateUserInfo(UserUpdateInfoDto userUpdateInfoDto, String uuid) {
+    public void updateUserInfo(UserUpdateInfoDto userUpdateInfoDto, String token) {
+        String uuid = jwtTokenProvider.getUuid(token.substring(7));
         User user = userRepository.findByUuid(uuid).orElseThrow(() ->
                 new NoSuchElementException("해당하는 uuid가 없습니다. " + uuid));
         userRepository.save(
@@ -57,8 +60,9 @@ public class UserServiceImple implements UserService{
 
     //  2. 유저 패스워드 변경
     @Override
-    public void updateUserPwd(UserUpdatePwdDto updatePwDto, String uuid)  {
-        User user = userRepository.findByUuid(uuid).get();
+    public void updateUserPwd(UserUpdatePwdDto updatePwDto, String token)  {
+        String loginId = jwtTokenProvider.getUuid(token.substring(7));
+        User user = userRepository.findByUuid(loginId).get();
         // 사용자가 입력한 현재 패스워드와 DB에 저장된 시큐리티 패스워드를 비교
         if (!new BCryptPasswordEncoder().matches(updatePwDto.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
@@ -71,7 +75,8 @@ public class UserServiceImple implements UserService{
 
     //  3. 유저 포인트 패스워드 변경
     @Override
-    public void updateUserPointPwd(UserUpdatePointPwdDto userUpdatePointPwdDto, String uuid) {
+    public void updateUserPointPwd(UserUpdatePointPwdDto userUpdatePointPwdDto, String token) {
+        String uuid = jwtTokenProvider.getUuid(token.substring(7));
         User user = userRepository.findByUuid(uuid).orElseThrow(() ->
                 new NoSuchElementException ("해당하는 uuid가 없습니다. " + uuid));
         // 새로운 포인트 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
@@ -80,7 +85,8 @@ public class UserServiceImple implements UserService{
 
     //  4. 유저 탈퇴 패스워드 확인
     @Override
-    public Boolean userLeavePwd(String password, String uuid) {
+    public Boolean userLeavePwd(String password, String token) {
+        String uuid = jwtTokenProvider.getUuid(token.substring(7));
         User user = userRepository.findByUuid(uuid).get();
         log.info("user : {}",user );
         if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
@@ -92,7 +98,8 @@ public class UserServiceImple implements UserService{
 
     //  5. 유저 탈퇴(상태변경)
     @Override
-    public void userLeaveOnline(String uuid) {
+    public void userLeaveOnline(String token) {
+        String uuid = jwtTokenProvider.getUuid(token.substring(7));
         Optional<User> user = userRepository.findByUuid(uuid);
         user.get().leaveOnlineStatus();
     }

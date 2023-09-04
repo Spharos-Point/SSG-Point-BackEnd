@@ -23,18 +23,28 @@ public class PointController {
     private final ModelMapper modelMapper;
 
     /**
-     * 포인트 생성
-     * 포인트 전체 조회
-     * 포인트 적립/사용 조회
-     * 포인트 선물 조회
-     * 포인트 전환 조회
-     * 포인트 선물 하기
-     * 포인트 선물 받기 성공 success boolean으로 ?
+     * 1. 포인트 생성
+     * 2. 포인트 전체 조회
+     * 3. 토탈 포인트 조회
+     * 4. 포인트 적립/사용 조회
+     * 5. 포인트 선물 조회
+     * 6. 포인트 전환 조회
+     * 7. 포인트 선물 하기
+     * 8. 포인트 선물 받기
+     * 9. 사용 여부
      */
 
+//    * 1. 포인트 생성
+//     * 2. 포인트 전체 조회
+//     * 3. 토탈 포인트 조회
+//     * 4. 포인트 선물
+//     * 5. 포인트 선물 적립
+//     * 6. 포인트 선물 대기 리스트 15일 뒤 취소 됨
+//     * 7. 포인트 전환
+//     * 8. 영수중 포인트 적립
+//     *
 
-
-//  1. 포인트 생성
+    //  1. 포인트 생성
     @PostMapping("/point")
     void addPoint(@RequestBody PointInVo pointInVo,
                   @RequestHeader("uuid") String uuid ) {
@@ -49,8 +59,9 @@ public class PointController {
     }
 
     @GetMapping("/pointRead")
-    public List<PointOutVo> getPointByUser(@RequestHeader("uuid") String uuid) {
-        List<PointGetDto> pointListByUser = pointService.getPointByUser(uuid);
+    public List<PointOutVo> getPointByUser(@RequestHeader("Authorization") String token) {
+
+        List<PointGetDto> pointListByUser = pointService.getPointByUser(token);
         List<PointOutVo> pointOutList = pointListByUser.stream().map(pointGetDto -> PointOutVo.builder()
                 .pointType(pointGetDto.getPointType())
                 .point(pointGetDto.getPoint())

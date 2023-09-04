@@ -84,7 +84,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return loginId; }
+    public String getUsername() { return uuid; }
 
     @Override
     public boolean isAccountNonExpired() {

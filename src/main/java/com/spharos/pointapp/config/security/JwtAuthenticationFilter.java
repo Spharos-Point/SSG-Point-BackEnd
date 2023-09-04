@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         jwt = authHeader.substring(7);
         uuid = jwtTokenProvider.getUuid(jwt);
         log.info("jwt doFilterInternal : {}", jwt);

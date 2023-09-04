@@ -34,13 +34,15 @@ public class AuthenticationService {
     private final PointCardRepository pointCardRepository;
 
     /**
-     * 1. 시큐리티 아이디 생성
+     *
+     * 1. 시큐리티 회원가입
      * 2. 바코드 생성
      * 3. 바코드 유효성 검사
      * 4. 로그인 기능
+     *
      */
 
-//    1. 시큐리티 로그인
+    //  1. 시큐리티 회원가입
     public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
@@ -127,10 +129,12 @@ public class AuthenticationService {
             String JwtToken = jwtTokenProvider.generateToken(user);
             log.info("{}", JwtToken);
 
+
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getLoginId(),
+                            user.getUsername(),
                             authenticationRequest.getPassword()
                     )
             );
