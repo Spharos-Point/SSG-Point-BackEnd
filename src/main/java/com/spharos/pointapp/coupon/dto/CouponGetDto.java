@@ -3,16 +3,17 @@ package com.spharos.pointapp.coupon.dto;
 import com.spharos.pointapp.partner.domain.Partner;
 import lombok.*;
 
-@Setter
 @Getter
+@Setter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CouponCreateDto {
+public class CouponGetDto {
     private String couponName;
     private String couponDesc;
-    private Partner partner;
+    private Long partnerId;
+    private String partnerName;
     private String couponNum;
     private String couponType;
     private Integer couponValue;

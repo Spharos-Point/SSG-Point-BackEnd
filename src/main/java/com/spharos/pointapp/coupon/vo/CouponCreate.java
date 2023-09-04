@@ -7,7 +7,7 @@ public class CouponCreate {
 
     private String couponName;
     private String couponDesc;
-    private String usePlace;
+    private Long partnerId;
     private String couponNum;
     private String couponType;
     private Integer couponValue;
