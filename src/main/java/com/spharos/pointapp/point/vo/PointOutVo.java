@@ -2,8 +2,9 @@ package com.spharos.pointapp.point.vo;
 
 import lombok.*;
 
-@Data
 @Builder
+@ToString
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PointOutVo {

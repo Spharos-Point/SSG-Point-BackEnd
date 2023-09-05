@@ -1,5 +1,5 @@
-package com.spharos.pointapp.pointgift.application;
-
-public interface PointGiftService {
-
-}
+//package com.spharos.pointapp.pointgift.application;
+//
+//public interface PointGiftService {
+//
+//}
