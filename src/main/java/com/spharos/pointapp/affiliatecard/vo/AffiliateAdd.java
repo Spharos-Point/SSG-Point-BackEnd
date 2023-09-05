@@ -1,17 +1,13 @@
 package com.spharos.pointapp.affiliatecard.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Getter
+@ToString
 public class AffiliateAdd {
-    private Long id;
-    private Long pintId;
-    private String affiliateType;
+    private Long extraId;
     private String affiliateNum;
+
 }
+

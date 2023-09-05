@@ -1,8 +1,8 @@
 package com.spharos.pointapp.affiliatecard.domain;
 
+import com.spharos.pointapp.extra.domain.Extra;
 import jakarta.persistence.*;
 import lombok.*;
-import com.spharos.pointapp.affiliatecard.domain.AffiliateType;
 
 @Entity
 @Getter
@@ -16,13 +16,10 @@ public class AffiliateCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @Column(nullable = false, name = "affiliate_type")
-    @Enumerated(EnumType.STRING)
-    private AffiliateType affiliateType;
-
-    @Column(nullable = false)
-    private Long pointId;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "extra_id")
+    private Extra extra;
 
     @Column(nullable = false, name = "affilicate_num")
-    private String affilicateNum;
+    private String affiliateNum;
 }

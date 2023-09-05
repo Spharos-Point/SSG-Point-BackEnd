@@ -1,6 +1,5 @@
-package com.spharos.pointapp.PointPlus.domain;
+package com.spharos.pointapp.pointplus.domain;
 
-import com.spharos.pointapp.config.common.BaseTimeEntity;
 import com.spharos.pointapp.config.common.BaseTimeEntity2;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.user.domain.User;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Roulette extends BaseTimeEntity2 {
+public class Attend extends BaseTimeEntity2 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +27,13 @@ public class Roulette extends BaseTimeEntity2 {
     @JoinColumn(name = "point_id")
     private Point point;
 
-    @Column(nullable = false, name = "roulette_point")
-    private Integer roulettePoint;
+    @Column(nullable = false, name = "attend_point")
+    private Integer attendPoint;
+
+//    총 출석 일수
+    @Column(nullable = false, name = "attend_cnt")
+    private Integer attendCnt;
+
+
 
 }

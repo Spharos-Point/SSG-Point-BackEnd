@@ -1,7 +1,6 @@
 package com.spharos.pointapp.affiliatecard.application;
 
 import com.spharos.pointapp.affiliatecard.domain.AffiliateCard;
-import com.spharos.pointapp.affiliatecard.domain.AffiliateType;
 import com.spharos.pointapp.affiliatecard.dto.AffiliateAddDto;
 import com.spharos.pointapp.affiliatecard.infrastructure.AffiliateRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +16,15 @@ public class AffiliateServiceImpl implements AffiliateService {
 
 //    제휴 포인트카드 생성
     @Override
-    public void addAffilicate(AffiliateAddDto affilicateAddDto) {
-//        affiliateRepository.save(AffiliateCard.builder()
-//                .affiliateType(AffiliateType)
-//                .affilicateNum(affilicateAddDto.getAffiliateNum())
-//                .build());
+    public void addAffiliate(AffiliateAddDto affiliateAddDto) {
+        affiliateRepository.save(AffiliateCard.builder()
+                .extra(affiliateAddDto.getExtra())
+                .affiliateNum(affiliateAddDto.getAffiliateNum())
+                .build());
+    }
+
+    @Override
+    public void updateAfiliate(AffiliateAddDto affiliateAddDto, Long id) {
+
     }
 }
