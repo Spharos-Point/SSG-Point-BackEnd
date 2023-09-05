@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 public class StoreAddInput {
 
+    private Integer id;
     private String storeName;
     private String logoImage;
 

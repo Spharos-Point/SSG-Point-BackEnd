@@ -10,5 +10,6 @@ public interface StoreService {
     void addStore(StoreAddDto storeAddDto);
     StoreGetDto getStoreById(Integer id);
     List<StoreGetDto> getStoreList();
-
+    List<StoreGetDto> getStoreByNotParentId();
+    List<StoreGetDto> getStoreListByParentId(Integer parentId);
 }

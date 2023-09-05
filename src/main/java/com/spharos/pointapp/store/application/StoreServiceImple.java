@@ -41,4 +41,10 @@ public class StoreServiceImple implements StoreService{
                 .toList();
         return storeGetDtoList;
     }
+
+    @Override
+    public List<StoreGetDto> getStoreByNotParentId() {
+        return null;
+    }
+
 }
