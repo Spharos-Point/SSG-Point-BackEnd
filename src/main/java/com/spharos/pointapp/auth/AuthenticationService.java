@@ -1,5 +1,4 @@
 package com.spharos.pointapp.auth;
-
 import com.spharos.pointapp.auth.vo.AuthenticationRequest;
 import com.spharos.pointapp.auth.vo.AuthenticationResponse;
 import com.spharos.pointapp.config.security.JwtTokenProvider;
@@ -25,7 +24,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-//@Transactional(readOnly = true)
 public class AuthenticationService {
 
     private final UserRepository userRepository;
@@ -42,12 +40,14 @@ public class AuthenticationService {
      *
      */
 
-    //  1. 시큐리티 회원가입
+
+//    1. 시큐리티 로그인
+    @Transactional(readOnly = false)
     public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
 
-        log.info("userSignUpDto is : {}" , userSignUpDto);
+        log.info("userSignUpDto is : {}", userSignUpDto);
 
         User user = User.builder()
                 .loginId(userSignUpDto.getLoginId())
@@ -62,8 +62,7 @@ public class AuthenticationService {
                 .build();
         user.hashPassword(user.getPassword());
         userRepository.save(user);
-
-        // 바코드 생성 및 저장
+//         바코드 생성 및 저장
         createAndSavePointCard(user, uuidString);
 
         return AuthenticationResponse.builder()
@@ -83,7 +82,7 @@ public class AuthenticationService {
         return pointCardRepository.save(pointCard);
     }
 
-//    2. 바코드 생성 (9350 + id값(8자리) + 랜덤 4자리)
+    //    2. 바코드 생성 (9350 + id값(8자리) + 랜덤 4자리)
     private String pointCardBarcodeGenerator(User user) {
         String fixedPrefix = "935000000000";
         Long id = user.getId();
@@ -91,43 +90,44 @@ public class AuthenticationService {
     }
 
     private String generatePointCardBarcode(String prefix, Long id) {
-        int length_id = (int)(Math.log10(id)+1);
-        String prefix_barcode = prefix.substring(0, prefix.length()-length_id);
-        String sum_barcode = prefix_barcode+id;
+        int length_id = (int) (Math.log10(id) + 1);
+        String prefix_barcode = prefix.substring(0, prefix.length() - length_id);
+        String sum_barcode = prefix_barcode + id;
         Random random = new Random();
 
         String full_barcode = sum_barcode + String.format("%04d", random.nextInt(1000));
-        log.info("full_barcode is : {}" , full_barcode);
+        log.info("full_barcode is : {}", full_barcode);
 
         return full_barcode;
     }
-//    3. 바코드 유효성 검사
+
+    //    3. 바코드 유효성 검사
     private String validateBarcode(String checkBarcode) {
         Optional<PointCard> byBarCode = pointCardRepository.findByBarcode(checkBarcode);
-        log.info("byBarCode is : {}" , byBarCode);
+        log.info("byBarCode is : {}", byBarCode);
 
         // DB에 없다면 무한 반복
         if (byBarCode.isPresent()) {
             String substring = checkBarcode.substring(12, 15);
             int endbarcode = Integer.parseInt(substring) + 1;
-            //endbarcode 길이가 5자리라면?
 
             String barcode = checkBarcode.substring(0, 12) + String.format("%04d", endbarcode);
             return validateBarcode(barcode);
         } else {
-            log.info("checkBarcode is : {}" , checkBarcode);
+            log.info("checkBarcode is : {}", checkBarcode);
 
             return checkBarcode;
         }
     }
-//    4. 로그인 기능
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException{
-        log.info("userlogin is : {}" , authenticationRequest);
 
-            User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
-            log.info("{}", user);
-            String JwtToken = jwtTokenProvider.generateToken(user);
-            log.info("{}", JwtToken);
+    //    4. 로그인 기능
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException {
+        log.info("userlogin is : {}", authenticationRequest);
+
+        User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
+        log.info("{}", user);
+        String JwtToken = jwtTokenProvider.generateToken(user);
+        log.info("{}", JwtToken);
 
 
 
@@ -147,4 +147,5 @@ public class AuthenticationService {
         }
 
     }
+
 }

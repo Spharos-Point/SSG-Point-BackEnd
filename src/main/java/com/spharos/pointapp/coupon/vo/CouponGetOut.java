@@ -1,18 +1,17 @@
-package com.spharos.pointapp.coupon.dto;
+package com.spharos.pointapp.coupon.vo;
 
 import com.spharos.pointapp.partner.domain.Partner;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @ToString
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class CouponCreateDto {
+public class CouponGetOut {
     private String couponName;
     private String couponDesc;
-    private Partner partner;
+    private String partnerName;
     private String couponNum;
     private String couponType;
     private Integer couponValue;

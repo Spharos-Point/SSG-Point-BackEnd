@@ -1,7 +1,11 @@
 package com.spharos.pointapp.coupon.domain;
 
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import com.spharos.pointapp.partner.domain.Partner;
+
+//  생성날짜, 수정날짜 필요하므로 base entity
 
 @Entity
 @Getter
@@ -9,7 +13,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coupon {
+public class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +25,9 @@ public class Coupon {
     @Column(nullable = false, length = 300, name = "coupon_desc")
     private String couponDesc;
 
-    @Column(nullable = false, length = 45, name = "use_place")
-    private String usePlace;
+    @ManyToOne
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
 
     @Column(nullable = false, length = 100, name = "coupon_num")
     private String couponNum;

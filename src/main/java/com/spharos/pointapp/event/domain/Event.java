@@ -1,9 +1,12 @@
 package com.spharos.pointapp.event.domain;
 
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+//  생성날짜, 수정날짜 필요하므로 base entity
 
 @Entity
 @Getter
@@ -11,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class  Event {
+public class Event extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
