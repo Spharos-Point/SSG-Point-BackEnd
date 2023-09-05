@@ -49,7 +49,7 @@ public class PointController {
                   @RequestBody PointInVo pointInVo) {
         String uuid = jwtTokenProvider.getUuid(token.substring(7));
         PointAddDto pointAddDto = modelMapper.map(pointInVo, PointAddDto.class);
-        log.info("INPUT Object Data is : {} " , pointAddDto);
+        log.info("INPUT Object Data is : {} ", pointAddDto);
 //        PointAddDto pointAddDto = PointAddDto.builder()
 //                .pointType(pointInVo.getPointType())
 //                .updatePoint(pointInVo.getUpdatePoint())
@@ -57,21 +57,22 @@ public class PointController {
 //                .build();
         pointService.createPoint(pointAddDto, uuid);
     }
+}
 
-
-    //  3. 포인트 전체 조회
-    @GetMapping("/pointRead")
-    public ResponseEntity<List<PointOutVo>> getPointByUser(@RequestHeader("Authorization") String token) {
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
-        List<PointGetDto> pointListByUser = pointService.getPointByUser(uuid);
-        log.info("INPUT Object Data is pointListByUser : {} " , pointListByUser);
-        List<PointOutVo> pointOutList = pointListByUser.stream()
-                .map(pointGetDto -> modelMapper.map(pointGetDto, PointOutVo.class))
-                .toList();
-        log.info("INPUT Object Data is pointOutList : {} " , pointOutList);
-        return new ResponseEntity<>(pointOutList, HttpStatus.OK);
-        }
-    }
+//    //  3. 포인트 전체 조회
+//    @GetMapping("/pointRead")
+//    public ResponseEntity<List<PointOutVo>> getPointByUser(@RequestHeader("Authorization") String token) {
+//        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+//        List<PointGetDto> pointListByUser = pointService.getPointByUser(uuid);
+//        log.info("INPUT Object Data is : {} " , pointListByUser);
+//
+//        List<PointOutVo> pointOutList = pointListByUser.stream()
+//                .map(pointGetDto -> modelMapper.map(pointGetDto, PointOutVo.class))
+//                .toList();
+//        log.info("INPUT Object Data is : {} " , pointOutList);
+//        return new ResponseEntity<>(pointOutList, HttpStatus.OK);
+//        }
+//    }
 
 //    public List<PointOutVo> getPointByUser(@RequestHeader("Authorization") String token) {
 //        String uuid = jwtTokenProvider.getUuid(token.substring(7));

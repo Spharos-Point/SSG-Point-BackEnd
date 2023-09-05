@@ -76,23 +76,23 @@ public class PointServiceImple implements PointService{
                 .build());
     }
 
-    //  4. 포인트 전체 조회
-    @Override
-    @Convert(converter = PointTypeConverter.class)
-    public List<PointGetDto> getPointByUser(String uuid) {
-        List<Point> pointList = pointRepository.findByUuid(uuid);
-        List<PointGetDto> pointGetDtoList = pointList.stream().map(point -> {
-                    PointType pointType = new PointTypeConverter().convertToEntityAttribute(point.getPointType().getCode());
-                    return PointGetDto.builder()
-                            .pointType(pointType.getValue())
-                            .point(point.getPoint())
-                            .used(point.getUsed())
-                            .build();
-                }
-        ).toList();
-        log.info("pointList is : {}" , pointList);
-        return pointGetDtoList;
-    }
+//    //  4. 포인트 전체 조회 실패
+//    @Override
+//    @Convert(converter = PointTypeConverter.class)
+//    public List<PointGetDto> getPointByUser(String uuid) {
+//        List<Point> pointList = pointRepository.findByUuid(uuid);
+//        List<PointGetDto> pointGetDtoList = pointList.stream().map(point -> {
+//                    PointType pointType = new PointTypeConverter().convertToEntityAttribute(point.getPointType().getCode());
+//                    return PointGetDto.builder()
+//                            .pointType(pointType.getValue())
+//                            .point(point.getPoint())
+//                            .used(point.getUsed())
+//                            .build();
+//                }
+//        ).toList();
+//        log.info("pointList is : {}" , pointList);
+//        return pointGetDtoList;
+//    }
 
 
 //    @GetMapping("/point/usablepoint")

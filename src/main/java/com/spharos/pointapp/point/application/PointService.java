@@ -24,11 +24,11 @@ public interface PointService {
     //  2. 포인트 계산
     Integer calcPointTotal(Boolean used, Integer totalPoint, Integer updatePoint);
 
-    //  3. 포인트 생성
+    //  3. 포인트 일반 적립/사용
     void createPoint(PointAddDto pointAddDto, String uuid);
 
-    //  4. 포인트 전체 조회
-    List<PointGetDto> getPointByUser(String uuid);
+//    //  4. 포인트 전체 조회
+//    List<PointGetDto> getPointByUser(String uuid);
 
 
 //    List<Point> getAllPoint();
