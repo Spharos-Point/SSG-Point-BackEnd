@@ -1,16 +1,15 @@
-package com.spharos.pointapp.store.dto;
+package com.spharos.pointapp.brand.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StoreGetDto {
+public class BrandGetDto {
 
     private Integer id;
-    private String storeName;
+    private String brandName;
     private String logoImage;
 
 }

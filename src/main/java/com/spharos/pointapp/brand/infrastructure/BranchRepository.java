@@ -1,12 +1,12 @@
-package com.spharos.pointapp.store.infrastructure;
+package com.spharos.pointapp.brand.infrastructure;
 
-import com.spharos.pointapp.store.domain.Branch;
+import com.spharos.pointapp.brand.domain.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
-    List<Branch> findAllByStoreId(Long storeId);
+    List<Branch> findAllByBrandId(Long brandId);
 
 }

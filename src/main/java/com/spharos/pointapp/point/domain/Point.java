@@ -30,6 +30,6 @@ public class Point {
     private PointType pointType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uuid", referencedColumnName = "uuid")
+//    @JoinColumn(name = "uuid", referencedColumnName = "uuid")
     private User user;
 }

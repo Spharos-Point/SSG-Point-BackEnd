@@ -1,4 +1,4 @@
-package com.spharos.pointapp.store.domain;
+package com.spharos.pointapp.brand.domain;
 
 import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -10,12 +10,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Store extends BaseTimeEntity {
+public class Brand extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String storeName;
+    private String brandName;
     private String logoImage;
 
 }

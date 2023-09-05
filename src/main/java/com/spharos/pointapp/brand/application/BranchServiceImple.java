@@ -1,10 +1,10 @@
-package com.spharos.pointapp.store.application;
+package com.spharos.pointapp.brand.application;
 
-import com.spharos.pointapp.store.domain.Branch;
-import com.spharos.pointapp.store.dto.BranchAddDto;
-import com.spharos.pointapp.store.dto.BranchGetDto;
-import com.spharos.pointapp.store.infrastructure.BranchRepository;
-import com.spharos.pointapp.store.infrastructure.StoreRepository;
+import com.spharos.pointapp.brand.domain.Branch;
+import com.spharos.pointapp.brand.dto.BranchAddDto;
+import com.spharos.pointapp.brand.dto.BranchGetDto;
+import com.spharos.pointapp.brand.infrastructure.BranchRepository;
+import com.spharos.pointapp.brand.infrastructure.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.List;
 public class BranchServiceImple implements BranchService{
 
     private final BranchRepository branchRepository;
-    private final StoreRepository storeRepository;
+    private final BrandRepository brandRepository;
 
     @Override
     public void addBranch(BranchAddDto branchAddDto) {
@@ -25,7 +25,7 @@ public class BranchServiceImple implements BranchService{
                 .branchName(branchAddDto.getBranchName())
                 .address(branchAddDto.getAddress())
                 .phone(branchAddDto.getPhone())
-                .store(storeRepository.findById(branchAddDto.getStoreId()).get())
+                .brand(brandRepository.findById(branchAddDto.getBrandId()).get())
                 .build();
     }
 
@@ -37,7 +37,7 @@ public class BranchServiceImple implements BranchService{
                 .branchName(branch.getBranchName())
                 .address(branch.getAddress())
                 .phone(branch.getPhone())
-                .store(storeRepository.findById(branch.getStore().getId()).get())
+                .brand(brandRepository.findById(branch.getBrand().getId()).get())
                 .build();
 
         return branchGetDto;
@@ -52,7 +52,7 @@ public class BranchServiceImple implements BranchService{
                         .branchName(branch.getBranchName())
                         .address(branch.getAddress())
                         .phone(branch.getPhone())
-                        .store(storeRepository.findById(branch.getStore().getId()).get())
+                        .brand(brandRepository.findById(branch.getBrand().getId()).get())
                         .build()
         ).toList();
         return branchGetDtoList;
@@ -60,14 +60,14 @@ public class BranchServiceImple implements BranchService{
 
     @Override
     public List<BranchGetDto> getBranchListByStoreId(Long storeId) {
-        List<Branch> branchList = branchRepository.findAllByStoreId(storeId);
+        List<Branch> branchList = branchRepository.findAllByBrandId(storeId);
         List<BranchGetDto> branchGetDtoList = branchList.stream().map(
                 branch -> BranchGetDto.builder()
                         .id(branch.getId())
                         .branchName(branch.getBranchName())
                         .address(branch.getAddress())
                         .phone(branch.getPhone())
-                        .store(storeRepository.findById(branch.getStore().getId()).get())
+                        .brand(brandRepository.findById(branch.getBrand().getId()).get())
                         .build()
         ).toList();
         return branchGetDtoList;

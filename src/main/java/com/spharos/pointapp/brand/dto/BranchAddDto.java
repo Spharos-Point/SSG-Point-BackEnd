@@ -1,6 +1,5 @@
-package com.spharos.pointapp.store.dto;
+package com.spharos.pointapp.brand.dto;
 
-import com.spharos.pointapp.store.domain.Store;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -8,11 +7,10 @@ import lombok.ToString;
 @ToString
 public class BranchAddDto {
 
-    private Long id;
     private String branchName;
     private String address;
     private String phone;
 
-    private Integer storeId;
+    private Integer brandId;
 
 }

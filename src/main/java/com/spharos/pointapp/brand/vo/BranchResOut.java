@@ -1,4 +1,4 @@
-package com.spharos.pointapp.store.vo;
+package com.spharos.pointapp.brand.vo;
 
 import lombok.*;
 

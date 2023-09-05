@@ -1,6 +1,5 @@
-package com.spharos.pointapp.store.dto;
+package com.spharos.pointapp.brand.vo;
 
-import com.spharos.pointapp.store.domain.Store;
 import lombok.*;
 
 @Setter
@@ -8,13 +7,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BranchGetDto {
+public class BranchAddInput {
 
-    private Long id;
     private String branchName;
     private String address;
     private String phone;
-
-    private Store store;
+    private Integer storeId;
 
 }

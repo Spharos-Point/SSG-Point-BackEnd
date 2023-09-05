@@ -1,4 +1,4 @@
-package com.spharos.pointapp.store.domain;
+package com.spharos.pointapp.brand.domain;
 
 import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -22,6 +22,6 @@ public class Branch extends BaseTimeEntity {
     private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Store store;
+    private Brand brand;
 
 }

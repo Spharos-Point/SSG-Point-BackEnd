@@ -1,16 +1,15 @@
-package com.spharos.pointapp.store.vo;
+package com.spharos.pointapp.brand.vo;
 
 import lombok.*;
 
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class StoreResOut {
+public class BrandResOut {
 
     private Integer id;
-    private String storeName;
+    private String brandName;
     private String logoImage;
 
 }
