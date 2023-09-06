@@ -7,11 +7,11 @@ import lombok.ToString;
 @ToString
 public class GiftInVo {
 
-    private String gifterUuid;
-    private String receiverUuid;
-    private String point;
-    private String message;
-    private String phone;
-    private String address;
+    private Integer point;
+    private Long imageId;
+    private String giftMessage;
+    private String pointPassword;
+    private String recipientLoginId;
+
 
 }

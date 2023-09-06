@@ -24,7 +24,7 @@ public interface PointService {
     //  2. 포인트 계산
     Integer calcPointTotal(Boolean used, Integer totalPoint, Integer updatePoint);
 
-    //  3. 포인트 일반 적립/사용
+    //  3. 포인트 타입별 적립/사용 (이벤트, 선물, 쿠폰, 출석, 룰렛, 전환, 제휴사, 영수증, 바코드, 소멸
     void createPoint(PointAddDto pointAddDto, String uuid);
 
 //    //  4. 포인트 전체 조회

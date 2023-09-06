@@ -1,6 +1,5 @@
 package com.spharos.pointapp.user.application;
 
-import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.*;
 
 public interface UserService {

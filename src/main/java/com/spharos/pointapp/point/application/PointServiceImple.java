@@ -11,6 +11,7 @@ import jakarta.persistence.Convert;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,10 +30,9 @@ public class PointServiceImple implements PointService{
     /**
      * 1. 토탈 포인트 조회
      * 2. 포인트 계산
-     * 3. 포인트 일반 적립/사용
-     * 4. 포인트 전체 조회
-     * 5. 포인트 적립 조회
-     * 6. 포인트 사용 조회
+     * 3. 포인트 타입별 적립/사용
+     * 4. 포인트 적립/사용 조회 (전환, 선물 제회)
+     * 5. 포인트 전체 조회
      */
 
     //  1. 토탈 포인트 조회
@@ -54,7 +54,7 @@ public class PointServiceImple implements PointService{
         return totalPoint;
     }
 
-    //  3. 포인트 일반 적립/사용
+    //  3. 포인트 타입별 적립/사용 (이벤트, 선물, 쿠폰, 출석, 룰렛, 전환, 제휴사, 영수증, 바코드, 소멸
     @Override
     @Convert(converter = PointTypeConverter.class)
     public void createPoint(PointAddDto pointAddDto, String uuid) {
@@ -76,7 +76,10 @@ public class PointServiceImple implements PointService{
                 .build());
     }
 
-//    //  4. 포인트 전체 조회 실패
+
+
+
+//    //  전체조회 강사님 코드
 //    @Override
 //    @Convert(converter = PointTypeConverter.class)
 //    public List<PointGetDto> getPointByUser(String uuid) {
@@ -93,23 +96,6 @@ public class PointServiceImple implements PointService{
 //        log.info("pointList is : {}" , pointList);
 //        return pointGetDtoList;
 //    }
-
-
-//    @GetMapping("/point/usablepoint")
-//    public ResponseEntity<String> getPointTotal(@RequestHeader("Authorization") String token) {
-//
-//        Long userId = userService.getUserIdFromToken(token);
-//
-//        Integer usablePoint = pointService.getUsablePoint(userId);
-//
-//        UsablePointOut usablePointOut = UsablePointOut.builder()
-//                .totalPoint(usablePoint)
-//                .build();
-//
-//        ResponseOut<?> responseOut = ResponseOut.success(usablePointOut);
-//        return ResponseEntity.ok(responseOut);
-//    }
-//
 //
 //    @Override
 //    public List<Point> getAllPoint() {

@@ -59,19 +59,21 @@ public class UserServiceImple implements UserService{
     }
 
     //  2. 유저 패스워드 변경
+    // todo: 아이디는 동일시 불가, 전화번호 중간, 끝 4자리 포함시 불가
     @Override
     public void updateUserPwd(UserUpdatePwdDto updatePwDto, String token)  {
         String loginId = jwtTokenProvider.getUuid(token.substring(7));
         User user = userRepository.findByUuid(loginId).get();
         // 사용자가 입력한 현재 패스워드와 DB에 저장된 시큐리티 패스워드를 비교
         if (!new BCryptPasswordEncoder().matches(updatePwDto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
+            throw new IllegalArgumentException("사용할 수 없는 패스워드 입니다.");
         }
 
         // 새로운 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
         user.hashPassword(updatePwDto.getNewPassword());
 
     }
+
 
     //  3. 유저 포인트 패스워드 변경
     @Override

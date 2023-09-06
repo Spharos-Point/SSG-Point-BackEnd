@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(nullable = false, length = 1, name = "status", columnDefinition = "int default 1")
     private Integer status; // todo: default 1
     @Column(length = 100, name = "point_password")
-    private String pointPassword; // todo: Hashing
+    private String pointPassword;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10, name = "roll")
