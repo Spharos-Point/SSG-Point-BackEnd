@@ -2,16 +2,14 @@ package com.spharos.pointapp.brand.domain;
 
 import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Branch extends BaseTimeEntity {
 
     @Id

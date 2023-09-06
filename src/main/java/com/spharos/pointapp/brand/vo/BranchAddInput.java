@@ -2,6 +2,7 @@ package com.spharos.pointapp.brand.vo;
 
 import lombok.*;
 
+@Getter
 @Setter
 @Builder
 @AllArgsConstructor
