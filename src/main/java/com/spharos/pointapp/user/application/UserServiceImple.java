@@ -30,7 +30,8 @@ public class UserServiceImple implements UserService{
      * 4. 유저 탈퇴 패스워드 확인
      * 5. 유저 탈퇴 (상태변경)
      * 6. 회원가입 시 로그인 중복 확인
-     * 7. 유저 휴대폰 번호, 유저 네임 으로 조회
+     * 7. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
+     * 8. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
      *
      */
 
@@ -61,19 +62,28 @@ public class UserServiceImple implements UserService{
     //  2. 유저 패스워드 변경
     // todo: 아이디는 동일시 불가, 전화번호 중간, 끝 4자리 포함시 불가
     @Override
-    public void updateUserPwd(UserUpdatePwdDto updatePwDto, String token)  {
-        String loginId = jwtTokenProvider.getUuid(token.substring(7));
-        User user = userRepository.findByUuid(loginId).get();
+    public void updateUserPwd(String loginId, String passWord, String NewPassword)  {
+        User user = userRepository.findByUuid(loginId)
+                .orElseThrow(()-> new NoSuchElementException("해당하는 유저가 존재하지 않습니다"));;
+        String phoneNum = userRepository.findByPhoneNumber(loginId)
+                .orElseThrow(()-> new NoSuchElementException("해당하는 유저의 번호가 존재하지 않습니다"));;
+
+        // 전화번호의 중간 4자리와 끝 4자리를 추출하여 비밀번호와 비교
+        String middleNum = phoneNum.substring(3, 7);
+        String lastNum = phoneNum.substring(phoneNum.length() - 4);
+
         // 사용자가 입력한 현재 패스워드와 DB에 저장된 시큐리티 패스워드를 비교
-        if (!new BCryptPasswordEncoder().matches(updatePwDto.getPassword(), user.getPassword())) {
+        if (!new BCryptPasswordEncoder().matches(passWord, NewPassword)) {
             throw new IllegalArgumentException("사용할 수 없는 패스워드 입니다.");
+        } else if (NewPassword.equals(loginId)) {
+            throw new IllegalArgumentException("아이디와 같은 패스워드 입니다.");
+        } else if (NewPassword.equals(middleNum) || NewPassword.equals(lastNum)) {
+            throw new IllegalArgumentException("전화번호의 일부를 포함한 패스워드는 사용할 수 없습니다.");
+        } else {
+            // 새로운 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
+            user.hashPassword(NewPassword);
         }
-
-        // 새로운 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
-        user.hashPassword(updatePwDto.getNewPassword());
-
     }
-
 
     //  3. 유저 포인트 패스워드 변경
     @Override
@@ -112,20 +122,31 @@ public class UserServiceImple implements UserService{
         return !userRepository.findByLoginId(loginId).isPresent();
     }
 
-    //  7. 유저 휴대폰 번호, 유저 네임 으로 조회
+    //  7. 유저 이름, 유저 휴대폰 번호로 조회
     @Override
     public String getUserByNameAndPhoneNumber(String userName, String phoneNumber) {
         // findByUserNameAndPhoneNumber 매개변수 순서 엔티티 순서랑 관련있음 ex) userName가 먼저 phoneNumber보다 엔티티에 선언됨
-        log.info("findByUserNameAndPhoneNumberuserName : {} ",userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber));
+        log.info("findByUserNameAndPhoneNumberuserName : {}, {} ",userName, phoneNumber);
+
+        log.info("findByUserNameAndPhoneNumberuserName : {} ", userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber));
 
         log.info("user : {}",userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber).map(User::getLoginId));
 
-        return userRepository
-                .findByUserNameAndPhoneNumber(userName, phoneNumber)
+        return userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
                 .map(User::getLoginId)
                 .orElse(null);
     }
 
+    //  8. 유저 네임 조회, 유저 휴대폰 번호로 조회
+    @Override
+    public String getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber) {
+
+        return userRepository
+                .findByLoginIdAndUserNameAndPhoneNumber(userName, phoneNumber, phoneNumber)
+                .map(User::getLoginId)
+                .orElse(null);
+    }
+}
 
 ////    강사님 코드 로그인 id 참고
 //    @Override
@@ -142,4 +163,3 @@ public class UserServiceImple implements UserService{
 //                .build();
 //        return userGetDto;
 //    }
-}

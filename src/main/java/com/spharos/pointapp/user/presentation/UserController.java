@@ -4,10 +4,6 @@ import com.spharos.pointapp.user.application.UserService;
 import com.spharos.pointapp.user.dto.*;
 import com.spharos.pointapp.user.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +22,15 @@ public class UserController {
     private final ModelMapper modelMapper;
 
     /**
-     *  todo: get --> post로 변경
+     *
      * 1. 유저 정보 변경
      * 2. 윺저 패스워드 변경
      * 3. 유저 포인트 패스워드 변경
      * 4. 유저 탈퇴 패스워드 확인
      * 5. 유저 탈퇴 (상태변경)
      * 6. 회원가입 시 로그인 중복 확인
-     * 7. 유저 휴대폰 번호, 유저 네임 으로 조회
+     * 7. 유저 이름, 유저 휴대폰 번호로 조회
+     * 8. 유저 아이디, 유저 이름, 유저 휴대폰 번호로 조회
      *
      */
 
@@ -61,14 +58,14 @@ public class UserController {
     // todo: 토큰이 아니라 로그인아이디 이름 전화번호
     @Operation(summary = "유저 정보 변경", description = "이메일과 주소를 변경합니다.", tags = { "User Controller" })
     @PutMapping("/changePwd")
-    public void updateUserPwd(@RequestHeader("Authorization") String token,
-                              @RequestBody UserUpdatePwdVo userUpdatePwdVo){
-
-        UserUpdatePwdDto updatePwDto = modelMapper.map(userUpdatePwdVo, UserUpdatePwdDto.class);
-        userService.updateUserPwd(updatePwDto, token);
+    public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo){
+        userService.updateUserPwd(userUpdatePwdVo.getLoginId(),
+                userUpdatePwdVo.getPassword(),
+                userUpdatePwdVo.getNewPassword());
     }
 
     //  3. 유저 포인트 패스워드 변경
+    @Operation(summary = "포인트 패스워드 확인 및 변경", description = "포인트 패스워드를 확인 하고 변경한다", tags = { "User Controller" })
     @PutMapping("/changePointPwd")
     @SecurityRequirement(name = "Bearer Authentication")
     public void updateUserPointPwd(@RequestHeader("Authorization") String token,
@@ -80,6 +77,7 @@ public class UserController {
 
 
     //  4. 유저 탈퇴 패스워드 확인
+    @Operation(summary = "탈퇴 패스워드 확인", description = "탈퇴 패스워드 확인", tags = { "User Controller" })
     @PostMapping("/leavePwd")
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<?> leavePwd(@RequestHeader("Authorization") String token,
@@ -93,14 +91,16 @@ public class UserController {
     }
 
     //  5. 유저 탈퇴(상태변경)
+    @Operation(summary = "유저 탈퇴", description = "상태를 변경 해준다.", tags = { "User Controller" })
     @PutMapping("/leaveOnline")
     public void leaveOnilne(@RequestHeader("Authorization") String token) {
         userService.userLeaveOnline(token);
     }
 
     //  6. 회원가입 시 로그인 중복 확인
+    @Operation(summary = "회원가입 (회원가입 로그인 중복 확인)", description = "회원가입 시 로그인 중복 확인 해준다.", tags = { "User Controller" })
     @PostMapping("/validateLoginId")
-    public ResponseEntity<String> validateLogin(@RequestBody UserValidateLoginIdInVo userValidateLoginIdInVo){
+    public ResponseEntity<?> validateLogin(@RequestBody UserValidateLoginIdInVo userValidateLoginIdInVo){
         boolean isLoginValid = userService.validateLoginInd(userValidateLoginIdInVo.getLoginId());
         log.info("isLoginValid {} ",isLoginValid);
         if (isLoginValid) {
@@ -110,10 +110,13 @@ public class UserController {
         }
     }
 
-    //  7. 유저 휴대폰 번호, 유저 네임 으로 조회
+    //  7. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
+    @Operation(summary = "아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)", description = "아이디 찾기", tags = { "User Controller" })
     @PostMapping("/search/NameAndPhoneNum")
-    public ResponseEntity<String> searchingPhoneNum(@RequestBody UserSearchNameAndNumInVo userSearchNameAndNumInVo) {
-        String loginId = userService.getUserByNameAndPhoneNumber(userSearchNameAndNumInVo.getPhoneNumber(), userSearchNameAndNumInVo.getUserName());
+    public ResponseEntity<?> searchingPhoneNum(@RequestBody UserSearchNameAndNumInVo userSearchNameAndNumInVo) {
+        String loginId = userService.getUserByNameAndPhoneNumber(
+                userSearchNameAndNumInVo.getPhoneNumber(),
+                userSearchNameAndNumInVo.getUserName());
         log.info("loginId {} ",loginId);
         if (loginId != null) {
             return ResponseEntity.ok(loginId);
@@ -122,19 +125,21 @@ public class UserController {
         }
     }
 
-//    //  8. 유저 휴대폰 번호, 유저 네임 으로 조회
-//    @PostMapping("/search/NameAndPhoneNum")
-//    public ResponseEntity<String> searchingPhoneNum(@RequestParam("userName") String userName,
-//                                                    @RequestParam("phoneNumber") String phoneNumber) {
-//        String loginId = userService.getUserByNameAndPhoneNumber(userName, phoneNumber);
-//
-//        log.info("loginId {} ",loginId);
-//        if (loginId != null) {
-//            return ResponseEntity.ok(loginId);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입력하신 정보로 가입된 신세계포인트 회원이 없습니다.");
-//        }
-//    }
+    //  8. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
+    @Operation(summary = "비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)", description = "비밀번호 찾기", tags = { "User Controller" })
+    @PostMapping("/search/IdAndNameAndPhoneNum")
+    public ResponseEntity<?> searchingPhoneNum(@RequestBody UserSearchIdAndUserNameAndNumInVo userSearchIdAndUserNameAndNumInVo) {
+        String loginId = userService.getUserByIdAndNameAndPhoneNumber(
+                userSearchIdAndUserNameAndNumInVo.getLoginId(),
+                userSearchIdAndUserNameAndNumInVo.getUserName(),
+                userSearchIdAndUserNameAndNumInVo.getPhoneNumber());
+        log.info("loginId {} ",loginId);
+        if (loginId != null) {
+            return ResponseEntity.ok(loginId);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입력하신 정보로 가입된 신세계포인트 회원이 없습니다.");
+        }
+    }
 
 //     강사님 코드 uuid로 조회
 //    @GetMapping("/api/{UUID}")
