@@ -1,6 +1,5 @@
-package com.spharos.pointapp.PointPlus.domain;
+package com.spharos.pointapp.pointplus.domain;
 
-import com.spharos.pointapp.config.common.BaseTimeEntity;
 import com.spharos.pointapp.config.common.BaseTimeEntity2;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.user.domain.User;
