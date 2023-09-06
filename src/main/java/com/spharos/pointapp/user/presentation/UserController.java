@@ -26,12 +26,13 @@ public class UserController {
 
     /**
      *
-     * 1. 유저 정보 업데이트
-     * 2. 유저 패스워드 변경
+     * 1. 유저 정보 변경
+     * 2. 윺저 패스워드 변경
      * 3. 유저 포인트 패스워드 변경
      * 4. 유저 탈퇴 패스워드 확인
-     * 5. 유저 탈퇴 상태 변경
+     * 5. 유저 탈퇴 (상태변경)
      * 6. 회원가입 시 로그인 중복 확인
+     * 7. 유저 휴대폰 번호, 유저 네임 으로 조회
      *
      */
 
@@ -43,55 +44,55 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-
-    // 1. 유저 정보 업데이트
+//    String loginId = jwtTokenProvider.getUuid(authHeader.substring(7));
+    //  1. 유저 정보 업데이트
     @PutMapping("/myinfo/changeInfo")
-    public void updateUserInfo(@RequestBody UserUpdateInfoVo userUpdateInfoVo,
-                               @RequestHeader("uuid") String uuid) {
+    public void updateUserInfo(@RequestHeader("Authorization") String token,
+                               @RequestBody UserUpdateInfoVo userUpdateInfoVo) {
 
         UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
-        userService.updateUserInfo(userUpdateInfoDto, uuid);
+        userService.updateUserInfo(userUpdateInfoDto, token);
+
     }
 
-    // 2. 유저 패스워드 변경
+    //  2. 유저 패스워드 변경
     @PutMapping("/changePwd")
-    public void updateUserPwd(@RequestBody UserUpdatePwdVo userUpdatePwdVo,
-                              @RequestHeader("uuid") String uuid) {
+    public void updateUserPwd(@RequestHeader("Authorization") String token,
+                              @RequestBody UserUpdatePwdVo userUpdatePwdVo){
 
         UserUpdatePwdDto updatePwDto = modelMapper.map(userUpdatePwdVo, UserUpdatePwdDto.class);
-        userService.updateUserPwd(updatePwDto, uuid);
+        userService.updateUserPwd(updatePwDto, token);
     }
 
-    // 3. 유저 포인트 패스워드 변경
+    //  3. 유저 포인트 패스워드 변경
     @PutMapping("/changePointPwd")
-    public void updateUserPointPwd(@RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo,
-                                   @RequestHeader("uuid") String uuid) {
+    public void updateUserPointPwd(@RequestHeader("Authorization") String token,
+                                   @RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo) {
 
         UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
-        userService.updateUserPointPwd(updatePointPwDto, uuid);
+        userService.updateUserPointPwd(updatePointPwDto, token);
     }
 
 
-    // 4. 유저 탈퇴 패스워드 확인
+    //  4. 유저 탈퇴 패스워드 확인
     @PostMapping("/leavePwd")
-    public ResponseEntity<Boolean> leavePwd(@RequestBody UserLeavePwdVo userLeavePwdVo,
-                                            @RequestHeader("uuid") String uuid) {
+    public ResponseEntity<Boolean> leavePwd(@RequestHeader("Authorization") String token,
+                                            @RequestBody UserLeavePwdVo userLeavePwdVo) {
 
-        if (!userService.userLeavePwd(userLeavePwdVo.getPassword(), uuid)) {
+        if (!userService.userLeavePwd(userLeavePwdVo.getPassword(), token)) {
             return ResponseEntity.ok(false);
         } else {
             return ResponseEntity.ok(true);
         }
     }
 
-    // 5. 유저 탈퇴 상태 변경
+    //  5. 유저 탈퇴(상태변경)
     @PutMapping("/leaveOnline")
-    public void leaveOnilne(@RequestHeader("uuid") String uuid) {
-        userService.userLeaveOnline(uuid);
+    public void leaveOnilne(@RequestHeader("Authorization") String token) {
+        userService.userLeaveOnline(token);
     }
 
-
-    // 6. 회원가입 시 로그인 중복 확인
+    //  6. 회원가입 시 로그인 중복 확인
     @GetMapping("/validateLoginId/{loginId}")
     public ResponseEntity<String> validateLogin(@PathVariable String loginId) {
         boolean isLoginValid = userService.validateLoginInd(loginId);
@@ -99,6 +100,20 @@ public class UserController {
             return ResponseEntity.ok("아이디 사용 가능합니다.");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 존재하는 아이디입니다.");
+        }
+    }
+
+    //  7. 유저 휴대폰 번호, 유저 네임 으로 조회
+    @GetMapping("/search/NameAndPhoneNum")
+    public ResponseEntity<String> searchingPhoneNum(@RequestParam("userName") String userName,
+                                                    @RequestParam("phoneNumber") String phoneNumber) {
+        String loginId = userService.getUserByNameAndPhoneNumber(userName, phoneNumber);
+
+        log.info("loginId {} ",loginId);
+        if (loginId != null) {
+            return ResponseEntity.ok(loginId);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입력하신 정보로 가입된 신세계포인트 회원이 없습니다.");
         }
     }
 

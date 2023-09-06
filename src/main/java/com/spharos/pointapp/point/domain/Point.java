@@ -1,19 +1,22 @@
 package com.spharos.pointapp.point.domain;
 
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Point {
+@DynamicUpdate // 더티체킹 변경된 필드만 update
+public class Point extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +32,11 @@ public class Point {
     @Convert(converter = PointTypeConverter.class)
     private PointType pointType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uuid", referencedColumnName = "uuid")
-    private User user;
+    @Column(nullable = false, name = "uuid")
+    private String uuid;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "uuid", referencedColumnName = "uuid")
+//    private User user;
+
 }

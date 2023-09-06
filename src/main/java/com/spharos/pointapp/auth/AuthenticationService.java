@@ -32,11 +32,14 @@ public class AuthenticationService {
     private final PointCardRepository pointCardRepository;
 
     /**
-     * 1. 시큐리티 아이디 생성
+     *
+     * 1. 시큐리티 회원가입
      * 2. 바코드 생성
      * 3. 바코드 유효성 검사
      * 4. 로그인 기능
+     *
      */
+
 
 //    1. 시큐리티 로그인
     @Transactional(readOnly = false)
@@ -50,10 +53,10 @@ public class AuthenticationService {
                 .loginId(userSignUpDto.getLoginId())
                 .uuid(uuidString)
                 .roll(Roll.USER)
-                .name(userSignUpDto.getName())
+                .userName(userSignUpDto.getName())
                 .password(userSignUpDto.getPassword())
                 .email(userSignUpDto.getEmail())
-                .phone(userSignUpDto.getPhone())
+                .phoneNumber(userSignUpDto.getPhone())
                 .address(userSignUpDto.getAddress())
                 .status(1)
                 .build();
@@ -126,10 +129,12 @@ public class AuthenticationService {
         String JwtToken = jwtTokenProvider.generateToken(user);
         log.info("{}", JwtToken);
 
+
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getLoginId(),
+                            user.getUsername(),
                             authenticationRequest.getPassword()
                     )
             );
