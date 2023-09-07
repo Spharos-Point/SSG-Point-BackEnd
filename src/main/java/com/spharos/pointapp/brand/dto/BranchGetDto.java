@@ -19,6 +19,8 @@ public class BranchGetDto {
     private String branchName;
     private String address;
     private String phone;
+    private String latitude;
+    private String longitude;
 
     private Brand brand;
 

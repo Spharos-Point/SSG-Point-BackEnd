@@ -3,8 +3,6 @@ package com.spharos.pointapp.brand.presentation;
 import com.spharos.pointapp.brand.application.BranchService;
 import com.spharos.pointapp.brand.application.BrandService;
 import com.spharos.pointapp.brand.dto.BranchAddDto;
-import com.spharos.pointapp.brand.dto.BranchGetDto;
-import com.spharos.pointapp.brand.dto.BrandGetDto;
 import com.spharos.pointapp.brand.vo.BranchAddInput;
 import com.spharos.pointapp.brand.vo.BranchResOut;
 import lombok.RequiredArgsConstructor;
@@ -32,16 +30,17 @@ public class BranchController {
 
     @GetMapping("/branch/{branchId}")
     public ResponseEntity<BranchResOut> getBranch(@PathVariable("branchId") Long branchId) {
-        BranchGetDto branchGetDto = branchService.getBranchById(branchId);
-        log.info("branchGetDto: {}", branchGetDto);
-        BranchResOut branchResOut = BranchResOut.builder()
-                .id(branchGetDto.getId())
-                .branchName(branchGetDto.getBranchName())
-                .address(branchGetDto.getAddress())
-                .phone(branchGetDto.getPhone())
-                .brand(brandRepositoty.findById(branch.getBrand().getId()).get())
-                .brandName(brandGetDto.getBrandName())
-                .build();
-        return ResponseEntity.of(java.util.Optional.of(branchResOut));
+//        BranchGetDto branchGetDto = branchService.getBranchById(branchId);
+//        log.info("branchGetDto: {}", branchGetDto);
+//        BranchResOut branchResOut = BranchResOut.builder()
+//                .id(branchGetDto.getId())
+//                .branchName(branchGetDto.getBranchName())
+//                .address(branchGetDto.getAddress())
+//                .phone(branchGetDto.getPhone())
+//                .brand(brandRepositoty.findById(branch.getBrand().getId()).get())
+//                .brandName(brandGetDto.getBrandName())
+//                .build();
+        return null;
     }
+    
 }

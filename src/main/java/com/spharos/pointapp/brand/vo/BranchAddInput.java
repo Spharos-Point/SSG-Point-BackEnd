@@ -13,6 +13,9 @@ public class BranchAddInput {
     private String branchName;
     private String address;
     private String phone;
-    private Integer storeId;
+    private String latitude;
+    private String longitude;
+    private Integer brandId;
+
 
 }

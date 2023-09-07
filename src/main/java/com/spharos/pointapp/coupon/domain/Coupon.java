@@ -1,5 +1,6 @@
 package com.spharos.pointapp.coupon.domain;
 
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coupon {
+public class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,6 +18,8 @@ public class Branch extends BaseTimeEntity {
     private String branchName;
     private String address;
     private String phone;
+    private String latitude;
+    private String longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Brand brand;

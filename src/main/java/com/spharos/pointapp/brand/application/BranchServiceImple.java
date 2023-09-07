@@ -27,6 +27,8 @@ public class BranchServiceImple implements BranchService{
                 .phone(branchAddDto.getPhone())
                 .brand(brandRepository.findById(branchAddDto.getBrandId()).get())
                 .build();
+        branchRepository.save(branch);
+        log.info("{}", branch);
     }
 
     @Override
@@ -72,4 +74,5 @@ public class BranchServiceImple implements BranchService{
         ).toList();
         return branchGetDtoList;
     }
+
 }
