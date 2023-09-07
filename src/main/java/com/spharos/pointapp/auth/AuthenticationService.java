@@ -130,7 +130,6 @@ public class AuthenticationService {
         log.info("{}", JwtToken);
 
 
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -140,6 +139,7 @@ public class AuthenticationService {
             );
             return AuthenticationResponse.builder()
                     .token(JwtToken)
+                    .userName(user.userName())
                     .build();
         } catch (AuthenticationException ex) {
             log.error("로그인 정보가 일치하지 않습니다.");
