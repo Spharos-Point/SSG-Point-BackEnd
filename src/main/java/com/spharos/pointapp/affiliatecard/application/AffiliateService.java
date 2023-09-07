@@ -9,6 +9,10 @@ public interface AffiliateService {
     void addAffiliate(AffiliateAddDto affiliateAddDto);
 
     //  수정
+
+    void updateAfiliate(AffiliateAddDto affiliateAddDto, Long id);
+
+
 //    void updateAffiliate(AffiliateUpdateDto affiliateUpdateDto, Long affiliateId);
 //    void updateAffiliate(AffiliateUpdateDto affiliateUpdateDto, String uuid);
 
