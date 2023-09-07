@@ -29,7 +29,7 @@ public class ExtraController {
     }
 
 //    외부 제휴사 수정
-    @PutMapping("extra")
+    @PutMapping("/extra")
     public void updateExtra(@RequestBody ExtraUpdate extraUpdate) {
         log.info("{}", extraUpdate);
         ModelMapper mapper = new ModelMapper();

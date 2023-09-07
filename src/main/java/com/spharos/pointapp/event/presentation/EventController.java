@@ -9,6 +9,7 @@ import com.spharos.pointapp.event.vo.EventCreate;
 import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.event.vo.EventListRes;
 import com.spharos.pointapp.event.vo.EventUpdate;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,7 @@ public class EventController {
     private final EventService eventService;
 
 //    이벤트 생성
+@Operation(summary = "이벤트 생성", description = "새로운 이벤트를 등록합니다.", tags = { "Event Controller" })
     @PostMapping("/event")
     public void createEvent(@RequestBody EventCreate eventCreate) {
         log.info("{}", eventCreate);

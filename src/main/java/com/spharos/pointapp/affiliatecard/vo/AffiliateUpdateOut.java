@@ -5,9 +5,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
-public class AffiliateUpdate {
+public class AffiliateUpdateOut {
 
+    private Long extraId;
     private String affiliateNum;
 
 }

@@ -7,4 +7,4 @@
 //public class Scheduler {
 ////    1일 1회 출석 가능
 //    @Scheduled()
-//}
+//
