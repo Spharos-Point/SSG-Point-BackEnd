@@ -1,11 +1,18 @@
 package com.spharos.pointapp.event.application;
 
+import com.spharos.pointapp.coupon.domain.Coupon;
+import com.spharos.pointapp.coupon.domain.CouponList;
+import com.spharos.pointapp.coupon.domain.CouponTypeConverter;
+import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.event.domain.Event;
+import com.spharos.pointapp.event.domain.EventList;
 import com.spharos.pointapp.event.dto.EventCreateDto;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventListGetDto;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
 import com.spharos.pointapp.event.infrastructure.EventListRepository;
 import com.spharos.pointapp.event.infrastructure.EventRepository;
+import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,14 +61,6 @@ public class EventServiceImpl implements EventService{
         log.info("{}", event);
     }
 
-
-//    이벤트 삭제
-//    @Override
-//    public EventCreateDto deleteEvent(Long eventId) {
-//        return null;
-//}
-
-
     //    이벤트 개별 조회
     @Override
     public EventGetDto getEvent(Long eventId) {
@@ -89,9 +88,31 @@ public class EventServiceImpl implements EventService{
         return eventGetDtoList;
     }
 
+//    이벤트 삭제
     @Override
     public void deleteEvent(Long eventId) {
         eventRepository.deleteById(eventId);
+    }
+
+//    사용자가 참여한 이벤트 조회
+    @Override
+    public List<EventListGetDto> getEventByUser(Long userId) {
+        List<EventList> eventListList = eventListRepository.findAllByUserId(userId);
+        log.info("{}", eventListList);
+        List<EventListGetDto> eventListGetDtoList = eventListList.stream().map(item -> {
+                    Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
+                    User user = userRepository.findById(item.getUser().getId()).orElseThrow();
+
+                    return EventListGetDto.builder()
+                            .id(item.getId())
+                            .eventId(event.getId())
+                            .userId(user.getId())
+                            .prize(item.getPrize())
+                            .build();
+                }).toList();
+
+        log.info("Event List is : {}", eventListGetDtoList);
+        return eventListGetDtoList;
     }
 
 

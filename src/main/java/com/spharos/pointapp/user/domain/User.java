@@ -2,8 +2,8 @@ package com.spharos.pointapp.user.domain;
 
 import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Transactional
+@DynamicUpdate // 더티체킹 변경된 필드만 update
 public class User extends BaseTimeEntity implements UserDetails {
 
     @Id
@@ -29,19 +29,19 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(nullable = false, length = 30, name = "login_id")
     private String loginId;
     @Column(nullable = false, length = 100, name = "user_name")
-    private String name;
+    private String userName;
     @Column(nullable = false, length = 100, name = "email")
     private String email;
     @Column(nullable = false, length = 100, name = "password")
-    private String password; // todo: Hashing
-    @Column(length = 30, name = "phone")
-    private String phone;
+    private String password;
+    @Column(length = 30, name = "phoneNumber")
+    private String phoneNumber;
     @Column(length = 100, name = "address")
     private String address;
     @Column(nullable = false, length = 1, name = "status", columnDefinition = "int default 1")
     private Integer status; // todo: default 1
     @Column(length = 100, name = "point_password")
-    private String pointPassword; // todo: Hashing
+    private String pointPassword;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10, name = "roll")
@@ -84,7 +84,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return loginId; }
+    public String getUsername() { return uuid; }
 
     @Override
     public boolean isAccountNonExpired() {

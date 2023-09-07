@@ -12,7 +12,7 @@ public enum PointType implements CodeValue{
     CONVERT("CN", "전환"),
     AFFILIATE("AF", "제휴사"),
     RECEIPT("RE", "영수증"),
-
+    BARCODE("BC","바코드"),
     EXTINCTION("EX", "소멸");
 
     private String code;

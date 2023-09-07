@@ -1,5 +1,7 @@
 package com.spharos.pointapp.config.security;
 
+import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,6 +17,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Slf4j
@@ -23,13 +26,13 @@ import java.util.function.Function;
 public class JwtTokenProvider {
 
     private final Environment env;
-
-//    토큰에서 uuid 클레임을 추출하여 반환
+    private final UserRepository userRepository;
+    //  토큰에서 uuid 클레임을 추출하여 반환
     public String getUuid(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-//    extractAllClaims를 통해 토큰의 정보를 풀고 빌드를 위한 객체
+    //  extractAllClaims를 통해 토큰의 정보를 풀고 빌드를 위한 객체
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -39,38 +42,57 @@ public class JwtTokenProvider {
 
         return generateToken(Map.of(), userDetails);
     }
-    //토큰 생성
+
+    // 사용자의 UUID를 데이터베이스에서 조회하는 서비스 메서드
+//    private String getUuidByUseruuid(String username) {
+//        // 데이터베이스에서 사용자의 UUID를 조회하는 로직을 구현
+//        // 예를 들어, 사용자 엔티티(UserEntity)를 사용하여 조회
+//        Optional<User> user = userRepository.findByLoginId(username);
+//        log.info("userRepository {} ", user);
+//
+//        if (user.isPresent()) {
+//            log.info("user {} ", user.get().getUuid());
+//
+//            return user.get().getUuid();
+//        }
+//        return null;
+//    }
+
+    //  토큰 생성
     public String generateToken(
             Map<String, Objects> extractClaims,
             UserDetails userDetails
     ) {
+//        String username = userDetails.getUsername();
+//        String uuid = getUuidByUseruuid(username); // 사용자의 UUID 조회
         log.info("generateToken {} ", userDetails);
         return Jwts.builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
+//                .claim("uuid", uuid) // UUID 추가
                 .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
                 .setExpiration(new java.util.Date(System.currentTimeMillis() + env.getProperty("JWT.EXPIRATION_TIME", Long.class)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    //토큰 유효성 검사
+    //  토큰 유효성 검사
     public boolean validateToken(String token, UserDetails userDetails) {
         final String uuid = getUuid(token);
-        // 뽑아온 UUID와 받은 UUID가 같고 유효기간이 지나지 않았다면
+        //  뽑아온 UUID와 받은 UUID가 같고 유효기간이 지나지 않았다면
         return (uuid.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-//    만료 비교
+    //  만료 비교
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new java.util.Date());
     }
-//  JWT 토큰에서 만료 시간 클레임을 추출하여 반환합니다.
+    //  JWT 토큰에서 만료 시간 클레임을 추출하여 반환합니다.
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    //extractClaim에서 토큰이 넘어와서 토큰을 풀어주는 메소드
+    //  extractClaim에서 토큰이 넘어와서 토큰을 풀어주는 메소드
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
@@ -80,7 +102,7 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
-//3개로 이루어진 키값을 풀기위한 메소드
+    //  3개로 이루어진 키값을 풀기위한 메소드
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(env.getProperty("JWT.SECRET_KEY"));
         return Keys.hmacShaKeyFor(keyBytes);

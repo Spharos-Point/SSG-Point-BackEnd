@@ -2,7 +2,6 @@ package com.spharos.pointapp.pointcard.presentation;
 
 import com.spharos.pointapp.pointcard.application.PointCardService;
 import com.spharos.pointapp.pointcard.dto.PointCardCreateDto;
-import com.spharos.pointapp.pointcard.dto.PointCardOutDto;
 import com.spharos.pointapp.pointcard.vo.PointCardCreateInVo;
 import com.spharos.pointapp.pointcard.vo.PointCardOutVo;
 import lombok.RequiredArgsConstructor;
