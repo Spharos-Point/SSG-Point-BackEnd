@@ -41,17 +41,17 @@ public class PointCardController {
         return ResponseEntity.ok(modelMapper.map(pointCardService.getPointCardByUser(uuid), List.class));
     }
 
-
-//    public List<PointCardOutVo> getPointCardByUser(@RequestHeader("uuid") String uuid) {
-//        List<PointCardOutDto> pointCardGetDtoList = PointCardService.getPointCardByUser(uuid);
+    // 3. 포인트 카드 삭제
+//    @DeleteMapping("/mypoint/cardDelete")
+//    private ResponseEntity<String> deletePointCard(@RequestParam(name = "uuid", defaultValue = "") String Uuid) {
+//        try {
+//            // Uuid를 사용하여 포인트 카드 삭제
+//            pointCardService.deletePointCard(Uuid);
 //
-//        return pointCardGetDtoList.stream().map(pointCardOutDto ->
-//                PointCardOutVo.builder()
-//                        .barcode(pointCardOutDto.getBarcode())
-//                        .partnerName(pointCardOutDto.getPartnerName())
-//                        .createAt(pointCardOutDto.getCreateAt())
-//                        .build()
-//        ).toList();
-//
+//            // 성공 응답 반환
+//            return ResponseEntity.ok("포인트 카드가 성공적으로 삭제되었습니다.");
+//        } catch (Exception e) {
+//            return null;
+//        }
 //    }
 }
