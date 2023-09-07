@@ -1,4 +1,4 @@
-//package com.spharos.pointapp.PointPlus;
+//package com.spharos.pointapp.pointplus;
 //
 //import org.springframework.scheduling.annotation.Scheduled;
 //import org.springframework.stereotype.Component;

@@ -37,6 +37,11 @@ public class AffiliateServiceImpl implements AffiliateService {
                 .build());
     }
 
+    @Override
+    public void updateAffiliate(AffiliateUpdateDto affiliupdateDto, Long id) {
+
+    }
+
     //    제휴 포인트카드 수정
 //    @Override
 //    public void updateAffiliate(AffiliateUpdateDto affiliateUpdateDto, String uuid) {
