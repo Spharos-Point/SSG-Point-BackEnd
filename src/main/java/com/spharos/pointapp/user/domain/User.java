@@ -62,16 +62,20 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-//    2. 해쉬 포인트 패스워드
+    //  2. 해쉬 포인트 패스워드
     public void hashPointPassword(String pointPassword) {
         this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
     }
 
-//    3. 유저 상태 변경
+    //  3. 유저 상태 변경
     public void leaveOnlineStatus() {
         this.status = 0;
     }
 
+    //  4.  유저 로그인시 이름 get
+    public String userName() {
+        return this.userName;
+    }
     // 정해진 코드 이 계정이 가지고 있는 권한을 제공
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
