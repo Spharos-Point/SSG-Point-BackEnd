@@ -7,7 +7,6 @@ import com.spharos.pointapp.pointcard.infrastructure.PointCardRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +23,8 @@ public class PointCardServiceImple implements PointCardService {
      *
      * 1. 포인트 카드 생성
      * 2. 포인트 카드 조회
-     *
+     * 3. 포인트 카드 삭제
+     * 4. 포인트 카드 조회
      */
 
 //    1. 포인트 카드 생성
@@ -54,5 +54,20 @@ public class PointCardServiceImple implements PointCardService {
 
 
     }
+
+
+    // 3. 포인트 카드 삭제
+//    @Override
+//    public void deletePointCard(String uuid) {
+//        pointCardRepository.deleteById(uuid);
+//    }
+
+
+
+    // 4. 포인트 카드 수정
+//    @Override
+//    public void updatePointCard(PointCardUpdateDto pointCardUpdateDto, Long pointcardId) {
+//
+//    }
 
 }

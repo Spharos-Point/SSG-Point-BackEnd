@@ -1,8 +1,6 @@
 package com.spharos.pointapp.pointcard.infrastructure;
 
 import com.spharos.pointapp.pointcard.domain.PointCard;
-import com.spharos.pointapp.pointcard.dto.PointCardOutDto;
-import com.spharos.pointapp.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,4 +14,5 @@ public interface PointCardRepository extends JpaRepository<PointCard, Long> {
 //    2. 포인트 카드 조회
     List<PointCard> findByUuid(String uuid);
 
+//    void deleteById(String uuid);
 }
