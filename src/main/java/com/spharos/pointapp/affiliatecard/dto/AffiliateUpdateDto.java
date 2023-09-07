@@ -5,12 +5,10 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class AffiliateUpdateDto {
-    private Long affiliateId;
+    private String uuid;
     private Long extraId;
     private String affiliateNum;
 

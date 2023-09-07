@@ -20,7 +20,7 @@ public class AffiliateCard {
     @JoinColumn(nullable = false, name = "extra_id")
     private Extra extra;
 
-    @Column(nullable = false, name = "affilicate_num")
+    @Column(nullable = false, name = "affiliate_num")
     private String affiliateNum;
 
     @Column(nullable = false, name = "uuid")

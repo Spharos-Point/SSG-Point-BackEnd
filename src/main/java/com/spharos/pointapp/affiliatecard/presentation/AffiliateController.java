@@ -11,6 +11,9 @@ import com.spharos.pointapp.extra.infrastructure.ExtraRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,8 +48,21 @@ public class AffiliateController {
         } else {
             throw new IllegalArgumentException("이미 존재하는 제휴 카드가 있습니다.");
         }
-
     }
+
+
+//    제휴포인트 카드 수정
+//    @PutMapping("/mypoint/regAffiliatePntCard")
+//    public void updateAffiliate(@RequestHeader("Authorization") String token,
+//                                @RequestBody AffiliateUpdate affiliateUpdate) {
+//        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+//        log.info("UUID {}", uuid);
+//        ModelMapper mapper = new ModelMapper();
+//        AffiliateUpdateDto affiliateUpdateDto = mapper.map(affiliateUpdate, AffiliateUpdateDto.class);
+//        affiliateService.updateAffiliate(affiliateUpdateDto, affiliateUpdateDto.getAffiliateNum()); //
+//    }
+
+}
 
 //    제휴포인트 카드 수정
 //    @PutMapping("/mypoint/regAffiliatePntCard")
@@ -59,5 +75,3 @@ public class AffiliateController {
 //                .build();
 //
 //    }
-
-}
