@@ -22,4 +22,8 @@ public class AffiliateCard {
 
     @Column(nullable = false, name = "affilicate_num")
     private String affiliateNum;
+
+    @Column(nullable = false, name = "uuid")
+    private String uuid;
+
 }
