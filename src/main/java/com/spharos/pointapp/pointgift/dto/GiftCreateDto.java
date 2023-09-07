@@ -8,13 +8,13 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class GiftInDto {
+public class GiftCreateDto {
 
     private Integer point;
-    private String giftMessage;
-    private String pointPassword;
-    private String recipientLoginId;
+    private Long imageId;
+    private String type;
+    private String receiverUuid;
     private String giverUuid;
-
+    private String giftMessage;
 
 }

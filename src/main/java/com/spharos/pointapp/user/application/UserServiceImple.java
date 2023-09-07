@@ -41,6 +41,7 @@ public class UserServiceImple implements UserService{
         String uuid = jwtTokenProvider.getUuid(token.substring(7));
         User user = userRepository.findByUuid(uuid).orElseThrow(() ->
                 new NoSuchElementException("해당하는 uuid가 없습니다. " + uuid));
+
         userRepository.save(
                 User.builder()
                         .id(user.getId())
@@ -155,8 +156,6 @@ public class UserServiceImple implements UserService{
     public String getUserByNameAndPhoneNumber(String userName, String phoneNumber) {
         // findByUserNameAndPhoneNumber 매개변수 순서 엔티티 순서랑 관련있음 ex) userName가 먼저 phoneNumber보다 엔티티에 선언됨
         log.info("findByUserNameAndPhoneNumberuserName : {}, {} ",userName, phoneNumber);
-
-        log.info("findByUserNameAndPhoneNumberuserName : {} ", userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber));
 
         log.info("user : {}",userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber).map(User::getLoginId));
 

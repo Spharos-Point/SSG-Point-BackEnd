@@ -67,7 +67,8 @@ public class UserController {
 
         String message = userService.updateUserPwd(
                 userUpdatePwdVo.getPassword(),
-                userUpdatePwdVo.getNewPassword(), token);
+                userUpdatePwdVo.getNewPassword(),
+                token);
 
         if (message.equals("패스워드가 업데이트되었습니다.")) {
             return ResponseEntity.ok(message);
@@ -143,8 +144,8 @@ public class UserController {
     @PostMapping("/search/NameAndPhoneNum")
     public ResponseEntity<String> searchingPhoneNum(@RequestBody UserSearchNameAndNumInVo userSearchNameAndNumInVo) {
         String loginId = userService.getUserByNameAndPhoneNumber(
-                userSearchNameAndNumInVo.getPhoneNumber(),
-                userSearchNameAndNumInVo.getUserName());
+                userSearchNameAndNumInVo.getUserName(),
+                userSearchNameAndNumInVo.getPhoneNumber());
         log.info("loginId {} ",loginId);
         if (loginId != null) {
             return ResponseEntity.ok(loginId);
