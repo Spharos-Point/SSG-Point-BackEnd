@@ -15,15 +15,16 @@ import org.springframework.context.annotation.Configuration;
                 description = "Point App API Docs"
         )
 )
-@RequiredArgsConstructor
-@Configuration
 @SecurityScheme(
-        name = "Bearer Authentication",
+        name = "Bearer Auth",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         scheme = "bearer"
 )
+@RequiredArgsConstructor
+@Configuration
 public class SwaggerConfiguration {
+
     @Bean
     public GroupedOpenApi publicApi() {
 

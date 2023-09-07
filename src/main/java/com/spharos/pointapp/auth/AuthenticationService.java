@@ -106,7 +106,7 @@ public class AuthenticationService {
         Optional<PointCard> byBarCode = pointCardRepository.findByBarcode(checkBarcode);
         log.info("byBarCode is : {}", byBarCode);
 
-        // DB에 없다면 무한 반복
+        // DB에 없다면 무한 반복 todo: 반복 제한 생성
         if (byBarCode.isPresent()) {
             String substring = checkBarcode.substring(12, 15);
             int endbarcode = Integer.parseInt(substring) + 1;

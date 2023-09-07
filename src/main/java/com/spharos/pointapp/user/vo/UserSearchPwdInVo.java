@@ -5,8 +5,8 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class UserUpdatePwdVo {
+public class UserSearchPwdInVo {
 
-    private String password;
-    private String newPassword;
+    String loginId;
+    String newPassword;
 }

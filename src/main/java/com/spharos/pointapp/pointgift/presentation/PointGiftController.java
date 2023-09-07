@@ -5,6 +5,7 @@ import com.spharos.pointapp.pointgift.application.PointGiftService;
 import com.spharos.pointapp.pointgift.dto.*;
 import com.spharos.pointapp.pointgift.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -30,8 +31,8 @@ public class PointGiftController {
      * 7. 포인트 사용 내역 조회
      *
      */
-
-    @Operation(summary = "포인트 선물 생성")
+    @Operation(summary = "포인트 선물 생성", description = "포인트 선물 생성 확인", tags = { "PointGift Controller" })
+    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
     @PostMapping("/point/gift")
     public void PointGift(@RequestHeader("Authorization") String token,
                                 @RequestBody GiftInVo giftInVo) {
