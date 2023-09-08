@@ -52,16 +52,16 @@ public class AffiliateController {
 
 
 //    제휴포인트 카드 수정
-//    @PutMapping("/mypoint/regAffiliatePntCard")
-//    public void updateAffiliate(@RequestHeader("Authorization") String token,
-//                                @RequestBody AffiliateUpdate affiliateUpdate) {
-//        String uuid = jwtTokenProvider.getUuid(token.substring(7));
-//        log.info("UUID {}", uuid);
-//        ModelMapper mapper = new ModelMapper();
-//        AffiliateUpdateDto affiliateUpdateDto = mapper.map(affiliateUpdate, AffiliateUpdateDto.class);
-//        affiliateService.updateAffiliate(affiliateUpdateDto, affiliateUpdateDto.getAffiliateNum()); //
-//    }
-
+@Operation(summary = "제휴포인트 카드 수정", description = "제휴포인트 카드를 수정합니다.", tags = { "Affiliate Controller" })
+    @PutMapping("/mypoint/regAffiliatePntCard")
+    public void updateAffiliate(@RequestHeader("Authorization") String token,
+                                @RequestBody AffiliateUpdate affiliateUpdate) {
+        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        log.info("UUID {}", uuid);
+        ModelMapper mapper = new ModelMapper();
+        AffiliateUpdateDto affiliateUpdateDto = mapper.map(affiliateUpdate, AffiliateUpdateDto.class);
+        affiliateService.updateAffiliate(affiliateUpdateDto, affiliateUpdateDto.getAffiliateNum());
+    }
 }
 
 //    제휴포인트 카드 수정

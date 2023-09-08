@@ -27,7 +27,7 @@ public class Event extends BaseTimeEntity {
     private String eventDesc;
 
     @Column(nullable = false, name = "event_type")
-    private Integer eventType; // tinyint
+    private String eventType; // tinyint
 
     @Column(nullable = false, length = 50, name = "prize_type")
     private String prizeType;
