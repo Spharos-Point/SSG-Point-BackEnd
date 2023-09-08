@@ -7,6 +7,10 @@ import com.spharos.pointapp.point.domain.PointTypeConverter;
 import com.spharos.pointapp.point.dto.PointAddDto;
 import com.spharos.pointapp.point.dto.PointGetDto;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
+import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
+import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
+import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
 import jakarta.persistence.Convert;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,8 @@ public class PointServiceImple implements PointService{
 
     private final PointRepository pointRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserPointListRepository userPointListRepository;
+    private final UserRepository userRepository;
 
     /**
      * 1. 토탈 포인트 조회
@@ -38,9 +44,12 @@ public class PointServiceImple implements PointService{
     //  1. 토탈 포인트 조회
     @Override
     public Integer getPointTotalByUser(String uuid) {
-        Optional<Integer> PointTotal = pointRepository.findTotalPointByUuid(uuid);
-        log.info("PointTotal 123{} ", PointTotal);
-        return PointTotal.orElse(0);
+        User user = userRepository.findByUuid(uuid).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 없습니다.")
+        );
+        Optional<UserPointList > latestUserPointList = userPointListRepository.findTopByUuidOrderByCreateAtDesc(user.getUuid());
+        Point pointTotal = pointRepository.findById(latestUserPointList.get().getPoint().getId()).get();
+        return pointTotal.getTotalPoint();
     }
 
     //  2. 포인트 계산
@@ -72,7 +81,6 @@ public class PointServiceImple implements PointService{
                 .totalPoint(updateTotalPoint)
                 .used(pointAddDto.getUsed())
                 .pointType(pointType)
-                .uuid(uuid)
                 .build());
     }
 
