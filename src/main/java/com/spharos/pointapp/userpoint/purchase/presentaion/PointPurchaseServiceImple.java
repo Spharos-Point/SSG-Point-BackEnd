@@ -21,30 +21,48 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
     private final PointPurchaseRepository pointPurchaseRepository;
     private final UserPointListRepository userPointListRepository;
     private final BranchRepository branchRepository;
+    private final PointRepository pointRepository;
 
     @Override
     public void purchasePoint(PointPurchaseDto pointPurchaseDto) {
 
+        var setTotalPoint = 0;
         UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(
                 pointPurchaseDto.getUuid()
-        ).orElseThrow(
-                () -> new IllegalArgumentException("has not data.")
-        );
+        ).orElse(null);
 
-        Point point = Point.builder()
-                .totalPoint(lastPoint.getPoint().getTotalPoint() + pointPurchaseDto.getPurchasePoint())
+        log.info("lastPoint : {}", lastPoint);
+//        no value present
+        if (lastPoint == null) {
+            setTotalPoint = 0;
+        } else {
+            setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
+        }
+
+        log.info("setTotalPoint : {}", setTotalPoint);
+
+        Point point = pointRepository.save(Point.builder()
+                .totalPoint(setTotalPoint + pointPurchaseDto.getPurchasePoint())
                 .used(false)
                 .point(pointPurchaseDto.getPurchasePoint())
                 .pointType(PointType.RECEIPT)
-                .build();
+                .build());
+
         pointPurchaseRepository.save(
                 PointPurchase.builder()
                         .purchasePrice(pointPurchaseDto.getPurchasePrice())
                         .purchaseMount(pointPurchaseDto.getPurchaseMount())
                         .point(point)
-                        .uuid(pointPurchaseDto.getUuid())
                         .branch(branchRepository.findById(pointPurchaseDto.getBranchId()).get())
                         .build(
         ));
+
+        userPointListRepository.save(
+                UserPointList.builder()
+                        .point(point)
+                        .uuid(pointPurchaseDto.getUuid())
+                        .pointType(PointType.RECEIPT)
+                        .build()
+        );
     }
 }

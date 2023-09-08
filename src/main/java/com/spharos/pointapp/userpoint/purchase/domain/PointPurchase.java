@@ -25,6 +25,5 @@ public class PointPurchase extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Branch branch;
-    private String uuid;
 
 }
