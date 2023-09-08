@@ -19,5 +19,4 @@ public class PointTypeConverter implements AttributeConverter<PointType, String>
                 .findFirst()
                 .orElseThrow(()-> new NoSuchElementException("존재하지 않는 코드입니다."));
     }
-
 }
