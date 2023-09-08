@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AffiliateRepository extends JpaRepository<AffiliateCard, Long> {
+        AffiliateCard findTopByUuidAndExtraId(String uuid, Long extraId);
+
         List<AffiliateCard> findAllByUuid(String uuid);
-    List<AffiliateCard> findByUuidAndAffiliateId(String uuid, String affiliateId);
+        Optional<AffiliateCard> findByAffiliateNum(String affiliateNum);
 
 }
