@@ -1,6 +1,5 @@
-package com.spharos.pointapp.pointgift.domain;
+package com.spharos.pointapp.userpoint.gift.domain;
 
-import com.spharos.pointapp.point.domain.PointType;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.EnumSet;

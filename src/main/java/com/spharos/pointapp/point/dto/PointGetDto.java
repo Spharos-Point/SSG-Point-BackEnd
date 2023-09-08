@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PointGetDto {
-    private String uuid;
     private Integer totalPoint;
     private Integer point;
     private String pointType;

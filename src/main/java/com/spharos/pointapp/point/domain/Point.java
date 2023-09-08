@@ -32,11 +32,4 @@ public class Point extends BaseTimeEntity {
     @Convert(converter = PointTypeConverter.class)
     private PointType pointType;
 
-    @Column(nullable = false, name = "uuid")
-    private String uuid;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "uuid", referencedColumnName = "uuid")
-//    private User user;
-
 }
