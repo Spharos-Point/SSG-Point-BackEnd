@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface AffiliateRepository extends JpaRepository<AffiliateCard, Long> {
         List<AffiliateCard> findAllByUuid(String uuid);
-    List<AffiliateCard> findByUuidAndAffiliateId(String uuid, String affiliateId);
+    //    List<AffiliateCard> findByUuidAndAffiliateId(String uuid, String affiliateId);
 
 }

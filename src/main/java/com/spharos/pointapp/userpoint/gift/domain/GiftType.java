@@ -1,4 +1,4 @@
-package com.spharos.pointapp.pointgift.domain;
+package com.spharos.pointapp.userpoint.gift.domain;
 
 import lombok.Getter;
 
