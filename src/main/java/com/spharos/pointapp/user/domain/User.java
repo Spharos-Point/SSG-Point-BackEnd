@@ -72,7 +72,7 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.status = 0;
     }
 
-    //  4.  유저 로그인시 이름 get
+    //  4. 유저 로그인 시 이름 반환
     public String userName() {
         return this.userName;
     }
