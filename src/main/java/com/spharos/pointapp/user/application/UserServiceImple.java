@@ -152,7 +152,7 @@ public class UserServiceImple implements UserService{
     //  9. 비밀번호 찾기(유저 아이디, 유저 이름, 유저 휴대폰 번호 조회)
     @Override
     public void getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber) throws BaseException {
-        if (userRepository.existsByLoginIdAndUserNameAndPhoneNumber(userName, phoneNumber, phoneNumber)) {
+        if (!userRepository.existsByLoginIdAndUserNameAndPhoneNumber(loginId, userName, phoneNumber)) {
             throw new BaseException(PASSWORD_RETRIEVE_FAILED);
         }
     }
