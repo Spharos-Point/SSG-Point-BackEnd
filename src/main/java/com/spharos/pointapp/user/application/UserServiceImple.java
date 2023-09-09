@@ -72,7 +72,7 @@ public class UserServiceImple implements UserService{
         String middleNum = phoneNum.substring(3, 7);
         String lastNum = phoneNum.substring(phoneNum.length() - 4);
 
-        if (!new BCryptPasswordEncoder().matches(passWord, user.getPassword())) {
+        if (new BCryptPasswordEncoder().matches(passWord, user.getPassword())) {
             throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
         } else if (newPassword.contains(user.getLoginId())) {
             throw new BaseException(PASSWORD_UPDATE_FAILED);
@@ -93,6 +93,8 @@ public class UserServiceImple implements UserService{
         String lastNum = phoneNum.substring(phoneNum.length() - 4);
 
         // 패스워드 변경 조건
+        if (new BCryptPasswordEncoder().matches(newPassword, user.getPassword())) {
+            throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
         if (newPassword.contains(user.getLoginId())) {
             throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
         } else if (newPassword.contains(middleNum) || newPassword.contains(lastNum)) {
