@@ -170,20 +170,20 @@ public class UserController {
 
     }
 
-//    //  9. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
-//    @Operation(summary = "비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)", description = "비밀번호 찾기", tags = { "User Controller" })
-//    @PostMapping("/search/IdAndNameAndPhoneNum")
-//    public ResponseEntity<String> searchingPhoneNum(@RequestBody UserSearchIdAndUserNameAndNumInVo userSearchIdAndUserNameAndNumInVo) {
-//        String loginId = userService.getUserByIdAndNameAndPhoneNumber(
-//                userSearchIdAndUserNameAndNumInVo.getLoginId(),
-//                userSearchIdAndUserNameAndNumInVo.getUserName(),
-//                userSearchIdAndUserNameAndNumInVo.getPhoneNumber());
-//        log.info("loginId {} ",loginId);
-//        if (loginId != null) {
-//            return ResponseEntity.ok(loginId);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입력하신 정보로 가입된 신세계포인트 회원이 없습니다.");
-//        }
-//    }
+    //  9. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
+    @Operation(summary = "비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)", description = "비밀번호 찾기", tags = { "User Controller" })
+    @PostMapping("/search/IdAndNameAndPhoneNum")
+    public BaseResponse<String> searchingPhoneNum(@RequestBody UserSearchIdAndUserNameAndNumInVo userSearchIdAndUserNameAndNumInVo) {
+
+        try {
+            userService.getUserByIdAndNameAndPhoneNumber(
+                    userSearchIdAndUserNameAndNumInVo.getLoginId(),
+                    userSearchIdAndUserNameAndNumInVo.getUserName(),
+                    userSearchIdAndUserNameAndNumInVo.getPhoneNumber());
+            return new BaseResponse<>("비밀번호 찾기를 성공했습니다.");
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 }

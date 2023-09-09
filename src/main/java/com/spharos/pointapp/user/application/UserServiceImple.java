@@ -61,7 +61,6 @@ public class UserServiceImple implements UserService{
     }
 
     //  2. 유저 패스워드 변경
-    // todo: 아이디는 동일시 불가, 전화번호 중간, 끝 4자리 포함시 불가
     @Override
     public void updateUserPwd(String passWord, String newPassword, String uuid) throws BaseException {
         User user = userRepository.findByUuid(uuid)
@@ -72,7 +71,6 @@ public class UserServiceImple implements UserService{
         // 전화번호의 중간 4자리와 끝 4자리를 추출하여 비밀번호와 비교
         String middleNum = phoneNum.substring(3, 7);
         String lastNum = phoneNum.substring(phoneNum.length() - 4);
-        log.info("middleNum, lastNum {}, {}", middleNum,lastNum);
 
         if (!new BCryptPasswordEncoder().matches(passWord, user.getPassword())) {
             throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
@@ -146,25 +144,19 @@ public class UserServiceImple implements UserService{
     //  8. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
     @Override
     public String getUserLoginIdByNameAndPhoneNumber(String userName, String phoneNumber) throws BaseException {
-        // findByUserNameAndPhoneNumber 매개변수 순서 엔티티 순서랑 관련있음 ex) userName가 먼저 phoneNumber보다 엔티티에 선언됨
-
-//        log.info("user : {}",userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber).map(User::getLoginId));
          String loginId = userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
                     .map(User::getLoginId)
                     .orElseThrow(()-> new BaseException(NO_EXIST_USER));
-        log.info("service loginId {}", loginId);
          return loginId;
     }
 
-//    //  8. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
-//    @Override
-//    public String getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber) {
-//
-//        return userRepository
-//                .findByLoginIdAndUserNameAndPhoneNumber(userName, phoneNumber, phoneNumber)
-//                .map(User::getLoginId)
-//                .orElse(null);
-//    }
+    //  9. 비밀번호 찾기(유저 아이디, 유저 이름, 유저 휴대폰 번호 조회)
+    @Override
+    public void getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber) throws BaseException {
+        if (userRepository.existsByLoginIdAndUserNameAndPhoneNumber(userName, phoneNumber, phoneNumber)) {
+            throw new BaseException(PASSWORD_RETRIEVE_FAILED);
+        }
+    }
 }
 
 ////    강사님 코드 로그인 id 참고

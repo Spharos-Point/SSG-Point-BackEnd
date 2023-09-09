@@ -12,6 +12,6 @@ public interface UserService {
     void userLeavePwd(String password, String uuid) throws BaseException;
     void validateLoginInd(String loginId) throws BaseException;
     String getUserLoginIdByNameAndPhoneNumber(String userName, String phoneNumber) throws BaseException;
-//    String getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber);
+    void getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber) throws BaseException;
 }
 

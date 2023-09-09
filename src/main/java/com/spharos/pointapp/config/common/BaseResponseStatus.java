@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum BaseResponseStatus {
 
     /**
-     * 1000: 요청 성공
+     * 200: 요청 성공
      **/
     SUCCESS(true, 200, "요청에 성공하였습니다."),
 
@@ -15,8 +15,7 @@ public enum BaseResponseStatus {
      **/
     // Common
     POST_EXISTS_LOGIN_ID(false, 2000, "중복된 아이디입니다."),
-    POST_EXISTS_PHONE(false, 2001, "중복된 휴대폰 번호입니다."),
-    POST_EXISTS_EMAIL(false, 2002, "중복된 이메일입니다."),
+
 
     /**
      * 3000: Response 오류
