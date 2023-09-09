@@ -84,7 +84,7 @@ public class UserServiceImple implements UserService{
     //  3. 유저 패스워드 찾기 및 변경
     public void SearchUserPwd(String loginId,String newPassword) throws BaseException {
         User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(()-> new BaseException(NO_EXIST_USER));
+                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
 
         String phoneNum = user.getPhoneNumber();
 
@@ -95,15 +95,15 @@ public class UserServiceImple implements UserService{
         // 패스워드 변경 조건
         if (new BCryptPasswordEncoder().matches(newPassword, user.getPassword())) {
             throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
-        if (newPassword.contains(user.getLoginId())) {
-            throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
+        } else if (newPassword.contains(user.getLoginId())) {
+            throw new BaseException(PASSWORD_UPDATE_FAILED);
         } else if (newPassword.contains(middleNum) || newPassword.contains(lastNum)) {
             throw new BaseException(PASSWORD_UPDATE_FAILED);
-        } else {
+        }else
             // 새로운 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
             user.hashPassword(newPassword);
-        }
     }
+
 
 
     //  4. 유저 포인트 패스워드 변경
