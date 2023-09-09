@@ -33,9 +33,10 @@ public enum BaseResponseStatus {
     USER_UPDATE_FAILED(false, 4002, "회원정보 변경에 실패했습니다."),
     PASSWORD_RETRIEVE_FAILED(false, 4003, "비밀번호 조회에 실패했습니다."),
     PASSWORD_UPDATE_FAILED(false, 4004, "비밀번호 변경에 실패했습니다."),
-    PASSWORD_CONTAIN_ID_FAILED(false, 4005,"아이디를 포함한 비밀번호 입니다."),
-    POINT_PASSWORD_RETRIEVE_FAILED(false, 4006,"포인트 비밀번호 조회에 실패했습니다."),
-    POINT_PASSWORD_UPDATE_FAILED(false, 4007, "포인트 비밀번호 변경에 실패했습니다.");
+    PASSWORD_CONTAIN_ID_FAILED(false, 4005,"휴대폰 번호를 포함한 비밀번호 입니다."),
+    PASSWORD_SAME_FAILED(false, 4006,"현재 사용중인 비밀번호 입니다."),
+    POINT_PASSWORD_RETRIEVE_FAILED(false, 4007,"포인트 비밀번호 조회에 실패했습니다."),
+    POINT_PASSWORD_UPDATE_FAILED(false, 4008, "포인트 비밀번호 변경에 실패했습니다.");
 
 
 

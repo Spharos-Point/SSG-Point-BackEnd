@@ -73,11 +73,11 @@ public class UserServiceImple implements UserService{
         String lastNum = phoneNum.substring(phoneNum.length() - 4);
 
         if (new BCryptPasswordEncoder().matches(passWord, user.getPassword())) {
-            throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
+            throw new BaseException(PASSWORD_SAME_FAILED);
         } else if (newPassword.contains(user.getLoginId())) {
             throw new BaseException(PASSWORD_UPDATE_FAILED);
         } else if (newPassword.contains(middleNum) || newPassword.contains(lastNum)) {
-            throw new BaseException(PASSWORD_UPDATE_FAILED);
+            throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
         }
     }
 
@@ -94,11 +94,11 @@ public class UserServiceImple implements UserService{
 
         // 패스워드 변경 조건
         if (new BCryptPasswordEncoder().matches(newPassword, user.getPassword())) {
-            throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
+            throw new BaseException(PASSWORD_SAME_FAILED);
         } else if (newPassword.contains(user.getLoginId())) {
             throw new BaseException(PASSWORD_UPDATE_FAILED);
         } else if (newPassword.contains(middleNum) || newPassword.contains(lastNum)) {
-            throw new BaseException(PASSWORD_UPDATE_FAILED);
+            throw new BaseException(PASSWORD_CONTAIN_ID_FAILED);
         }else
             // 새로운 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
             user.hashPassword(newPassword);
