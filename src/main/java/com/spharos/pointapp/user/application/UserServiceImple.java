@@ -91,7 +91,6 @@ public class UserServiceImple implements UserService{
         // 전화번호의 중간 4자리와 끝 4자리를 추출하여 비밀번호와 비교
         String middleNum = phoneNum.substring(3, 7);
         String lastNum = phoneNum.substring(phoneNum.length() - 4);
-        log.info("middleNum, lastNum {}, {}", middleNum, lastNum);
 
         // 패스워드 변경 조건
         if (newPassword.contains(user.getLoginId())) {

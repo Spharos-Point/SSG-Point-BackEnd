@@ -138,21 +138,20 @@ public class UserController {
             userService.userLeaveOnline(uuid);
             return new BaseResponse<>("탈퇴가 완료 되었습니다.");
         } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getMessage());
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 
     // 7. 회원가입 시 로그인 중복 확인
     @Operation(summary = "회원가입 (회원가입 로그인 중복 확인)", description = "회원가입 시 로그인 중복 확인 해준다.", tags = { "User Controller" })
     @GetMapping("/validateLoginId/{loginId}")
-    public BaseResponse<String> validateLogin(@PathVariable String loginId) {
+    public BaseResponse<String> validateLogin(@PathVariable("loginId") String loginId) {
         try {
             userService.validateLoginInd(loginId);
             return new BaseResponse<>("사용할 수 있는 아이디입니다.");
         } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getMessage());
+            return new BaseResponse<>(exception.getStatus());
         }
-
     }
 
     //  8. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
@@ -172,14 +171,13 @@ public class UserController {
 
     //  9. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
     @Operation(summary = "비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)", description = "비밀번호 찾기", tags = { "User Controller" })
-    @PostMapping("/search/IdAndNameAndPhoneNum")
-    public BaseResponse<String> searchingPhoneNum(@RequestBody UserSearchIdAndUserNameAndNumInVo userSearchIdAndUserNameAndNumInVo) {
+    @GetMapping("/search/IdAndNameAndPhoneNum")
+    public BaseResponse<String> searchingPhoneNum(@RequestParam("loginId") String loginId,
+                                                  @RequestParam("userName") String userName,
+                                                  @RequestParam("phoneNumber") String phoneNumber) {
 
         try {
-            userService.getUserByIdAndNameAndPhoneNumber(
-                    userSearchIdAndUserNameAndNumInVo.getLoginId(),
-                    userSearchIdAndUserNameAndNumInVo.getUserName(),
-                    userSearchIdAndUserNameAndNumInVo.getPhoneNumber());
+            userService.getUserByIdAndNameAndPhoneNumber(loginId, userName, phoneNumber);
             return new BaseResponse<>("비밀번호 찾기를 성공했습니다.");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
