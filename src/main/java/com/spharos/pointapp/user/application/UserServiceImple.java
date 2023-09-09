@@ -1,8 +1,6 @@
 package com.spharos.pointapp.user.application;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.spharos.pointapp.config.common.BaseException;
-import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.*;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
@@ -11,9 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
 
@@ -145,10 +140,9 @@ public class UserServiceImple implements UserService{
     //  8. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
     @Override
     public String getUserLoginIdByNameAndPhoneNumber(String userName, String phoneNumber) throws BaseException {
-         String loginId = userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
-                    .map(User::getLoginId)
-                    .orElseThrow(()-> new BaseException(NO_EXIST_USER));
-         return loginId;
+         return userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
+                 .map(User::getLoginId)
+                 .orElseThrow(()-> new BaseException(NO_EXIST_USER));
     }
 
     //  9. 비밀번호 찾기(유저 아이디, 유저 이름, 유저 휴대폰 번호 조회)
