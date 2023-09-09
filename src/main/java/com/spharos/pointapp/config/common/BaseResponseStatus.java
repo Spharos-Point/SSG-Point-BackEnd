@@ -8,7 +8,7 @@ public enum BaseResponseStatus {
     /**
      * 1000: 요청 성공
      **/
-    SUCCESS(true, 1000, "요청에 성공하였습니다."),
+    SUCCESS(true, 200, "요청에 성공하였습니다."),
 
     /**
      * 2000: Request 오류
@@ -17,11 +17,6 @@ public enum BaseResponseStatus {
     POST_EXISTS_LOGIN_ID(false, 2000, "중복된 아이디입니다."),
     POST_EXISTS_PHONE(false, 2001, "중복된 휴대폰 번호입니다."),
     POST_EXISTS_EMAIL(false, 2002, "중복된 이메일입니다."),
-    POST_EXISTS_CART(false, 2003, "이미 장바구니에 있는 상품입니다."),
-    POST_EXISTS_QNA(false, 2004, "중복된 문의&답변 입니다."),
-    AUTH_NUM_IS_NULL(false, 2005, "인증번호가 비어 있습니다."),
-    INVALID_PHONE_NUM(false, 2006, "유효하지 않은 전화번호 형식입니다."),
-    POST_EXISTS_WISH(false, 2007, "중복된 좋아요 요청입니다."),
 
     /**
      * 3000: Response 오류
@@ -38,9 +33,16 @@ public enum BaseResponseStatus {
     USER_RETRIEVE_FAILED(false, 4001, "회원정보 조회에 실패했습니다."),
     USER_UPDATE_FAILED(false, 4002, "회원정보 변경에 실패했습니다."),
     PASSWORD_RETRIEVE_FAILED(false, 4003, "비밀번호 조회에 실패했습니다."),
-    PASSWORD_UPDATE_FAILED(false, 4004, "비밀번호 변경에 실패했습니다.");
+    PASSWORD_UPDATE_FAILED(false, 4004, "비밀번호 변경에 실패했습니다."),
+    PASSWORD_CONTAIN_ID_FAILED(false, 4005,"아이디를 포함한 비밀번호 입니다."),
+    POINT_PASSWORD_RETRIEVE_FAILED(false, 4006,"포인트 비밀번호 조회에 실패했습니다."),
+    POINT_PASSWORD_UPDATE_FAILED(false, 4007, "포인트 비밀번호 변경에 실패했습니다.");
 
 
+
+
+    // Gift
+    //todo: 본인 한테 선물인지 확인
     private final boolean isSuccess;
     private final int code;
     private final String message;

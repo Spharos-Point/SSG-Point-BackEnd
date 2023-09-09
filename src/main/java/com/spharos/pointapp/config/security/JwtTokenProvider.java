@@ -17,7 +17,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 @Slf4j
@@ -27,7 +26,8 @@ public class JwtTokenProvider {
 
     private final Environment env;
     private final UserRepository userRepository;
-    //  토큰에서 uuid 클레임을 추출하여 반환
+
+    //  토큰에서 uuid 클레임 추출할 때 Bearer 제거 후 반환
     public String getUuid(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -43,33 +43,16 @@ public class JwtTokenProvider {
         return generateToken(Map.of(), userDetails);
     }
 
-    // 사용자의 UUID를 데이터베이스에서 조회하는 서비스 메서드
-//    private String getUuidByUseruuid(String username) {
-//        // 데이터베이스에서 사용자의 UUID를 조회하는 로직을 구현
-//        // 예를 들어, 사용자 엔티티(UserEntity)를 사용하여 조회
-//        Optional<User> user = userRepository.findByLoginId(username);
-//        log.info("userRepository {} ", user);
-//
-//        if (user.isPresent()) {
-//            log.info("user {} ", user.get().getUuid());
-//
-//            return user.get().getUuid();
-//        }
-//        return null;
-//    }
-
     //  토큰 생성
     public String generateToken(
             Map<String, Objects> extractClaims,
             UserDetails userDetails
     ) {
-//        String username = userDetails.getUsername();
-//        String uuid = getUuidByUseruuid(username); // 사용자의 UUID 조회
+
         log.info("generateToken {} ", userDetails);
         return Jwts.builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
-//                .claim("uuid", uuid) // UUID 추가
                 .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
                 .setExpiration(new java.util.Date(System.currentTimeMillis() + env.getProperty("JWT.EXPIRATION_TIME", Long.class)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
