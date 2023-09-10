@@ -10,8 +10,9 @@ import lombok.*;
 @Setter
 public class PointCardOutDto {
 
-    private String barcode;
-    private String partnerName;
+    private String cardNumber;
+    private Integer brandId;
     private String createAt;
+    private Long branchId;
 
 }

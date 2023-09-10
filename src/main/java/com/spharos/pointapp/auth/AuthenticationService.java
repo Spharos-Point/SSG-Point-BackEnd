@@ -74,8 +74,7 @@ public class AuthenticationService {
         String validatedBarcode = validateBarcode(pointCardBarcode);
 
         PointCard pointCard = PointCard.builder()
-                .barcode(validatedBarcode)
-                .partnerName("신세계포인트닷컴")
+                .cardnumber(validatedBarcode)
                 .uuid(uuidString)
                 .build();
 
@@ -102,21 +101,21 @@ public class AuthenticationService {
     }
 
     //    3. 바코드 유효성 검사
-    private String validateBarcode(String checkBarcode) {
-        Optional<PointCard> byBarCode = pointCardRepository.findByBarcode(checkBarcode);
+    private String validateBarcode(String checkCardNumber) {
+        Optional<PointCard> byBarCode = pointCardRepository.findByCardnumber(checkCardNumber);
         log.info("byBarCode is : {}", byBarCode);
 
         // DB에 없다면 무한 반복 todo: 반복 제한 생성
         if (byBarCode.isPresent()) {
-            String substring = checkBarcode.substring(12, 15);
+            String substring = checkCardNumber.substring(12, 15);
             int endbarcode = Integer.parseInt(substring) + 1;
 
-            String barcode = checkBarcode.substring(0, 12) + String.format("%04d", endbarcode);
+            String barcode = checkCardNumber.substring(0, 12) + String.format("%04d", endbarcode);
             return validateBarcode(barcode);
         } else {
-            log.info("checkBarcode is : {}", checkBarcode);
+            log.info("checkBarcode is : {}", checkCardNumber);
 
-            return checkBarcode;
+            return checkCardNumber;
         }
     }
 

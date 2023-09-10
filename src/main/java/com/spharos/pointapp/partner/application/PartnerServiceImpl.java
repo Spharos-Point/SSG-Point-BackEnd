@@ -1,11 +1,10 @@
 package com.spharos.pointapp.partner.application;
 
-import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.brand.infrastructure.BranchRepository;
 import com.spharos.pointapp.partner.domain.Partner;
 import com.spharos.pointapp.partner.dto.PartnerCreateDto;
 import com.spharos.pointapp.partner.dto.PartnerGetDto;
 import com.spharos.pointapp.partner.infrastructure.PartnerRepository;
-import jakarta.persistence.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,6 +20,7 @@ import java.util.List;
 public class PartnerServiceImpl implements PartnerService {
 
     private final PartnerRepository partnerRepository;
+    private final BranchRepository branchRepository;
 
 //    파트너 생성
     @Override
