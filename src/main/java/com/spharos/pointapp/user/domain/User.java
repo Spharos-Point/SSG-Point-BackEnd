@@ -25,7 +25,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, length = 100, name = "uuid")
-    private String uuid; // todo: UUID
+    private String uuid;
     @Column(nullable = false, length = 30, name = "login_id")
     private String loginId;
     @Column(nullable = false, length = 100, name = "user_name")
@@ -73,7 +73,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
     //  4. 유저 로그인 시 이름 반환
-    public String userName() {
+    public String getName() {
         return this.userName;
     }
     // 정해진 코드 이 계정이 가지고 있는 권한을 제공

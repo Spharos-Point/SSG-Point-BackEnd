@@ -36,13 +36,13 @@ public enum BaseResponseStatus {
     PASSWORD_CONTAIN_ID_FAILED(false, 4005,"휴대폰 번호를 포함한 비밀번호 입니다."),
     PASSWORD_SAME_FAILED(false, 4006,"현재 사용중인 비밀번호 입니다."),
     POINT_PASSWORD_RETRIEVE_FAILED(false, 4007,"포인트 비밀번호 조회에 실패했습니다."),
-    POINT_PASSWORD_UPDATE_FAILED(false, 4008, "포인트 비밀번호 변경에 실패했습니다.");
-
-
-
+    POINT_PASSWORD_UPDATE_FAILED(false, 4008, "포인트 비밀번호 변경에 실패했습니다."),
 
     // Gift
-    //todo: 본인 한테 선물인지 확인
+    GIFT_FAILED(false, 5000, "선물하기에 실패하였습니다."),
+    GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다.");
+
+
     private final boolean isSuccess;
     private final int code;
     private final String message;

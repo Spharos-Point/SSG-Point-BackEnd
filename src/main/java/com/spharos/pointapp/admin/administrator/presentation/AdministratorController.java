@@ -28,7 +28,7 @@ public class AdministratorController {
                 .address(inAdministrator.getAddress())
                 .loginId(inAdministrator.getLoginId())
                 .email(inAdministrator.getEmail())
-                .userName(inAdministrator.getUserName())
+                .name(inAdministrator.getName())
                 .password(inAdministrator.getPassword())
                 .build();
         administratorServiceImple.createAdministrator(administratorCreateDto);

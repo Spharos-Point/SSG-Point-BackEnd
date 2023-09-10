@@ -3,7 +3,7 @@ package com.spharos.pointapp.userpoint.gift.domain;
 import lombok.Getter;
 
 @Getter
-public enum GiftType implements CodeValue{
+public enum PointGiftType implements CodeValue{
 
     GET("G", "적립"),
     WAIT("W", "대기"),
@@ -12,7 +12,7 @@ public enum GiftType implements CodeValue{
     private String code;
     private String value;
 
-    GiftType(String code, String value) {
+    PointGiftType(String code, String value) {
         this.code = code;
         this.value = value;
     }

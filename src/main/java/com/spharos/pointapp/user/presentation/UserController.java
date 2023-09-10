@@ -11,8 +11,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -87,7 +85,7 @@ public class UserController {
     public BaseResponse<String> SearchUserPwd(@RequestBody UserSearchPwdInVo userSearchPwdInVo){
 
         try {
-            userService.SearchUserPwd(userSearchPwdInVo.getLoginId(), userSearchPwdInVo.getNewPassword());
+            userService.searchUserPwd(userSearchPwdInVo.getLoginId(), userSearchPwdInVo.getNewPassword());
             return new BaseResponse<>("패스워드를 변경하였습니다.");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -155,9 +153,9 @@ public class UserController {
     }
 
     //  8. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
-    @Operation(summary = "아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)", description = "아이디 찾기", tags = { "User Controller" })
+    @Operation(summary = "아이디 찾기(유저 이름, 유저 휴대폰 번호 조회)", description = "아이디 찾기", tags = { "User Controller" })
     @GetMapping("/search/NameAndPhoneNum")
-    public BaseResponse<String> searchingPhoneNum(@RequestParam("userName") String userName,
+    public BaseResponse<String> searchUserIdByNameAndPhoneNumber(@RequestParam("userName") String userName,
                                                     @RequestParam("phoneNumber") String phoneNumber)   {
 
         try {
@@ -172,7 +170,7 @@ public class UserController {
     //  9. 비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)
     @Operation(summary = "비밀번호 찾기(유저 아이디, 유저 이름,유저 휴대폰 번호 조회)", description = "비밀번호 찾기", tags = { "User Controller" })
     @GetMapping("/search/IdAndNameAndPhoneNum")
-    public BaseResponse<String> searchingPhoneNum(@RequestParam("loginId") String loginId,
+    public BaseResponse<String> searchPasswordByUserCredentials(@RequestParam("loginId") String loginId,
                                                   @RequestParam("userName") String userName,
                                                   @RequestParam("phoneNumber") String phoneNumber) {
 
