@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface PointCardRepository extends JpaRepository<PointCard, Long> {
 
 //    1. 바코드 유효성 검사
-    Optional<PointCard> findByBarcode(String barcode);
+    Optional<PointCard> findByCardnumber(String cardnumber);
 
 //    2. 포인트 카드 조회
     List<PointCard> findByUuid(String uuid);

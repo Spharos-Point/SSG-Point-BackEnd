@@ -10,10 +10,10 @@ import lombok.*;
 @NoArgsConstructor
 public class PointCardCreateDto {
 
-    private String barcode;
-    private Integer cvc;
-    private String partnerName;
-    private String registeredStore;
+    private String cardNumber;
+    private String cvc;
+    private Integer brandId;
+    private Long branchId;
     private String uuid;
 
 }
