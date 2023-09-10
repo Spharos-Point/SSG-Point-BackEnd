@@ -12,7 +12,7 @@ import lombok.ToString;
 public class AdministratorCreateDto {
     private String roll;
     private String loginId;
-    private String userName;
+    private String name;
     private String email;
     private String phone;
     private String address;

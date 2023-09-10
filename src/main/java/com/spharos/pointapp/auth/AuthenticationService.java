@@ -60,11 +60,14 @@ public class AuthenticationService {
                 .address(userSignUpDto.getAddress())
                 .status(1)
                 .build();
+        log.info("user 1 {} ", user.getName());
+
         user.hashPassword(user.getPassword());
         userRepository.save(user);
 //         바코드 생성 및 저장
         createAndSavePointCard(user, uuidString);
 
+        log.info("user 2 {} ", user);
         return AuthenticationResponse.builder()
                 .build();
     }
@@ -139,7 +142,7 @@ public class AuthenticationService {
             );
             return AuthenticationResponse.builder()
                     .token(JwtToken)
-                    .userName(user.userName())
+                    .name(user.getName())
                     .build();
         } catch (AuthenticationException ex) {
             log.error("로그인 정보가 일치하지 않습니다.");

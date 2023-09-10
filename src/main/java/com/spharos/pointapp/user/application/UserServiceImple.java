@@ -45,7 +45,7 @@ public class UserServiceImple implements UserService{
                         .roll(user.getRoll())
                         .address(userUpdateInfoDto.getAddress())
                         .pointPassword(user.getPointPassword())
-                        .userName(user.userName())
+                        .userName(user.getName())
                         .status(user.getStatus())
                         .uuid(user.getUuid())
                         .phoneNumber(user.getPhoneNumber())
@@ -77,7 +77,7 @@ public class UserServiceImple implements UserService{
     }
 
     //  3. 유저 패스워드 찾기 및 변경
-    public void SearchUserPwd(String loginId,String newPassword) throws BaseException {
+    public void searchUserPwd(String loginId,String newPassword) throws BaseException {
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
 
