@@ -2,7 +2,6 @@ package com.spharos.pointapp.user.presentation;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
-import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.user.application.UserService;
 import com.spharos.pointapp.user.dto.*;
