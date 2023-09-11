@@ -1,16 +1,15 @@
 package com.spharos.pointapp.userpoint.trans.domain;
 
 import com.spharos.pointapp.affiliatecard.domain.AffiliateCard;
+import com.spharos.pointapp.brand.domain.Branch;
 import com.spharos.pointapp.config.common.BaseTimeEntity;
 import com.spharos.pointapp.point.domain.Point;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -20,6 +19,7 @@ public class PointTrans extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer transMount;
+    private Integer trnasPoint;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Point point;
@@ -27,4 +27,7 @@ public class PointTrans extends BaseTimeEntity {
     private AffiliateCard affiliateCard;
 
     private String uuid;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Branch branch;
 }

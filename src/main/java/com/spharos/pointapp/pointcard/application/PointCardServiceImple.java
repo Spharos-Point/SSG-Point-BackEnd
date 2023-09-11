@@ -18,13 +18,10 @@ public class PointCardServiceImple implements PointCardService {
     private final PointCardRepository pointCardRepository;
     private final ModelMapper modelMapper;
 
-
     /**
      *
      * 1. 포인트 카드 생성
      * 2. 포인트 카드 조회
-     * 3. 포인트 카드 삭제
-     * 4. 포인트 카드 조회
      */
 
 //    1. 포인트 카드 생성
@@ -33,11 +30,12 @@ public class PointCardServiceImple implements PointCardService {
     public void createPointCard(PointCardCreateDto pointCardCreateDto) {
 
         PointCard pointcard = PointCard.builder()
-                .partnerName(pointCardCreateDto.getPartnerName())
+                .brandId(pointCardCreateDto.getBrandId())
+                .branchId(pointCardCreateDto.getBranchId())
+                .cvc(pointCardCreateDto.getCvc())
+                .cardnumber(pointCardCreateDto.getCardNumber())
                 .uuid(pointCardCreateDto.getUuid())
-                .barcode(pointCardCreateDto.getBarcode())
-                .registeredStore(pointCardCreateDto.getRegisteredStore())
-                .build();
+                        .build();
         pointCardRepository.save(pointcard);
     }
 
@@ -45,29 +43,17 @@ public class PointCardServiceImple implements PointCardService {
     @Override
     public List<PointCardOutDto> getPointCardByUser(String uuid) {
 
-        List<PointCard> pointCards = pointCardRepository.findByUuid(uuid);
+//        List<PointCard> pointCards = pointCardRepository.findByUuid(uuid);
+//
+//        List<PointCardOutDto> pointCardOutDto = pointCards.stream().map(
+//                pointCard -> modelMapper.map(pointCard, PointCardOutDto.class)
+//        ).toList();
+//        return pointCardOutDto;
 
-        List<PointCardOutDto> pointCardOutDto = pointCards.stream().map(
-                pointCard -> modelMapper.map(pointCard, PointCardOutDto.class)
-        ).toList();
-        return pointCardOutDto;
+        return null;
 
 
     }
 
-
-    // 3. 포인트 카드 삭제
-//    @Override
-//    public void deletePointCard(String uuid) {
-//        pointCardRepository.deleteById(uuid);
-//    }
-
-
-
-    // 4. 포인트 카드 수정
-//    @Override
-//    public void updatePointCard(PointCardUpdateDto pointCardUpdateDto, Long pointcardId) {
-//
-//    }
 
 }

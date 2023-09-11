@@ -7,9 +7,8 @@ import lombok.ToString;
 @Getter
 public class PointCardCreateInVo {
 
-    private String barcode;
-    private Integer cvc;
-    private String partnerName;
-    private String registeredStore;
-
+    private String cardNumber;
+    private String cvc;
+    private Integer brandId;
+    private Long branchId;
 }

@@ -21,7 +21,7 @@ public class AdministratorServiceImple implements AdministratorService{
         Administrator administrator = Administrator.builder()
                 .roll(roll)
                 .phone(administratorCreateDto.getPhone())
-                .userName(administratorCreateDto.getUserName())
+                .userName(administratorCreateDto.getName())
                 .address(administratorCreateDto.getAddress())
                 .email(administratorCreateDto.getEmail())
                 .loginId(administratorCreateDto.getLoginId())

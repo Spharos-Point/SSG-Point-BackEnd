@@ -1,4 +1,4 @@
-package com.spharos.pointapp.userpoint.purchase.presentaion;
+package com.spharos.pointapp.userpoint.trans.presentation;
 
 import com.spharos.pointapp.brand.infrastructure.BranchRepository;
 import com.spharos.pointapp.point.domain.Point;
@@ -7,8 +7,9 @@ import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
 import com.spharos.pointapp.userpoint.purchase.domain.PointPurchase;
-import com.spharos.pointapp.userpoint.purchase.dto.PointPurchaseDto;
-import com.spharos.pointapp.userpoint.purchase.infrastructure.PointPurchaseRepository;
+import com.spharos.pointapp.userpoint.trans.domain.PointTrans;
+import com.spharos.pointapp.userpoint.trans.dto.PointTransDto;
+import com.spharos.pointapp.userpoint.trans.infrastructure.PointTransRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,23 +17,23 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PointPurchaseServiceImple implements PointPurchaseService{
+public class PointTransServiceImple implements PointTransService {
 
-    private final PointPurchaseRepository pointPurchaseRepository;
+    private final PointTransRepository pointTransRepository;
     private final UserPointListRepository userPointListRepository;
     private final BranchRepository branchRepository;
     private final PointRepository pointRepository;
 
     @Override
-    public void purchasePoint(PointPurchaseDto pointPurchaseDto) {
+    public void transPoint(PointTransDto pointTransDto) {
 
         var setTotalPoint = 0;
         UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(
-                pointPurchaseDto.getUuid()
+                pointTransDto.getUuid()
         ).orElse(null);
 
         log.info("lastPoint : {}", lastPoint);
-//        no value present
+
         if (lastPoint == null) {
             setTotalPoint = 0;
         } else {
@@ -42,25 +43,24 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
         log.info("setTotalPoint : {}", setTotalPoint);
 
         Point point = pointRepository.save(Point.builder()
-                .totalPoint(setTotalPoint + pointPurchaseDto.getPurchasePoint())
-                .used(false)
-                .point(pointPurchaseDto.getPurchasePoint())
-                .pointType(PointType.RECEIPT)
+                        .totalPoint(setTotalPoint + pointTransDto.getTransMount())
+                        .used(false)
+                        .point(pointTransDto.getTransMount())
                 .build());
 
-        pointPurchaseRepository.save(
-                PointPurchase.builder()
-                        .purchasePrice(pointPurchaseDto.getPurchasePrice())
-                        .purchaseMount(pointPurchaseDto.getPurchaseMount())
+        pointTransRepository.save(
+                PointTrans.builder()
+                        .trnasPoint(pointTransDto.getTransPoint())
+                        .transMount(pointTransDto.getTransMount())
                         .point(point)
-                        .branch(branchRepository.findById(pointPurchaseDto.getBranchId()).get())
+                        .branch(branchRepository.findById(pointTransDto.getBranchId()).get())
                         .build(
-        ));
+                        ));
 
         userPointListRepository.save(
                 UserPointList.builder()
                         .point(point)
-                        .uuid(pointPurchaseDto.getUuid())
+                        .uuid(pointTransDto.getUuid())
                         .pointType(PointType.RECEIPT)
                         .build()
         );

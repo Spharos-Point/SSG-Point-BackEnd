@@ -15,7 +15,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Random;
@@ -42,7 +41,7 @@ public class AuthenticationService {
 
 
 //    1. 시큐리티 로그인
-    @Transactional(readOnly = false)
+//    @Transactional(readOnly = false)
     public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
@@ -60,26 +59,28 @@ public class AuthenticationService {
                 .address(userSignUpDto.getAddress())
                 .status(1)
                 .build();
+        log.info("user 1 {} ", user.getName());
+
         user.hashPassword(user.getPassword());
         userRepository.save(user);
 //         바코드 생성 및 저장
         createAndSavePointCard(user, uuidString);
 
+        log.info("user 2 {} ", user);
         return AuthenticationResponse.builder()
                 .build();
     }
 
-    private PointCard createAndSavePointCard(User user, String uuidString) {
+    private void createAndSavePointCard(User user, String uuidString) {
         String pointCardBarcode = pointCardBarcodeGenerator(user);
         String validatedBarcode = validateBarcode(pointCardBarcode);
 
         PointCard pointCard = PointCard.builder()
-                .barcode(validatedBarcode)
-                .partnerName("신세계포인트닷컴")
+                .cardnumber(validatedBarcode)
                 .uuid(uuidString)
                 .build();
 
-        return pointCardRepository.save(pointCard);
+        pointCardRepository.save(pointCard);
     }
 
     //    2. 바코드 생성 (9350 + id값(8자리) + 랜덤 4자리)
@@ -102,21 +103,21 @@ public class AuthenticationService {
     }
 
     //    3. 바코드 유효성 검사
-    private String validateBarcode(String checkBarcode) {
-        Optional<PointCard> byBarCode = pointCardRepository.findByBarcode(checkBarcode);
+    private String validateBarcode(String checkCardNumber) {
+        Optional<PointCard> byBarCode = pointCardRepository.findByCardnumber(checkCardNumber);
         log.info("byBarCode is : {}", byBarCode);
 
         // DB에 없다면 무한 반복 todo: 반복 제한 생성
         if (byBarCode.isPresent()) {
-            String substring = checkBarcode.substring(12, 15);
+            String substring = checkCardNumber.substring(12, 15);
             int endbarcode = Integer.parseInt(substring) + 1;
 
-            String barcode = checkBarcode.substring(0, 12) + String.format("%04d", endbarcode);
+            String barcode = checkCardNumber.substring(0, 12) + String.format("%04d", endbarcode);
             return validateBarcode(barcode);
         } else {
-            log.info("checkBarcode is : {}", checkBarcode);
+            log.info("checkBarcode is : {}", checkCardNumber);
 
-            return checkBarcode;
+            return checkCardNumber;
         }
     }
 
@@ -133,13 +134,14 @@ public class AuthenticationService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
+                            // uuid로 로그인 가능
                             user.getUsername(),
                             authenticationRequest.getPassword()
                     )
             );
             return AuthenticationResponse.builder()
                     .token(JwtToken)
-                    .userName(user.userName())
+                    .name(user.getName())
                     .build();
         } catch (AuthenticationException ex) {
             log.error("로그인 정보가 일치하지 않습니다.");
