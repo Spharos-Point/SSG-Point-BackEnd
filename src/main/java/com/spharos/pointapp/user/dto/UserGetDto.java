@@ -3,9 +3,9 @@ package com.spharos.pointapp.user.dto;
 import lombok.*;
 
 @Builder
+@ToString
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserGetDto {

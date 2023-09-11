@@ -36,5 +36,10 @@ out/
 ### VS Code ###
 .vscode/
 
-### yml
-.yml/
+### yml ###
+*.yml
+
+### Replica ###
+master/
+slave/
+replication/
