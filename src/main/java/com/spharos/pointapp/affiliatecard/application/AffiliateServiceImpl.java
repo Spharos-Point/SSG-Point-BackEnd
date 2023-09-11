@@ -4,7 +4,6 @@ import com.spharos.pointapp.affiliatecard.domain.AffiliateCard;
 import com.spharos.pointapp.affiliatecard.dto.AffiliateAddDto;
 import com.spharos.pointapp.affiliatecard.dto.AffiliateUpdateDto;
 import com.spharos.pointapp.affiliatecard.infrastructure.AffiliateRepository;
-import com.spharos.pointapp.extra.domain.Extra;
 import com.spharos.pointapp.extra.infrastructure.ExtraRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

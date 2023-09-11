@@ -1,9 +1,5 @@
 package com.spharos.pointapp.event.application;
 
-import com.spharos.pointapp.coupon.domain.Coupon;
-import com.spharos.pointapp.coupon.domain.CouponList;
-import com.spharos.pointapp.coupon.domain.CouponTypeConverter;
-import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.domain.EventList;
 import com.spharos.pointapp.event.dto.EventCreateDto;
