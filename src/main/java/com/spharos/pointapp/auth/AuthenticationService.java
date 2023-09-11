@@ -15,7 +15,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Random;
@@ -42,7 +41,7 @@ public class AuthenticationService {
 
 
 //    1. 시큐리티 로그인
-    @Transactional(readOnly = false)
+//    @Transactional(readOnly = false)
     public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
@@ -72,7 +71,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    private PointCard createAndSavePointCard(User user, String uuidString) {
+    private void createAndSavePointCard(User user, String uuidString) {
         String pointCardBarcode = pointCardBarcodeGenerator(user);
         String validatedBarcode = validateBarcode(pointCardBarcode);
 
@@ -81,7 +80,7 @@ public class AuthenticationService {
                 .uuid(uuidString)
                 .build();
 
-        return pointCardRepository.save(pointCard);
+        pointCardRepository.save(pointCard);
     }
 
     //    2. 바코드 생성 (9350 + id값(8자리) + 랜덤 4자리)
@@ -135,6 +134,7 @@ public class AuthenticationService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
+                            // uuid로 로그인 가능
                             user.getUsername(),
                             authenticationRequest.getPassword()
                     )

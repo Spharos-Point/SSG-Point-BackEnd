@@ -103,15 +103,10 @@ public class PointGiftServiceImple implements PointGiftService {
     public String getSenderUser(String userName, String phoneNumber, String uuid) throws BaseException {
         User senderUser = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        log.info("senderUser 1 {} ", senderUser);
-        // 유저네임 uuid 나옴 수정 필요
+
         if (senderUser.getName().equals(userName) && senderUser.getPhoneNumber().equals(phoneNumber)) {
-            log.info("senderUser  2{} ", senderUser);
             throw new BaseException(GIFT_MYSELF_FAILED);
         }
-        log.info("senderUser  3{} ", userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
-                .map(User::getLoginId)
-                .orElseThrow(()-> new BaseException(NO_EXIST_USER)));
 
         return userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
                 .map(User::getLoginId)

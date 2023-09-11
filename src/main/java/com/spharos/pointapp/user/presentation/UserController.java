@@ -3,6 +3,7 @@ package com.spharos.pointapp.user.presentation;
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.config.security.JwtTokenProvider;
+import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.user.application.UserService;
 import com.spharos.pointapp.user.dto.*;
 import com.spharos.pointapp.user.vo.*;
@@ -21,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenUtils tokenUtils; // TokenUtils를 주입받음
 
     /**
      *
@@ -53,7 +54,8 @@ public class UserController {
     public BaseResponse<String> updateUserInfo(@RequestHeader("Authorization") String token,
                                                @RequestBody UserUpdateInfoVo userUpdateInfoVo) {
 
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        String uuid = tokenUtils.extractUuidFromToken(token);
+
         try {
             UserUpdateInfoDto userUpdateInfoDto = modelMapper.map(userUpdateInfoVo, UserUpdateInfoDto.class);
             userService.updateUserInfo(userUpdateInfoDto, uuid);
@@ -70,7 +72,8 @@ public class UserController {
     public BaseResponse<String> updateUserPwd(@RequestHeader("Authorization") String token,
                                                 @RequestBody UserUpdatePwdVo userUpdatePwdVo) {
 
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        String uuid = tokenUtils.extractUuidFromToken(token);
+
         try {
             userService.updateUserPwd(userUpdatePwdVo.getPassword(), userUpdatePwdVo.getNewPassword(), uuid);
             return new BaseResponse<>("패스워드를 변경하였습니다.");
@@ -98,7 +101,8 @@ public class UserController {
     @PutMapping("/changePointPwd")
     public BaseResponse<String> updateUserPointPwd(@RequestHeader("Authorization") String token,
                                    @RequestBody UserUpdatePointPwdVo userUpdatePointPwdVo) {
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        String uuid = tokenUtils.extractUuidFromToken(token);
+
         UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
 
 
@@ -118,7 +122,7 @@ public class UserController {
     public BaseResponse<String> leavePwd(@RequestHeader("Authorization") String token,
                                             @RequestBody UserLeavePwdVo userLeavePwdVo) {
 
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        String uuid = tokenUtils.extractUuidFromToken(token);
         try {
             userService.userLeavePwd(userLeavePwdVo.getPassword(), uuid);
             return new BaseResponse<>("패스워드가 일치합니다");
@@ -131,7 +135,7 @@ public class UserController {
     @Operation(summary = "유저 탈퇴", description = "상태를 변경 해준다.", tags = { "User Controller" })
     @PutMapping("/leaveOnline")
     public BaseResponse<String> leaveOnilne(@RequestHeader("Authorization") String token) {
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        String uuid = tokenUtils.extractUuidFromToken(token);
         try {
             userService.userLeaveOnline(uuid);
             return new BaseResponse<>("탈퇴가 완료 되었습니다.");
