@@ -21,6 +21,8 @@ public class PointGift extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false, name = "giver_uuid")
     private String giverUuid;
+    @Column(nullable = false, name = "sender_uuid")
+    private String senderUuid;
     @Column(nullable = false, name= "gift_price")
     private Integer giftPoint;
     @Column(name = "gift_message")

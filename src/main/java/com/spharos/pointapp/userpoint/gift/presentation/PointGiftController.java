@@ -23,27 +23,25 @@ public class PointGiftController {
 
     private final PointGiftService pointGiftService;
     private final ModelMapper modelMapper;
-    private final JwtTokenProvider jwtTokenProvider;
     private final TokenUtils tokenUtils; // TokenUtils를 주입받음
 
 
     /**
-     *
      * 1. 포인트 선물 생성
      * 2. 포인트 선물 유저 확인
      * 3. 포인트 대기 조회
      * 4. 포인트 선물 수락
      * 5. 포인트 선물 거절
-     *
      */
 
     @Operation(summary = "포인트 선물 생성", description = "대기 상태로 포인트를 생성합니다.")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
     @PostMapping("/gift/createPoint")
     public BaseResponse<?> purchasePoint(@RequestHeader("Authorization") String token,
-                              @RequestBody PointGiftInVo PointGiftInVo) {
+                                         @RequestBody PointGiftInVo PointGiftInVo) {
 
         String uuid = tokenUtils.extractUuidFromToken(token);
+        log.info("PointGiftInVo : {}", PointGiftInVo);
         try {
             pointGiftService.giftPoint(
                     modelMapper.map(PointGiftInVo, PointGiftCreateDto.class), uuid);
@@ -71,15 +69,22 @@ public class PointGiftController {
 
     }
 
-//    @Operation(summary = "포인트 선물 대기 조회", description = "가장 최근 포인트 선물 기록 조회")
-//    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
-//    @PutMapping("/gift/Pending")
-//    public BaseResponse<String> searchPendingGift(@RequestHeader("Authorization") String token) {
-//        String uuid = jwtTokenProvider.getUuid(token.substring(7));
-//
-//    }
+    @Operation(summary = "포인트 선물 대기 조회", description = "가장 최근 포인트 선물 기록 조회")
+    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
+    @PutMapping("/gift/Pending")
+    public BaseResponse<PointGiftLastDto> searchPendingGift(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
 
+        try {
+            PointGiftLastDto pointGiftLastDto = pointGiftService.getLastGift(uuid);
+            return new BaseResponse<>(pointGiftLastDto);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
 
+    }
+
+}
 //    @Operation(summary = "포인트 선물 수락", description = "선물 상태 변경 W -> S")
 //    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
 //    @PutMapping("/gift/Success")
@@ -94,4 +99,3 @@ public class PointGiftController {
 //        }
 //
 //    }
-}

@@ -8,7 +8,9 @@ import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.userpoint.gift.domain.PointGift;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftType;
+import com.spharos.pointapp.userpoint.gift.domain.PointGiftTypeConverter;
 import com.spharos.pointapp.userpoint.gift.dto.PointGiftCreateDto;
+import com.spharos.pointapp.userpoint.gift.dto.PointGiftLastDto;
 import com.spharos.pointapp.userpoint.gift.infrastructure.PointGiftRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
@@ -17,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
 
@@ -44,23 +48,35 @@ public class PointGiftServiceImple implements PointGiftService {
     // 1. 포인트 선물 생성
     @Override
     public void giftPoint(PointGiftCreateDto pointGiftCreateDto, String uuid) throws BaseException{
-        User senderUser = userRepository.findByUuid(uuid)
+
+        // 본인 확인
+        User giverUser = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        User giverUser = userRepository.findByLoginId(pointGiftCreateDto.getGiverLoginId())
+        log.info("giverUser : {}", giverUser);
+        log.info("pointGiftCreateDto : {}", pointGiftCreateDto);
+
+        // 받는 대상자 확인
+        User senderUser = userRepository.findByLoginId(pointGiftCreateDto.getSenderLoginId())
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        if (new BCryptPasswordEncoder()
-                .matches(pointGiftCreateDto.getPointPassword(), senderUser.getPassword())) {
+        log.info("senderUser : {}", senderUser);
+        log.info("giverUser.getPassword() : {}", giverUser.getPassword());
+        log.info("pointGiftCreateDto.getPointPassword() : {}", pointGiftCreateDto.getPointPassword());
+
+        // 포인트 비밀번호 없거나 일치하지 않으면 에러
+        if (senderUser.getPassword() == null) {
+            throw new BaseException(POINT_PASSWORD_RETRIEVE_FAILED);
+        } else if (!new BCryptPasswordEncoder()
+                .matches(pointGiftCreateDto.getPointPassword(), giverUser.getPassword())) {
             throw new BaseException(POINT_PASSWORD_RETRIEVE_FAILED);
         }
 
+
         var setTotalPoint = 0;
-        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(
-                uuid
-        ).orElse(null);
+        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid).orElse(null);
 
         log.info("lastPoint : {}", lastPoint);
         if (lastPoint == null) {
-            setTotalPoint = 0;
+            throw new BaseException(GIFT_FAILED);
         } else {
             setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
         }
@@ -76,6 +92,7 @@ public class PointGiftServiceImple implements PointGiftService {
         // 포인트 선물 내역
         PointGift pointGift = PointGift.builder()
                 .giverUuid(giverUser.getUuid())
+                .senderUuid(uuid)
                 .pointGiftType(PointGiftType.WAIT)
                 .point(point)
                 .build();
@@ -93,7 +110,6 @@ public class PointGiftServiceImple implements PointGiftService {
 
     }
 
-
     // 2. 포인트 선물 유저 확인
     @Override
     public String getSenderUser(String userName, String phoneNumber, String uuid) throws BaseException {
@@ -109,34 +125,34 @@ public class PointGiftServiceImple implements PointGiftService {
                 .orElseThrow(()-> new BaseException(NO_EXIST_USER));
     }
 
-//    // 3. 포인트 대기 조회
-//
-//    @Override
-//    public PointGiftLastDto getLastGift(String uuid) {
-//
-//        // 선물 테이블에서 대기 중인 가장 최근 선물 정보만 가져오기
-//        PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
-//        Optional<Gift> gift = giftRepository.findFirstByGiftRecipientIdAndGiftTypeOrderByIdDesc(uuid, pointGiftType);
-//
-//        // 대기중인 선물 정보가 없는 경우 null을 리턴
-//        if(gift.isEmpty()) {
-//            return null;
-//        }
-//
-//        Gift targetGift = gift.get();
-//
-//        // 보낸 유저 정보 가져오기
-//        User user = userRepository.findById(targetGift.getGiftSenderId()).orElseThrow(() -> new NoSuchElementException("User not found"));
-//
-//        return GiftLastDto.builder()
-//                .giftId(targetGift.getId())
-//                .senderLoginId(user.getLoginId())
-//                .senderName(user.getName())
-//                .point(targetGift.getPoint())
-//                .giftMessage(targetGift.getGiftMessage())
-//                .createdDate(targetGift.getCreatedDate())
-//                .build();
-//    }
+    // 3. 포인트 대기 조회
+    @Override
+    public PointGiftLastDto getLastGift(String uuid) throws BaseException{
+
+        // 선물 테이블에서 대기 중인 가장 최근 선물 정보만 가져오기
+        PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
+        Optional<PointGift> gift = pointGiftRepository.findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(uuid, pointGiftType);
+
+        // 대기중인 선물 정보가 없는 경우 null을 리턴
+        if(gift.isEmpty()) {
+            return null;
+        }
+
+        PointGift giverUser = gift.get();
+
+        // 보낸 유저 정보 가져오기
+        User user = userRepository.findByUuid(giverUser.getGiverUuid())
+                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
+
+        return PointGiftLastDto.builder()
+                .giftId(giverUser.getId())
+                .senderLoginId(user.getLoginId())
+                .senderName(user.getName())
+                .point(giverUser.getGiftPoint())
+                .giftMessage(giverUser.getGiftMessage())
+                .createdDate(giverUser.getCreateAt())
+                .build();
+    }
 
 
 //

@@ -29,7 +29,6 @@ import java.util.Optional;
 public class PointServiceImple implements PointService{
 
     private final PointRepository pointRepository;
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserPointListRepository userPointListRepository;
     private final UserRepository userRepository;
 
@@ -47,9 +46,14 @@ public class PointServiceImple implements PointService{
         User user = userRepository.findByUuid(uuid).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 없습니다.")
         );
-        Optional<UserPointList > latestUserPointList = userPointListRepository.findTopByUuidOrderByCreateAtDesc(user.getUuid());
-        Point pointTotal = pointRepository.findById(latestUserPointList.get().getPoint().getId()).get();
-        return pointTotal.getTotalPoint();
+        Optional<UserPointList> latestUserPointList = userPointListRepository.findTopByUuidOrderByCreateAtDesc(user.getUuid());
+        log.info("latestUserPointList {} ", latestUserPointList);
+        if (latestUserPointList.isEmpty() || latestUserPointList.get().equals(0)) {
+            return 0;
+        } else {
+            Point pointTotal = pointRepository.findById(latestUserPointList.get().getPoint().getId()).get();
+            return pointTotal.getTotalPoint();
+        }
     }
 
     //  2. 포인트 계산
