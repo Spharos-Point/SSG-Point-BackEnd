@@ -1,5 +1,7 @@
 package com.spharos.pointapp.point.presentation;
 
+import com.spharos.pointapp.config.common.BaseException;
+import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.point.application.PointService;
 import com.spharos.pointapp.point.dto.PointAddDto;
@@ -9,8 +11,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,27 +36,31 @@ public class PointController {
     @Operation(summary = "유저 토탈 포인트 조회", description = "Integer로 토탈 포인트를 반환합니다.", tags = { "Point Controller" })
     @GetMapping("/pointRead/total")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
-    public ResponseEntity<Integer> getTotalPointByUser(@RequestHeader("Authorization") String token) {
+    public BaseResponse<Integer> getTotalPointByUser(@RequestHeader("Authorization") String token) {
         String uuid = tokenUtils.extractUuidFromToken(token);
 
-        Integer PointTotal = pointService.getPointTotalByUser(uuid);
-        return new ResponseEntity<>(PointTotal, HttpStatus.OK);
+        try{
+            Integer PointTotal = pointService.getPointTotalByUser(uuid);
+            return new BaseResponse<>(PointTotal);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
-    //  2. 포인트 적립/사용 (이벤트, 선물, 쿠폰, 출석, 룰렛, 전환, 제휴사, 영수증, 바코드, 소멸
+    //  2. 포인트 적립/사용 (이벤트, 선물, 쿠폰, 출석, 룰렛, 전환, 제휴사, 영수증, 바코드, 소멸)
     @PostMapping("/point/general")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
-    void addPoint(@RequestHeader("Authorization") String token,
+    public BaseResponse<String> addPoint(@RequestHeader("Authorization") String token,
                   @RequestBody PointInVo pointInVo) {
         String uuid = tokenUtils.extractUuidFromToken(token);
-        PointAddDto pointAddDto = modelMapper.map(pointInVo, PointAddDto.class);
-        log.info("INPUT Object Data is : {} ", pointAddDto);
-//        PointAddDto pointAddDto = PointAddDto.builder()
-//                .pointType(pointInVo.getPointType())
-//                .updatePoint(pointInVo.getUpdatePoint())
-//                .used(pointInVo.getUsed())
-//                .build();
-        pointService.createPoint(pointAddDto, uuid);
+        try {
+            PointAddDto pointAddDto = modelMapper.map(pointInVo, PointAddDto.class);
+            pointService.createPoint(pointAddDto, uuid);
+            return new BaseResponse<>("포인트 적립 성공");
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+
     }
 
 //    //  3. 포인트 적립/사용 조회 (전환, 선물 제외)

@@ -1,5 +1,6 @@
 package com.spharos.pointapp.point.application;
 
+import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.dto.PointAddDto;
 
 public interface PointService {
@@ -15,13 +16,13 @@ public interface PointService {
 
 
     //  1. 토탈 포인트 조회
-    Integer getPointTotalByUser(String uuid);
+    Integer getPointTotalByUser(String uuid) throws BaseException;
 
     //  2. 포인트 계산
     Integer calcPointTotal(Boolean used, Integer totalPoint, Integer updatePoint);
 
     //  3. 포인트 타입별 적립/사용 (이벤트, 선물, 쿠폰, 출석, 룰렛, 전환, 제휴사, 영수증, 바코드, 소멸
-    void createPoint(PointAddDto pointAddDto, String uuid);
+    void createPoint(PointAddDto pointAddDto, String uuid) throws BaseException;
 
 //    //  4. 포인트 전체 조회
 //    List<PointGetDto> getPointByUser(String uuid);

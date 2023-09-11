@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.util.Optional;
 
@@ -43,6 +44,8 @@ public class PointGiftServiceImple implements PointGiftService {
     private final UserRepository userRepository;
     private final UserPointListRepository userPointListRepository;
     private final PointRepository pointRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+
 
     // 1. 포인트 선물 생성
     @Transactional(rollbackFor = Exception.class) // 롤백 설정 추가
@@ -52,15 +55,10 @@ public class PointGiftServiceImple implements PointGiftService {
         // 본인 확인
         User giverUser = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        log.info("giverUser : {}", giverUser);
-        log.info("pointGiftCreateDto : {}", pointGiftCreateDto);
 
         // 받는 대상자 확인
         User senderUser = userRepository.findByLoginId(pointGiftCreateDto.getSenderLoginId())
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        log.info("senderUser : {}", senderUser);
-        log.info("giverUser.getPassword() : {}", giverUser.getPassword());
-        log.info("pointGiftCreateDto.getPointPassword() : {}", pointGiftCreateDto.getPointPassword());
 
         // 포인트 비밀번호 없거나 일치하지 않으면 에러
         if (senderUser.getPassword() == null) {
@@ -74,7 +72,6 @@ public class PointGiftServiceImple implements PointGiftService {
         UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid)
                 .orElse(null);
 
-        log.info("lastPoint : {}", lastPoint);
         if (lastPoint == null) {
             setTotalPoint = 0;
         } else {
@@ -132,14 +129,14 @@ public class PointGiftServiceImple implements PointGiftService {
     @Override
     public PointGiftLastDto getLastGift(String senderUuid) throws BaseException{
 
-        // 선물 테이블에서 대기 중인 가장 최근 선물 정보만 가져오기
+        // 가장 최근 선물 정보
         PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
         log.info("pointGiftType {} ", pointGiftType);
 
         Optional<PointGift> pointGiftSenderUser = pointGiftRepository.findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(senderUuid, pointGiftType);
         log.info("pointGiftSenderUser {} ", pointGiftSenderUser);
 
-        // 대기중인 선물 정보가 없는 경우 null을 리턴
+        // 대기중인 선물포인트가 없다면 null
         if(pointGiftSenderUser.isEmpty()) {
             return null;
         }
@@ -162,23 +159,28 @@ public class PointGiftServiceImple implements PointGiftService {
                 .build();
     }
 
+    // 4. 포인트 선물 수락
+    @Override
+    public void updateGiftPointSuccess(String senderUuid) throws BaseException {
 
-//
-//    // 4. 포인트 선물 수락
-//    @Override
-//    public void updateGiftSuccess(PointGiftCreateDto pointGiftCreateDto, String uuid) throws BaseException {
-//
-//        var setTotalPoint = 0;
-//        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid)
-//                .orElse(null);
-//
-//        log.info("lastPoint : {}", lastPoint);
-//        if (lastPoint == null) {
-//            setTotalPoint = 0;
-//        } else {
-//            setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
-//        }
-//
+        // 가장 최근 선물 정보
+        PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
+        log.info("pointGiftType {} ", pointGiftType);
+
+
+        Optional<PointGift> pointGiftSenderUser = pointGiftRepository.findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(senderUuid, pointGiftType);
+        log.info("pointGiftSenderUser {} ", pointGiftSenderUser);
+
+        var setTotalPoint = 0;
+        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(senderUuid)
+                .orElse(null);
+
+        if (lastPoint == null) {
+            setTotalPoint = 0;
+        } else {
+            setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
+        }
+
 //        // 포인트 증가
 //        Point point = pointRepository.save(Point.builder()
 //                .totalPoint(setTotalPoint + pointGiftDto.getGiftPoint())
@@ -200,8 +202,13 @@ public class PointGiftServiceImple implements PointGiftService {
 //                .point(pointPurchaseDto.getPurchasePoint())
 //                .pointType(PointType.RECEIPT)
 //                .build());
-//
-//    }
+
+    }
+
+    @Override
+    public void updateGiftPointCancel(String senderUuid) throws BaseException {
+
+    }
 
 
 }
