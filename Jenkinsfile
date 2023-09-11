@@ -1,4 +1,4 @@
-def PROJECT_NAME = 'spharos-0.0.1-SNAPSHOT
+def PROJECT_NAME = 'pointapp-0.0.1-SNAPSHOT'
 pipeline{
     agent any
     stages{
