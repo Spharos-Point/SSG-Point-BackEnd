@@ -8,9 +8,7 @@ import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.userpoint.gift.domain.PointGift;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftType;
-import com.spharos.pointapp.userpoint.gift.domain.PointGiftTypeConverter;
 import com.spharos.pointapp.userpoint.gift.dto.PointGiftCreateDto;
-import com.spharos.pointapp.userpoint.gift.dto.PointGiftLastDto;
 import com.spharos.pointapp.userpoint.gift.infrastructure.PointGiftRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
@@ -19,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
 
