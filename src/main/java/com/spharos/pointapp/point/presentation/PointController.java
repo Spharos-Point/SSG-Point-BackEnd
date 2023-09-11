@@ -1,6 +1,5 @@
 package com.spharos.pointapp.point.presentation;
 
-import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.point.application.PointService;
 import com.spharos.pointapp.point.dto.PointAddDto;

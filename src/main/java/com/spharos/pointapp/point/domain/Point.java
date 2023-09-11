@@ -1,21 +1,17 @@
 package com.spharos.pointapp.point.domain;
 
 import com.spharos.pointapp.config.common.BaseTimeEntity;
-import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamicUpdate // 더티체킹 변경된 필드만 update
 public class Point extends BaseTimeEntity {
 
     @Id

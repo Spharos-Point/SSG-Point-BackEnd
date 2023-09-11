@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 
 @Entity
 @Getter
@@ -19,8 +18,6 @@ public class PointGift extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, name = "giver_uuid")
-    private String giverUuid;
     @Column(nullable = false, name = "sender_uuid")
     private String senderUuid;
     @Column(nullable = false, name= "gift_price")

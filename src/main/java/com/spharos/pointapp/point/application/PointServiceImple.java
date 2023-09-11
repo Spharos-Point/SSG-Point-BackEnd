@@ -1,11 +1,9 @@
 package com.spharos.pointapp.point.application;
 
-import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.domain.PointTypeConverter;
 import com.spharos.pointapp.point.dto.PointAddDto;
-import com.spharos.pointapp.point.dto.PointGetDto;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
@@ -15,10 +13,8 @@ import jakarta.persistence.Convert;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

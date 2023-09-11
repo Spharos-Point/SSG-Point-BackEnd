@@ -1,10 +1,6 @@
 package com.spharos.pointapp.point.application;
 
 import com.spharos.pointapp.point.dto.PointAddDto;
-import com.spharos.pointapp.point.dto.PointGetDto;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface PointService {
 

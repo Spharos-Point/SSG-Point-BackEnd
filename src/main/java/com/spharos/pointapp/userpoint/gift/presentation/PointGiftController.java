@@ -2,9 +2,7 @@ package com.spharos.pointapp.userpoint.gift.presentation;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
-import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.config.security.TokenUtils;
-import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.userpoint.gift.application.PointGiftService;
 import com.spharos.pointapp.userpoint.gift.dto.*;
 import com.spharos.pointapp.userpoint.gift.vo.*;
@@ -54,10 +52,11 @@ public class PointGiftController {
 
     @Operation(summary = "포인트 선물 유저 확인(유저 이름, 유저 휴대폰 번호 조회)", description = "선물 대상자 확인하기")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
-    @PostMapping("/gift/searchSenderUser")
+    @GetMapping("/gift/searchSenderUser")
     public BaseResponse<String> searchSenderUser(@RequestHeader("Authorization") String token,
                                                  @RequestParam("userName") String senderUserName,
                                                  @RequestParam("phoneNumber") String senderPhoneNumber) {
+        log.info("searchSenderUser : {} {}", senderUserName, senderPhoneNumber);
 
         String uuid = tokenUtils.extractUuidFromToken(token);
         try {
@@ -71,17 +70,19 @@ public class PointGiftController {
 
     @Operation(summary = "포인트 선물 대기 조회", description = "가장 최근 포인트 선물 기록 조회")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
-    @PutMapping("/gift/Pending")
+    @GetMapping("/gift/Pending")
     public BaseResponse<PointGiftLastDto> searchPendingGift(@RequestHeader("Authorization") String token) {
-        String uuid = tokenUtils.extractUuidFromToken(token);
+        String senderUuid = tokenUtils.extractUuidFromToken(token);
+        log.info("senderUuid : {}", senderUuid);
 
         try {
-            PointGiftLastDto pointGiftLastDto = pointGiftService.getLastGift(uuid);
+            PointGiftLastDto pointGiftLastDto = pointGiftService.getLastGift(senderUuid);
+            log.info("pointGiftLastDto : {}", pointGiftLastDto);
+
             return new BaseResponse<>(pointGiftLastDto);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
-
     }
 
 }

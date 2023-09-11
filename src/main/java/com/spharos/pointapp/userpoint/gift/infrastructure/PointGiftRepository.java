@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PointGiftRepository extends JpaRepository<PointGift, Long> {
-    Optional<PointGift> findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(String uuid, PointGiftType pointGiftType);
+    Optional<PointGift> findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(String senderUuid, PointGiftType pointGiftType);
 
 }
