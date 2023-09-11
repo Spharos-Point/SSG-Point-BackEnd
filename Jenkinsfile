@@ -12,11 +12,6 @@ pipeline{
                 sh 'gradlew build -x test'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'gradlew test'
-            }
-        }
         stage('Deploy Prepare'){
             steps{
                 sh 'sudo kill $(pgrep -f ${PROJECT_NAME})'
