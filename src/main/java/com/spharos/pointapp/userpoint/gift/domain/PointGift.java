@@ -27,6 +27,7 @@ public class PointGift extends BaseTimeEntity {
     @Column(name = "gift_image")
     private String giftImage;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "point_id")
     private Point point;
 
     @Column(nullable = false)
