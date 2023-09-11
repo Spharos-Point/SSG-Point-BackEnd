@@ -8,9 +8,7 @@ import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.userpoint.gift.domain.PointGift;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftType;
-import com.spharos.pointapp.userpoint.gift.domain.PointGiftTypeConverter;
 import com.spharos.pointapp.userpoint.gift.dto.PointGiftCreateDto;
-import com.spharos.pointapp.userpoint.gift.dto.PointGiftLastDto;
 import com.spharos.pointapp.userpoint.gift.infrastructure.PointGiftRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
@@ -19,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
 
@@ -103,15 +99,10 @@ public class PointGiftServiceImple implements PointGiftService {
     public String getSenderUser(String userName, String phoneNumber, String uuid) throws BaseException {
         User senderUser = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        log.info("senderUser 1 {} ", senderUser);
-        // 유저네임 uuid 나옴 수정 필요
+
         if (senderUser.getName().equals(userName) && senderUser.getPhoneNumber().equals(phoneNumber)) {
-            log.info("senderUser  2{} ", senderUser);
             throw new BaseException(GIFT_MYSELF_FAILED);
         }
-        log.info("senderUser  3{} ", userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
-                .map(User::getLoginId)
-                .orElseThrow(()-> new BaseException(NO_EXIST_USER)));
 
         return userRepository.findByUserNameAndPhoneNumber(userName, phoneNumber)
                 .map(User::getLoginId)

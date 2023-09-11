@@ -3,6 +3,8 @@ package com.spharos.pointapp.userpoint.gift.presentation;
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.config.security.JwtTokenProvider;
+import com.spharos.pointapp.config.security.TokenUtils;
+import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.userpoint.gift.application.PointGiftService;
 import com.spharos.pointapp.userpoint.gift.dto.*;
 import com.spharos.pointapp.userpoint.gift.vo.*;
@@ -22,6 +24,7 @@ public class PointGiftController {
     private final PointGiftService pointGiftService;
     private final ModelMapper modelMapper;
     private final JwtTokenProvider jwtTokenProvider;
+    private final TokenUtils tokenUtils; // TokenUtils를 주입받음
 
 
     /**
@@ -40,7 +43,7 @@ public class PointGiftController {
     public BaseResponse<?> purchasePoint(@RequestHeader("Authorization") String token,
                               @RequestBody PointGiftInVo PointGiftInVo) {
 
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
+        String uuid = tokenUtils.extractUuidFromToken(token);
         try {
             pointGiftService.giftPoint(
                     modelMapper.map(PointGiftInVo, PointGiftCreateDto.class), uuid);
@@ -57,8 +60,8 @@ public class PointGiftController {
     public BaseResponse<String> searchSenderUser(@RequestHeader("Authorization") String token,
                                                  @RequestParam("userName") String senderUserName,
                                                  @RequestParam("phoneNumber") String senderPhoneNumber) {
-        String uuid = jwtTokenProvider.getUuid(token.substring(7));
 
+        String uuid = tokenUtils.extractUuidFromToken(token);
         try {
             String loginId = pointGiftService.getSenderUser(senderUserName, senderPhoneNumber, uuid);
             return new BaseResponse<>(loginId);

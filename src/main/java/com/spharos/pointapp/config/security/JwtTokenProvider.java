@@ -1,7 +1,5 @@
 package com.spharos.pointapp.config.security;
 
-import com.spharos.pointapp.user.domain.User;
-import com.spharos.pointapp.user.infrastructure.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,7 +23,6 @@ import java.util.function.Function;
 public class JwtTokenProvider {
 
     private final Environment env;
-    private final UserRepository userRepository;
 
     //  토큰에서 uuid 클레임 추출할 때 Bearer 제거 후 반환
     public String getUuid(String token) {
