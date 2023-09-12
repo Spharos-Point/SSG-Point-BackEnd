@@ -29,6 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    chmod +x gradlew
                     ./gradlew build
                 '''
             }
