@@ -40,7 +40,7 @@ public class PointGiftController {
                                          @RequestBody PointGiftInVo PointGiftInVo) {
 
         String uuid = tokenUtils.extractUuidFromToken(token);
-        log.info("PointGiftInVo : {}", PointGiftInVo);
+        log.info("PointGiftInVo : {}", PointGiftInVo.getReceiverLoginId());
         try {
             pointGiftService.giftPoint(
                     modelMapper.map(PointGiftInVo, PointGiftCreateDto.class), uuid);
