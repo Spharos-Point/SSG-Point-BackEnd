@@ -1,7 +1,5 @@
 package com.spharos.pointapp.event.dto;
 
-import com.spharos.pointapp.event.domain.Event;
-import com.spharos.pointapp.user.domain.User;
 import lombok.*;
 
 @Setter

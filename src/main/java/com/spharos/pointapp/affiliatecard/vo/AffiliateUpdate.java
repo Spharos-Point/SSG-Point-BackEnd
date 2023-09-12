@@ -1,7 +1,6 @@
 package com.spharos.pointapp.affiliatecard.vo;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @Getter
