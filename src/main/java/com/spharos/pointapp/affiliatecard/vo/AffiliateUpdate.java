@@ -8,6 +8,5 @@ import lombok.ToString;
 public class AffiliateUpdate {
 
     private String affiliateNum;
-    private Long extraId;
 
 }
