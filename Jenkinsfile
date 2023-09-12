@@ -46,7 +46,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d --name ssgpointapp -p 8000:8000 -e DATASOURCE_URL="jdbc:mysql://3.38.123.173:3306/ssgpoint" -e DATASOURCE_PASS="ssgpointdocker" ssgpoint-be'
+                sh 'docker run -d --name ssgpointapp -p 8000:8000 -e DATASOURCE_URL=jdbc:mysql://3.38.123.173:3306/ssgpoint -e DATASOURCE_PASS=ssgpointdocker ssgpoint-be'
             }
         }
     }
