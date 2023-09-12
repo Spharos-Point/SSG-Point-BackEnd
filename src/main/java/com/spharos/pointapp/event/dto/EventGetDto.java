@@ -12,7 +12,7 @@ public class EventGetDto {
 
     private String eventName;
     private String eventDesc;
-    private Integer eventType;
+    private String eventType;
     private String prizeType;
 
 }
