@@ -25,6 +25,7 @@ public class NoticeServiceImple implements NoticeService {
                 Notice.builder()
                         .title(noticeCreateDto.getTitle())
                         .context(noticeCreateDto.getContext())
+                        .createAt(noticeCreateDto.getCreateAt())
                         .build());
     }
 
