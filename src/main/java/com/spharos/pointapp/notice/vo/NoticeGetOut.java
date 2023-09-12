@@ -10,4 +10,5 @@ import lombok.ToString;
 public class NoticeGetOut {
     private String title;
     private String context;
+    private Long noticeId;
 }
