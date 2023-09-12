@@ -6,7 +6,6 @@ import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
-import com.spharos.pointapp.userpoint.purchase.domain.PointPurchase;
 import com.spharos.pointapp.userpoint.trans.domain.PointTrans;
 import com.spharos.pointapp.userpoint.trans.dto.PointTransDto;
 import com.spharos.pointapp.userpoint.trans.infrastructure.PointTransRepository;
