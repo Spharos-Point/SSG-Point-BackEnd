@@ -34,7 +34,7 @@ public class Event extends BaseTimeEntity {
     private String eventDesc;
 
     @Column(nullable = false, name = "event_type")
-    private Integer eventType; // tinyint
+    private String eventType; // enum 또는 String으로 하기
 
     @Column(nullable = false, length = 50, name = "prize_type")
     private String prizeType;

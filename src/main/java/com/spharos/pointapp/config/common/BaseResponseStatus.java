@@ -40,10 +40,10 @@ public enum BaseResponseStatus {
 
     // Gift
     GIFT_FAILED(false, 5000, "선물하기에 실패하였습니다."),
-    GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다.");
+    GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다."),
 
     // affiliate card
-//    AFFILIATE_CARD_ADD_FAILED(false, 7000, "카드 등록 횟수를 초과하였습니다.");
+    AFFILIATE_CARD_ADD_FAILED(false, 7000, "카드 등록 횟수를 초과하였습니다.");
 
 
     private final boolean isSuccess;
