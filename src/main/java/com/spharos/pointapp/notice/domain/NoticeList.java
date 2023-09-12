@@ -2,16 +2,14 @@ package com.spharos.pointapp.notice.domain;
 
 import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class NoticeList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

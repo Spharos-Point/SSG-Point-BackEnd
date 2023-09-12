@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface NoticeListRepository extends JpaRepository<NoticeList, Long> {
     List<NoticeList> findByUserId(Long userId);
+
+    List<NoticeList> findAllByUserId(Long userId);
+
 }

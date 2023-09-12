@@ -2,13 +2,13 @@ package com.spharos.pointapp.notice.dto;
 
 import lombok.*;
 
-@Getter
 @Setter
+@Getter
 @Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoticeCreateDto {
+public class NoticeListGetDto {
     private String title;
     private String context;
     private Long noticeId;
