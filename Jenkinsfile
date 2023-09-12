@@ -39,14 +39,14 @@ pipeline {
                 sh '''
                     docker stop ssgpointapp || true
                     docker rm ssgpointapp || true
-                    docker rmi ssgpoint_be || true
-                    docker build -t ssgpoint_be .
+                    docker rmi ssgpoint-be || true
+                    docker build -t ssgpoint-be .
                 '''
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d —name ssgpointapp -p 8000:8000 ssgpoint_be'
+                sh 'docker run -d --name ssgpointapp -p 8000:8000 ssgpoint-be'
             }
         }
     }
