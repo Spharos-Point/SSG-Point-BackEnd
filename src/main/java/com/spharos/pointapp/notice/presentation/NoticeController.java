@@ -25,6 +25,7 @@ public class NoticeController {
         NoticeCreateDto noticeCreateDto = NoticeCreateDto.builder()
                 .title(noticeCreate.getTitle())
                 .context(noticeCreate.getContext())
+                .createAt(noticeCreate.getCreateAt())
                 .build();
         noticeService.createNotice(noticeCreateDto);
     }

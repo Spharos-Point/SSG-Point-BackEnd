@@ -1,6 +1,7 @@
 package com.spharos.pointapp.userpoint.trans.presentation;
 
 import com.spharos.pointapp.brand.infrastructure.BranchRepository;
+import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
@@ -24,7 +25,7 @@ public class PointTransServiceImple implements PointTransService {
     private final PointRepository pointRepository;
 
     @Override
-    public void transPoint(PointTransDto pointTransDto) {
+    public void transPoint(PointTransDto pointTransDto, String uuid) throws BaseException {
 
         var setTotalPoint = 0;
         UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(

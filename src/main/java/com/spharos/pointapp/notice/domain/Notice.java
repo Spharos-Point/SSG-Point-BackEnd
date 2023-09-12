@@ -3,6 +3,8 @@ package com.spharos.pointapp.notice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @ToString
@@ -21,4 +23,6 @@ public class Notice {
     @Column(nullable = false, length = 100 , name = "context")
     private String context;
 
+    @Column(nullable = false, length = 200, name ="date")
+    private LocalDateTime createAt;
 }
