@@ -31,4 +31,3 @@ public class PointTrans extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Branch branch;
 }
-

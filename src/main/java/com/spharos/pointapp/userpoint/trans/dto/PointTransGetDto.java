@@ -20,4 +20,3 @@ public class PointTransGetDto {
     private AffiliateCard affiliateCard;
     private String uuid;
 }
-

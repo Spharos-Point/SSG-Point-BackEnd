@@ -5,4 +5,3 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PointTransRepository extends JpaRepository<PointTrans, Long> {
 }
-
