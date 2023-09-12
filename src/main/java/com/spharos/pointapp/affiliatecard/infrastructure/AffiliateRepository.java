@@ -10,9 +10,6 @@ public interface AffiliateRepository extends JpaRepository<AffiliateCard, Long> 
         AffiliateCard findTopByUuidAndExtraId(String uuid, Long extraId);
 
         List<AffiliateCard> findAllByUuid(String uuid);
-
         Optional<AffiliateCard> findByAffiliateNum(String affiliateNum);
-
-
 
 }
