@@ -18,3 +18,4 @@ public class PointTransAddRequest {
     private AffiliateCard affiliateCard;
     private String uuid;
 }
+

@@ -6,3 +6,4 @@ public interface PointTransService {
 
     void transPoint(PointTransDto pointTrnasDto);
 }
+
