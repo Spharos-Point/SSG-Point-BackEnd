@@ -7,7 +7,12 @@ import lombok.*;
 public class EventUpdate {
     private Long eventId;
     private String eventName;
+    private String regDate;
+    private String endDate;
     private String eventDesc;
-    private Integer eventType;
+    private String eventType;
     private String prizeType;
+    private String img;
+    private Boolean expired;
+
 }
