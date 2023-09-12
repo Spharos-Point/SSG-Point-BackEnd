@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class PointGiftLastDto {
+    private Long pointGiftId;
     private String giverLoginId;
     private String giverName;
     private Integer point;

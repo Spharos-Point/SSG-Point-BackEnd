@@ -39,7 +39,7 @@ public class QPointGift extends EntityPathBase<PointGift> {
 
     public final EnumPath<PointGiftType> pointGiftType = createEnum("pointGiftType", PointGiftType.class);
 
-    public final StringPath senderUuid = createString("senderUuid");
+    public final StringPath receiverUuid = createString("receiverUuid");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateAt = _super.updateAt;

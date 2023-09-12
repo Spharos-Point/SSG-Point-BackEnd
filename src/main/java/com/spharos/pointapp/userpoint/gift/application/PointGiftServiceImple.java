@@ -9,8 +9,7 @@ import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.userpoint.gift.domain.PointGift;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftType;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftTypeConverter;
-import com.spharos.pointapp.userpoint.gift.dto.PointGiftCreateDto;
-import com.spharos.pointapp.userpoint.gift.dto.PointGiftLastDto;
+import com.spharos.pointapp.userpoint.gift.dto.*;
 import com.spharos.pointapp.userpoint.gift.infrastructure.PointGiftRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
@@ -44,6 +43,7 @@ public class PointGiftServiceImple implements PointGiftService {
     private final UserRepository userRepository;
     private final UserPointListRepository userPointListRepository;
     private final PointRepository pointRepository;
+
     private final JPAQueryFactory jpaQueryFactory;
 
 
@@ -72,31 +72,34 @@ public class PointGiftServiceImple implements PointGiftService {
         UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid)
                 .orElse(null);
 
+        log.info("lastPoint : {}", lastPoint);
         if (lastPoint == null) {
             setTotalPoint = 0;
         } else {
             setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
         }
 
+
+        log.info("setTotalPoint : {}", setTotalPoint);
+
         // 포인트 차감
         Point point = pointRepository.save(Point.builder()
-                .totalPoint(setTotalPoint + pointGiftCreateDto.getGiftPoint())
+                .totalPoint(setTotalPoint - pointGiftCreateDto.getGiftPoint())
                 .used(true)
                 .point(pointGiftCreateDto.getGiftPoint())
                 .pointType(PointType.GIFT)
                 .build());
 
         // 포인트 선물 내역
-        PointGift pointGift = PointGift.builder()
-                .senderUuid(senderUser.getUuid())
+        pointGiftRepository.save(
+                PointGift.builder()
+                .receiverUuid(senderUser.getUuid())
                 .giftPoint(pointGiftCreateDto.getGiftPoint())
                 .giftMessage(pointGiftCreateDto.getGiftMessage())
                 .giftImage(pointGiftCreateDto.getGiftImage())
                 .pointGiftType(PointGiftType.WAIT)
                 .point(point)
-                .build();
-
-        pointGiftRepository.save(pointGift);
+                .build());
 
         // 유저 포인트 중간 테이블
         userPointListRepository.save(
@@ -111,7 +114,7 @@ public class PointGiftServiceImple implements PointGiftService {
 
     // 2. 포인트 선물 유저 확인
     @Override
-    public String getSenderUser(String userName, String phoneNumber, String uuid) throws BaseException {
+    public String getreceiverUser(String userName, String phoneNumber, String uuid) throws BaseException {
         User senderUser = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
         log.info("senderUser : {}", senderUser);
@@ -127,29 +130,29 @@ public class PointGiftServiceImple implements PointGiftService {
 
     // 3. 포인트 대기 조회
     @Override
-    public PointGiftLastDto getLastGift(String senderUuid) throws BaseException{
+    public PointGiftLastDto getLastGift(String receiverUuid) throws BaseException{
 
         // 가장 최근 선물 정보
         PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
         log.info("pointGiftType {} ", pointGiftType);
 
-        Optional<PointGift> pointGiftSenderUser = pointGiftRepository.findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(senderUuid, pointGiftType);
+        Optional<PointGift> pointGiftSenderUser = pointGiftRepository.findTopByreceiverUuidAndPointGiftTypeOrderByIdAsc(receiverUuid, pointGiftType);
         log.info("pointGiftSenderUser {} ", pointGiftSenderUser);
 
         // 대기중인 선물포인트가 없다면 null
         if(pointGiftSenderUser.isEmpty()) {
-            return null;
+            throw new BaseException(GIFT_NO_HISTORY_FAILED);
         }
 
-        log.info("pointGiftSenderUser {} ", pointGiftSenderUser);
         // 보낸 유저 정보 가져오기
-        UserPointList userPointList = userPointListRepository.findTopByPointIdOrderByCreateAtDesc(pointGiftSenderUser.get().getPoint().getId());
+        Optional<UserPointList> userPointList = userPointListRepository.findByPointId(pointGiftSenderUser.get().getPoint().getId());
 
-        User giverUser = userRepository.findByUuid(userPointList.getUuid())
+        User giverUser = userRepository.findByUuid(userPointList.get().getUuid())
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
         log.info("giverUser {} ", giverUser);
 
         return PointGiftLastDto.builder()
+                .pointGiftId(pointGiftSenderUser.get().getId())
                 .giverLoginId(giverUser.getLoginId())
                 .giverName(giverUser.getName())
                 .point(pointGiftSenderUser.get().getGiftPoint())
@@ -160,55 +163,117 @@ public class PointGiftServiceImple implements PointGiftService {
     }
 
     // 4. 포인트 선물 수락
+    @Transactional(rollbackFor = Exception.class) // 롤백 설정 추가
     @Override
-    public void updateGiftPointSuccess(String senderUuid) throws BaseException {
+    public void updateSuccessGiftPoint(String receiverUuid) throws BaseException {
 
         // 가장 최근 선물 정보
         PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
         log.info("pointGiftType {} ", pointGiftType);
 
+        Optional<PointGift> pointGiftReceiver = pointGiftRepository.findTopByreceiverUuidAndPointGiftTypeOrderByIdAsc(receiverUuid, pointGiftType);
+        log.info("pointGiftReceiver {} ", pointGiftReceiver);
 
-        Optional<PointGift> pointGiftSenderUser = pointGiftRepository.findTopBySenderUuidAndPointGiftTypeOrderByIdDesc(senderUuid, pointGiftType);
-        log.info("pointGiftSenderUser {} ", pointGiftSenderUser);
-
-        var setTotalPoint = 0;
-        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(senderUuid)
+        // 유저 포인트 리스트 포인트 아이디로 조회
+        UserPointList userPointList = userPointListRepository.findByPointId(pointGiftReceiver.get().getPoint().getId())
                 .orElse(null);
 
+        // 포인트 계산
+        var setTotalPoint = 0;
+        UserPointList lastPoint = userPointList;
+
+        log.info("lastPoint : {}", lastPoint);
         if (lastPoint == null) {
             setTotalPoint = 0;
         } else {
+            log.info("lastPoint.getPoint().getId() : {}", lastPoint.getPoint().getId());
+            setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
+        }
+        log.info("setTotalPoint : {}", setTotalPoint);
+
+        Point point = pointRepository.save(Point.builder()
+                .totalPoint(setTotalPoint + pointGiftReceiver.get().getGiftPoint())
+                .used(false)
+                .point(pointGiftReceiver.get().getGiftPoint())
+                .pointType(PointType.GIFT)
+                .build());
+
+        pointGiftRepository.save(
+                PointGift.builder()
+                        .id(pointGiftReceiver.get().getId())
+                        .receiverUuid(pointGiftReceiver.get().getReceiverUuid())
+                        .giftPoint(pointGiftReceiver.get().getGiftPoint())
+                        .giftMessage(pointGiftReceiver.get().getGiftMessage())
+                        .giftImage(pointGiftReceiver.get().getGiftImage())
+                        .point(pointGiftReceiver.get().getPoint())
+                        .pointGiftType(PointGiftType.GET)
+                        .build()
+        );
+
+        userPointListRepository.save(
+                UserPointList.builder()
+                        .point(point)
+                        .uuid(receiverUuid)
+                        .pointType(PointType.GIFT)
+                        .build()
+
+        );
+
+    }
+
+    // 5. 포인트 선물 거절
+    @Override
+    public void updateCancelGiftPoint(String receiverUuid) throws BaseException {
+
+        // 가장 최근 선물 정보
+        PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
+        log.info("pointGiftType {} ", pointGiftType);
+
+        Optional<PointGift> pointGiftReceiver = pointGiftRepository.findTopByreceiverUuidAndPointGiftTypeOrderByIdAsc(receiverUuid, pointGiftType);
+        log.info("pointGiftReceiver {} ", pointGiftReceiver);
+
+        // 유저 포인트 리스트 포인트 아이디로 조회
+        UserPointList userPointList = userPointListRepository.findByPointId(pointGiftReceiver.get().getPoint().getId())
+                .orElse(null);
+
+        // 포인트 계산
+        var setTotalPoint = 0;
+        UserPointList lastPoint = userPointList;
+
+        log.info("lastPoint : {}", lastPoint);
+        if (lastPoint == null) {
+            setTotalPoint = 0;
+        } else {
+            log.info("lastPoint.getPoint().getId() : {}", lastPoint.getPoint().getId());
             setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
         }
 
-//        // 포인트 증가
-//        Point point = pointRepository.save(Point.builder()
-//                .totalPoint(setTotalPoint + pointGiftDto.getGiftPoint())
-//                .used(false)
-//                .point(pointGiftDto.getGiftPoint())
-//                .pointType(PointType.GIFT)
-//                .build());
-//
-//        userPointListRepository.save(
-//                UserPointList.builder()
-//                        .point(point)
-//                        .uuid(pointPurchaseDto.getUuid())
-//                        .pointType(PointType.RECEIPT)
-//                        .build()
-//        );
-//        Point point = pointRepository.save(Point.builder()
-//                .totalPoint(setTotalPoint + pointPurchaseDto.getPurchasePoint())
-//                .used(false)
-//                .point(pointPurchaseDto.getPurchasePoint())
-//                .pointType(PointType.RECEIPT)
-//                .build());
+        Point point = pointRepository.save(Point.builder()
+                .totalPoint(setTotalPoint + pointGiftReceiver.get().getGiftPoint())
+                .used(false)
+                .point(pointGiftReceiver.get().getGiftPoint())
+                .pointType(PointType.GIFT)
+                .build());
 
+        pointGiftRepository.save(
+                PointGift.builder()
+                        .id(pointGiftReceiver.get().getId())
+                        .receiverUuid(pointGiftReceiver.get().getReceiverUuid())
+                        .giftPoint(pointGiftReceiver.get().getGiftPoint())
+                        .giftMessage(pointGiftReceiver.get().getGiftMessage())
+                        .giftImage(pointGiftReceiver.get().getGiftImage())
+                        .point(pointGiftReceiver.get().getPoint())
+                        .pointGiftType(PointGiftType.CANCEL)
+                        .build()
+        );
+
+        userPointListRepository.save(
+                UserPointList.builder()
+                        .point(point)
+                        .uuid(receiverUuid)
+                        .pointType(PointType.GIFT)
+                        .build()
+
+        );
     }
-
-    @Override
-    public void updateGiftPointCancel(String senderUuid) throws BaseException {
-
-    }
-
-
 }

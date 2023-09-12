@@ -18,8 +18,8 @@ public class PointGift extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, name = "sender_uuid")
-    private String senderUuid;
+    @Column(nullable = false, name = "receiver_uuid")
+    private String receiverUuid;
     @Column(nullable = false, name= "gift_price")
     private Integer giftPoint;
     @Column(name = "gift_message")
