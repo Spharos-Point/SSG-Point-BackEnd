@@ -5,6 +5,7 @@ import com.spharos.pointapp.brand.application.BrandService;
 import com.spharos.pointapp.brand.dto.BranchAddDto;
 import com.spharos.pointapp.brand.vo.BranchAddInput;
 import com.spharos.pointapp.brand.vo.BranchResOut;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,7 @@ public class BranchController {
     private final BranchService branchService;
     private final BrandService brandService;
 
+    @Operation(summary = "1:1상담 답변 조회", description = "1:1상담 답변을 조회합니다.", tags = { "board Controller" })
     @PostMapping("/branch")
     public void addBranch(@RequestBody BranchAddInput branchAddInput) {
         log.info("branchAddInput: {}", branchAddInput);

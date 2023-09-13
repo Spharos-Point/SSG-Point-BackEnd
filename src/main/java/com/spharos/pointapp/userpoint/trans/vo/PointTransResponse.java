@@ -3,6 +3,7 @@ package com.spharos.pointapp.userpoint.trans.vo;
 import lombok.*;
 
 @Setter
+@Getter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor

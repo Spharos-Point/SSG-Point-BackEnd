@@ -21,7 +21,7 @@ public class PointController {
 
     /**
      * 1. 토탈 포인트 조회
-     * 2. 포인트 전체 조회
+     * 2. 전체 포인트 내역 조회
      */
 
     // 1. 토탈 포인트 조회
@@ -38,7 +38,5 @@ public class PointController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-
-
 }
 
