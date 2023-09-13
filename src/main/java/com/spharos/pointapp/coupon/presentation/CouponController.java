@@ -2,9 +2,12 @@ package com.spharos.pointapp.coupon.presentation;
 
 import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.coupon.application.CouponService;
+import com.spharos.pointapp.coupon.domain.Coupon;
 import com.spharos.pointapp.coupon.dto.CouponCreateDto;
+import com.spharos.pointapp.coupon.dto.CouponDownDto;
 import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
+import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
 import com.spharos.pointapp.coupon.vo.CouponCreate;
 import com.spharos.pointapp.coupon.vo.CouponDown;
 import com.spharos.pointapp.coupon.vo.CouponGetOut;
@@ -15,6 +18,7 @@ import com.spharos.pointapp.event.vo.EventUpdate;
 import com.spharos.pointapp.partner.domain.Partner;
 import com.spharos.pointapp.partner.infrastructure.PartnerRepository;
 import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,7 +37,9 @@ public class CouponController {
 
     private final CouponService couponService;
     private final PartnerRepository partnerRepository;
+    private final CouponRepository couponRepository;
     private final TokenUtils tokenUtils;
+    private final UserRepository userRepository;
 
 
 //    쿠폰 생성
@@ -102,12 +108,19 @@ public class CouponController {
         return couponGetOutList;
     }
 
+//    쿠폰 다운로드
 //    @PostMapping("/couponPage")
 //    public void downCoupon(@RequestHeader("Authorization") String token,
 //                           @RequestBody CouponDown couponDown) {
 //        String uuid = tokenUtils.extractUuidFromToken(token);
+//        User user = userRepository.findByUuid(uuid).get();
 //        log.info("{}", uuid);
-//        User user
+//        Coupon coupon = couponRepository.findByCouponId(couponDown.getCouponId());
+//        CouponDownDto couponDownDto = CouponDownDto.builder()
+//                .user(user)
+//                .coupon(coupon)
+//                .build();
+//        couponService.downCoupon(couponDownDto, uuid);
 //    }
 
 }

@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CouponGetDto {
+    private Long id;
     private String couponName;
     private String couponDesc;
     private Long partnerId;

@@ -138,10 +138,24 @@ public class EventServiceImpl implements EventService{
         return eventGetDtoList;
     }
 
-    //    참여형 이벤트 조회 (당첨자 발표가 필요한 이벤트)
+    //    진행중 이벤트 조회
     @Override
     public List<EventGetDto> getEventByWin() {
-        List<Event> eventList = eventRepository.findByEventType();
+        List<Event> eventList = eventRepository.findByEventTypeAndExpired();
+        List<EventGetDto> eventGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        eventList.forEach(
+                event -> eventGetDtoList.add(
+                        mapper.map(event, EventGetDto.class)
+                )
+        );
+        return eventGetDtoList;
+    }
+
+//    종료된 이벤트를 제외한 이벤트 조회
+    @Override
+    public List<EventGetDto> getEventByNotExpired() {
+        List<Event> eventList = eventRepository.findAllByNotExpired();
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(

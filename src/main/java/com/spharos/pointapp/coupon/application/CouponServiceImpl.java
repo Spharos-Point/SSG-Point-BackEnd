@@ -8,6 +8,8 @@ import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
 import com.spharos.pointapp.partner.domain.Partner;
+import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import jakarta.persistence.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.spharos.pointapp.user.domain.QUser.user;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
     private final CouponListRepository couponListRepository;
+    private final UserRepository userRepository;
 
 
 
@@ -106,16 +111,20 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
     }
 
 
-//    사용자 쿠폰 다운로드
-    @Override
-    public void downCoupon(CouponDownDto couponDownDto) {
-        couponListRepository.save(
-                CouponList.builder()
-                        .coupon(couponDownDto.getCoupon())
-                        .build()
-        );
+//    쿠폰 다운로드
+//    @Override
+//    public void downCoupon(CouponDownDto couponDownDto, String uuid) {
+//        if (uuid != null && couponDownDto.getCoupon() != null) {
+//            // CouponList 엔티티를 생성하고 User와 Coupon을 연결한 후 저장
+//            CouponList couponList = CouponList.builder()
+//                    .user(couponDownDto.getUser())
+//                    .coupon(couponDownDto.getCoupon())
+//                    .build();
+//
+//            couponListRepository.save(couponList);
+//        }
 
-}
+//}
 
 
 }

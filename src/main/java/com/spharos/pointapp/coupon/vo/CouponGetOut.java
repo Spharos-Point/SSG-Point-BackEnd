@@ -9,6 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CouponGetOut {
+    private Long id;
     private String couponName;
     private String couponDesc;
     private String partnerName;

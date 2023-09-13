@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class EventGetDto {
 
+    private Long id;
     private String eventName;
     private String regDate;
     private String endDate;
