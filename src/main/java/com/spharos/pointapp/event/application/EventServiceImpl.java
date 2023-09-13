@@ -113,7 +113,7 @@ public class EventServiceImpl implements EventService{
     //    종료 이벤트 조회
     @Override
     public List<EventGetDto> getEventByExpired() {
-        List<Event> eventList = eventRepository.findAllByExpired();
+        List<Event> eventList = eventRepository.findAllByExpiredAndEventType();
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(

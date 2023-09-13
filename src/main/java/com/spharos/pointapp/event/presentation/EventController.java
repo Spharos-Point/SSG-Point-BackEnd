@@ -145,7 +145,7 @@ public class EventController {
 }
 
 //    종료된 참여형 이벤트 조회
-    @Operation(summary = "종료된 이벤트 조회", description = "종료된 참여형 이벤트를 조회합니다.", tags = { "Event Controller" })
+    @Operation(summary = "당첨 발표", description = "종료된 참여형 이벤트를 조회합니다.", tags = { "Event Controller" })
     @GetMapping("/winevents")
     public List<EventGetOut> getEventByWin() {
         ModelMapper mapper = new ModelMapper();
