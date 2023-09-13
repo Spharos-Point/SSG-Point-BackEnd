@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface UserPointListRepository extends JpaRepository<UserPointList, Long> {
 
     Optional<UserPointList> findTopByUuidOrderByCreateAtDesc(String uuid);
-    UserPointList findTopByPointIdOrderByCreateAtDesc(Long point_id);
+    Optional<UserPointList> findByPointId(Long pointId);
 
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class PointGiftCreateDto {
 
-    private String senderLoginId;
+    private String receiverLoginId;
     private Integer giftPoint;
     private String pointPassword;
     private String giftMessage;

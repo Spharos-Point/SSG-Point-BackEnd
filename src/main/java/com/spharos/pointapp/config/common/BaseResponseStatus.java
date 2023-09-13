@@ -23,12 +23,12 @@ public enum BaseResponseStatus {
     // Common
     FAILED_TO_LOGIN(false, 3000, "없는 아이디거나 비밀번호가 틀렸습니다."),
     NO_LOOKUP_VALUE(false, 3001, "조회된 데이터가 없습니다."),
-    JWT_CREATE_FAILED(false, 3002, "토큰 생성에 실패하였습니다."),
+    JWT_CREATE_FAILED(false, 3002, "토큰 생성에 실패했습니다."),
     NO_EXIST_USER(false, 3003, "존재하지 않는 유저 정보입니다."),
 
 
     // User
-    USER_INSERT_FAILED(false, 4000, "사용자 회원가입에 실패하였습니다."),
+    USER_INSERT_FAILED(false, 4000, "사용자 회원가입에 실패했습니다."),
     USER_RETRIEVE_FAILED(false, 4001, "회원정보 조회에 실패했습니다."),
     USER_UPDATE_FAILED(false, 4002, "회원정보 변경에 실패했습니다."),
     PASSWORD_RETRIEVE_FAILED(false, 4003, "비밀번호 조회에 실패했습니다."),
@@ -37,8 +37,13 @@ public enum BaseResponseStatus {
     PASSWORD_SAME_FAILED(false, 4006,"현재 사용중인 비밀번호 입니다."),
     POINT_PASSWORD_RETRIEVE_FAILED(false, 4007,"포인트 비밀번호 조회에 실패했습니다."),
     POINT_PASSWORD_UPDATE_FAILED(false, 4008, "포인트 비밀번호 변경에 실패했습니다."),
+    NO_USER_POINT_LIST_HISTORY_FAILED(false, 4009, "해당하는 유저 포인트 리스트가 없습니다."),
+
 
     // Gift
+    GIFT_FAILED(false, 5000, "선물하기에 실패했습니다."),
+    GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다."),
+    GIFT_NO_HISTORY_FAILED(false, 5002, "해당하는 선물 내역 조회에 실패했습니다.");
     GIFT_FAILED(false, 5000, "선물하기에 실패하였습니다."),
     GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다."),
 

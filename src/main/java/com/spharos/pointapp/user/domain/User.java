@@ -30,6 +30,9 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 100, name = "email")
     private String email;
     @Column(nullable = false, length = 100, name = "password")
+    private String password;
+    @Column(length = 30, name = "phone_Number")
+    private String phoneNumber;
     private String password; // todo: Hashing
     @Column(length = 30, name = "phone")
     private String phone;

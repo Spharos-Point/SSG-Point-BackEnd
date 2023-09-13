@@ -5,12 +5,12 @@ import lombok.Getter;
 @Getter
 public enum PointGiftType implements CodeValue{
 
-    GET("G", "적립"),
+    ACCEPT("A", "수락"),
     WAIT("W", "대기"),
-    CANCEL("C", "취소");
+    REFUSE("R", "거절");
 
-    private String code;
-    private String value;
+    private final String code;
+    private final String value;
 
     PointGiftType(String code, String value) {
         this.code = code;
