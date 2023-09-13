@@ -41,6 +41,8 @@ pipeline {
                     docker rm ssgpointapp || true
                     docker rmi ssgpoint-be || true
                     docker build -t ssgpoint-be .
+                    echo ${DB_URL}
+                    echo ${DB_PASS}
                 '''
             }
         }
