@@ -19,12 +19,7 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final com.spharos.pointapp.config.common.QBaseTimeEntity _super = new com.spharos.pointapp.config.common.QBaseTimeEntity(this);
-
     public final StringPath address = createString("address");
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> createAt = _super.createAt;
 
     public final StringPath email = createString("email");
 
@@ -34,6 +29,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath password = createString("password");
 
+    public final StringPath phone = createString("phone");
+
     public final StringPath phoneNumber = createString("phoneNumber");
 
     public final StringPath pointPassword = createString("pointPassword");
@@ -41,9 +38,6 @@ public class QUser extends EntityPathBase<User> {
     public final EnumPath<Roll> roll = createEnum("roll", Roll.class);
 
     public final NumberPath<Integer> status = createNumber("status", Integer.class);
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> updateAt = _super.updateAt;
 
     public final StringPath userName = createString("userName");
 

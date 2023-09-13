@@ -59,7 +59,6 @@ public class AuthenticationService {
                 .address(userSignUpDto.getAddress())
                 .status(1)
                 .build();
-        log.info("user 1 {} ", user.getName());
 
         user.hashPassword(user.getPassword());
         userRepository.save(user);

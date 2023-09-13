@@ -43,9 +43,7 @@ public enum BaseResponseStatus {
     // Gift
     GIFT_FAILED(false, 5000, "선물하기에 실패했습니다."),
     GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다."),
-    GIFT_NO_HISTORY_FAILED(false, 5002, "해당하는 선물 내역 조회에 실패했습니다.");
-    GIFT_FAILED(false, 5000, "선물하기에 실패하였습니다."),
-    GIFT_MYSELF_FAILED(false, 5001, "자신에게 선물할 수 없습니다."),
+    GIFT_NO_HISTORY_FAILED(false, 5002, "해당하는 선물 내역 조회에 실패했습니다."),
 
     // Trans
     TRANS_FAILED( false, 6000, "전환하기에 실패하였습니다."),
