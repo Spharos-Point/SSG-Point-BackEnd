@@ -24,25 +24,19 @@ public class QPointTrans extends EntityPathBase<PointTrans> {
 
     public final com.spharos.pointapp.config.common.QBaseTimeEntity _super = new com.spharos.pointapp.config.common.QBaseTimeEntity(this);
 
-    public final com.spharos.pointapp.affiliatecard.domain.QAffiliateCard affiliateCard;
-
-    public final com.spharos.pointapp.brand.domain.QBranch branch;
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createAt = _super.createAt;
+
+    public final com.spharos.pointapp.extra.domain.QExtra extra;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final com.spharos.pointapp.point.domain.QPoint point;
 
-    public final NumberPath<Integer> transMount = createNumber("transMount", Integer.class);
-
-    public final NumberPath<Integer> trnasPoint = createNumber("trnasPoint", Integer.class);
+    public final NumberPath<Integer> transPoint = createNumber("transPoint", Integer.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateAt = _super.updateAt;
-
-    public final StringPath uuid = createString("uuid");
 
     public QPointTrans(String variable) {
         this(PointTrans.class, forVariable(variable), INITS);
@@ -62,8 +56,7 @@ public class QPointTrans extends EntityPathBase<PointTrans> {
 
     public QPointTrans(Class<? extends PointTrans> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.affiliateCard = inits.isInitialized("affiliateCard") ? new com.spharos.pointapp.affiliatecard.domain.QAffiliateCard(forProperty("affiliateCard"), inits.get("affiliateCard")) : null;
-        this.branch = inits.isInitialized("branch") ? new com.spharos.pointapp.brand.domain.QBranch(forProperty("branch"), inits.get("branch")) : null;
+        this.extra = inits.isInitialized("extra") ? new com.spharos.pointapp.extra.domain.QExtra(forProperty("extra")) : null;
         this.point = inits.isInitialized("point") ? new com.spharos.pointapp.point.domain.QPoint(forProperty("point")) : null;
     }
 

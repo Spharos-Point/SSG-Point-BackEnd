@@ -4,13 +4,13 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
-@ToString
+@Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoticeGetDto {
+public class NoticeListGetDto {
     private String title;
     private String context;
     private Long noticeId;

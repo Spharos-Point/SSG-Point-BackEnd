@@ -2,14 +2,16 @@ package com.spharos.pointapp.userpoint.trans.vo;
 
 import lombok.*;
 
-@Getter
-@Builder
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class PointTransAddRequest {
+@Builder
+public class PointTransResponse {
 
-    private Long extraId;
+    private Long id;
     private Integer transPoint;
+    private Long pointId;
+    private Long extraId;
 
 }

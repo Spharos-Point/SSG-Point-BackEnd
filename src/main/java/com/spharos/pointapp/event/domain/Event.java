@@ -23,13 +23,28 @@ public class Event extends BaseTimeEntity {
     @Column(nullable = false, length = 45 , name = "event_name")
     private String eventName; // varchar는 java에서 string
 
+    @Column(nullable = false, name = "reg_date")
+    private String regDate;
+
+    @Column(nullable = false, name = "end_date")
+    private String endDate;
+
     @Column(nullable = false, length = 500, name = "event_desc")
     private String eventDesc;
 
     @Column(nullable = false, name = "event_type")
-    private Integer eventType; // tinyint
+    private String eventType; // 참여, 안내
 
     @Column(nullable = false, length = 50, name = "prize_type")
-    private String prizeType;
+    private String prizeType; // 포인트, 쿠폰, 경품, 안내
+
+    //    img url을 받음
+    @Column(nullable = false, length = 500, name = "img")
+    private String img;
+
+    // 마감 여부
+    @Column(nullable = false)
+    private Boolean expired;
+
 
 }

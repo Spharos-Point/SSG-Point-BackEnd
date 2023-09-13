@@ -3,6 +3,8 @@ package com.spharos.pointapp.notice.vo;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @Setter
@@ -12,4 +14,6 @@ import lombok.*;
 public class NoticeCreate {
     private String title;
     private String context;
+    private Long noticeId;
+    private LocalDateTime createAt;
 }

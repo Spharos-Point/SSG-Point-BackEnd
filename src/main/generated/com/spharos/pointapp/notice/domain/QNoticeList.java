@@ -22,6 +22,8 @@ public class QNoticeList extends EntityPathBase<NoticeList> {
 
     public static final QNoticeList noticeList = new QNoticeList("noticeList");
 
+    public final DateTimePath<java.time.LocalDateTime> createAt = createDateTime("createAt", java.time.LocalDateTime.class);
+
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
     public final QNotice notice;

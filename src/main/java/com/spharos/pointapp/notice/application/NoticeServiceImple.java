@@ -25,6 +25,7 @@ public class NoticeServiceImple implements NoticeService {
                 Notice.builder()
                         .title(noticeCreateDto.getTitle())
                         .context(noticeCreateDto.getContext())
+                        .createAt(noticeCreateDto.getCreateAt())
                         .build());
     }
 
@@ -43,6 +44,10 @@ public class NoticeServiceImple implements NoticeService {
         log.info("{}", noticeGetDtoList);
         return noticeGetDtoList;
     }
+
+    @Override
+    public void deleteNotice(Long noticeId) { noticeRepository.deleteById(noticeId); }
+
 }
 
 
