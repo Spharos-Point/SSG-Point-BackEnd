@@ -72,7 +72,7 @@ public class User implements UserDetails {
 
     // 4. 유저 네임
     public String getName() {
-        return this.getUsername();
+        return this.userName;
     }
 
     // 정해진 코드 이 계정이 가지고 있는 권한을 제공
@@ -87,7 +87,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return loginId; }
+    public String getUsername() { return uuid; }
 
     @Override
     public boolean isAccountNonExpired() {
