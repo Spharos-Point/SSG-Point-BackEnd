@@ -10,8 +10,12 @@ import java.time.LocalDateTime;
 public class EventCreateDto {
 
     private String eventName;
+    private String regDate;
+    private String endDate;
     private String eventDesc;
-    private Integer eventType;
+    private String eventType;
     private String prizeType;
+    private String img;
+    private Boolean expired;
 
 }

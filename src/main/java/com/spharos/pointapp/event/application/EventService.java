@@ -1,11 +1,13 @@
 package com.spharos.pointapp.event.application;
 
 import com.spharos.pointapp.coupon.dto.CouponGetDto;
+import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.dto.EventCreateDto;
 import com.spharos.pointapp.event.dto.EventGetDto;
 import com.spharos.pointapp.event.dto.EventListGetDto;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventService {
@@ -26,6 +28,16 @@ public interface EventService {
 
 //    사용자가 참여한 이벤트
     List<EventListGetDto> getEventByUser(Long userId);
+
+//    종료 이벤트 조회
+    List<EventGetDto> getEventByExpired();
+
+//    역순 정렬 조회
+    List<EventGetDto> getEventByDesc();
+
+//    참여형 이벤트 조회 (당첨자 발표가 필요한 이벤트)
+    List<EventGetDto> getEventByWin();
+
 
 }
 

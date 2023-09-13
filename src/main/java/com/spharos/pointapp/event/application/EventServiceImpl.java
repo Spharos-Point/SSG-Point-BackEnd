@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +34,13 @@ public class EventServiceImpl implements EventService{
         eventRepository.save(
                 Event.builder()
                         .eventDesc(eventCreateDto.getEventDesc())
+                        .regDate(eventCreateDto.getRegDate())
+                        .endDate(eventCreateDto.getEndDate())
+                        .img(eventCreateDto.getImg())
                         .eventName(eventCreateDto.getEventName())
                         .eventType(eventCreateDto.getEventType())
                         .prizeType(eventCreateDto.getPrizeType())
+                        .expired(eventCreateDto.getExpired())
                         .build()
         );
     }
@@ -49,9 +54,13 @@ public class EventServiceImpl implements EventService{
           Event.builder()
                   .Id(eventId)
                   .eventName(eventUpdateDto.getEventName())
+                  .regDate(eventUpdateDto.getRegDate())
+                  .endDate(eventUpdateDto.getEndDate())
+                  .img(eventUpdateDto.getImg())
                   .eventDesc(eventUpdateDto.getEventDesc())
                   .eventType(eventUpdateDto.getEventType())
                   .prizeType(eventUpdateDto.getPrizeType())
+                  .expired(eventUpdateDto.getExpired())
                   .build()
         );
         log.info("{}", event);
@@ -96,19 +105,67 @@ public class EventServiceImpl implements EventService{
         List<EventList> eventListList = eventListRepository.findAllByUserId(userId);
         log.info("{}", eventListList);
         List<EventListGetDto> eventListGetDtoList = eventListList.stream().map(item -> {
-                    Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
-                    User user = userRepository.findById(item.getUser().getId()).orElseThrow();
+            Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
+            User user = userRepository.findById(item.getUser().getId()).orElseThrow();
 
-                    return EventListGetDto.builder()
-                            .id(item.getId())
-                            .eventId(event.getId())
-                            .userId(user.getId())
-                            .prize(item.getPrize())
-                            .build();
-                }).toList();
+            return EventListGetDto.builder()
+                    .id(item.getId())
+                    .eventId(event.getId())
+                    .userId(user.getId())
+                    .prize(item.getPrize())
+                    .build();
+        }).toList();
 
         log.info("Event List is : {}", eventListGetDtoList);
         return eventListGetDtoList;
+    }
+
+    //    종료 이벤트 조회
+    @Override
+    public List<EventGetDto> getEventByExpired() {
+        List<Event> eventList = eventRepository.findAllByExpired();
+        log.info("{}", eventList);
+        List<EventGetDto> eventGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        eventList.forEach(
+                event -> eventGetDtoList.add(
+                        mapper.map(event, EventGetDto.class)
+                )
+        );
+        log.info("{}", eventGetDtoList);
+        return eventGetDtoList;
+    }
+
+//    마감 임박순 조회
+    @Override
+    public List<EventGetDto> getEventByDesc() {
+        List<Event> eventList = eventRepository.findAllByOrderByEndDateAsc();
+        log.info("{}", eventList);
+        List<EventGetDto> eventGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        eventList.forEach(
+                event -> eventGetDtoList.add(
+                        mapper.map(event, EventGetDto.class)
+                )
+        );
+        log.info("{}", eventGetDtoList);
+        return eventGetDtoList;
+    }
+
+    //    참여형 이벤트 조회 (당첨자 발표가 필요한 이벤트)
+    @Override
+    public List<EventGetDto> getEventByWin() {
+        List<Event> eventList = eventRepository.findByEventType();
+        log.info("{}", eventList);
+        List<EventGetDto> eventGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        eventList.forEach(
+                event -> eventGetDtoList.add(
+                        mapper.map(event, EventGetDto.class)
+                )
+        );
+        log.info("{}", eventGetDtoList);
+        return eventGetDtoList;
     }
 
 
