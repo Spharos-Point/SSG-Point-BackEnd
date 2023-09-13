@@ -15,12 +15,12 @@ spring:
 
   datasource:
         url: ${DATASOURCE_URL}
-        username: root
+        username: ${DATASOURCE_USER}
         password: ${DATASOURCE_PASS}
         driver-class-name: com.mysql.cj.jdbc.Driver
 
 JWT:
-  SECRET_KEY: f9ee13691cd0a3de2875b5fdcf5babcdb3394a3801e0843d6f998f78b9e016a0
+  SECRET_KEY: ${JWT_SECRET_KEY}
   EXPIRATION_TIME: 14400000
   header: Authorization
   prefix: Bearer

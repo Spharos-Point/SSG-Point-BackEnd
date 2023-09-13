@@ -42,13 +42,15 @@ pipeline {
                     docker rmi ssgpoint-be || true
                     docker build -t ssgpoint-be .
                     echo ${DB_URL}
+                    echo ${DB_USER}
                     echo ${DB_PASS}
+                    echo ${JWT_SECRET_KEY}
                 '''
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d --name ssgpointapp -p 8000:8000 -e DATASOURCE_URL=${DB_URL} -e DATASOURCE_PASS={DB_PASS} ssgpoint-be'
+                sh 'docker run -d --name ssgpointapp -p 8000:8000 -e DATASOURCE_URL=${DB_URL} -e DATASOURCE_USER=${DB_USER} -e DATASOURCE_PASS={DB_PASS} -e JWT_SECRET_KEY={JWT_SECRET_KEY} ssgpoint-be'
             }
         }
     }
