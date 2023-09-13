@@ -26,14 +26,13 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 30, name = "login_id")
     private String loginId;
     @Column(nullable = false, length = 100, name = "user_name")
-    private String name;
+    private String userName;
     @Column(nullable = false, length = 100, name = "email")
     private String email;
     @Column(nullable = false, length = 100, name = "password")
     private String password;
     @Column(length = 30, name = "phone_Number")
     private String phoneNumber;
-    private String password; // todo: Hashing
     @Column(length = 30, name = "phone")
     private String phone;
     @Column(length = 100, name = "address")
@@ -55,21 +54,25 @@ public class User implements UserDetails {
      * 4. ETC 시큐리티
      */
 
-    //todo: 수정일자, 생성일자
-//    1. 해쉬 패스워드
+    // 1. 해쉬 패스워드
     public void hashPassword(String password) {
     //      this.password = password;
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-//    2. 해쉬 포인트 패스워드
+    // 2. 해쉬 포인트 패스워드
     public void hashPointPassword(String pointPassword) {
         this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
     }
 
-//    3. 유저 상태 변경
+    // 3. 유저 상태 변경
     public void leaveOnlineStatus() {
         this.status = 0;
+    }
+
+    // 4. 유저 네임
+    public String getName() {
+        return this.getUsername();
     }
 
     // 정해진 코드 이 계정이 가지고 있는 권한을 제공
