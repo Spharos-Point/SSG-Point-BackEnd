@@ -1,5 +1,7 @@
 package com.spharos.pointapp.pointcard.application;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.pointcard.dto.PointCardCreateDto;
 import com.spharos.pointapp.pointcard.dto.PointCardOutDto;
 
@@ -7,10 +9,10 @@ import java.util.List;
 
 public interface PointCardService {
 
-    //    1. 포인트 카드 생성
+    // 1. 포인트 카드 생성
     void createPointCard(PointCardCreateDto pointCardCreateDto);
 
-//   2. 포인트 카드 조회
-    List<PointCardOutDto> getPointCardByUser(String uuid);
+    // 2. 포인트 카드 조회
+    List<PointCardOutDto> getPointCardByUser(String uuid) throws BaseException;
 
 }

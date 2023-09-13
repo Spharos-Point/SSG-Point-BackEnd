@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -60,7 +62,7 @@ public class PointGiftController {
 
         String uuid = tokenUtils.extractUuidFromToken(token);
         try {
-            String loginId = pointGiftService.getreceiverUser(senderUserName, senderPhoneNumber, uuid);
+            String loginId = pointGiftService.getReceiverUser(senderUserName, senderPhoneNumber, uuid);
             return new BaseResponse<>(loginId);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -113,12 +115,19 @@ public class PointGiftController {
 //    @Operation(summary = "포인트 선물 조회", description = "포인트 선물 조회")
 //    @SecurityRequirement(name = "Bearer Auth")
 //    @GetMapping("/gift/search")
-//    public BaseResponse<String> giftSearch(@RequestHeader("Authorization") String token) {
-//        String receiverUuid = tokenUtils.extractUuidFromToken(token);
+//    public BaseResponse<List<PointGiftHistoryDto>> giftHistory(@RequestHeader("Authorization") String token) {
+//
+//        String uuid = tokenUtils.extractUuidFromToken(token);
+//
 //        try {
-//            pointGiftService.updateCancelGiftPoint(receiverUuid);
-//            return new BaseResponse<>();
-//        } catch (BaseException exception){
+//            List<PointGiftHistoryDto> pointGiftHistoryDto = pointGiftService.getGiftHistory(uuid);
+//
+//
+//            PointGiftHistoryOutVo pointGiftHistoryOutVo = PointGiftHistoryOutVo.builder()
+//
+//
+//            return new BaseResponse<>(pointGiftHistoryOutVo);
+//        } catch (BaseException exception) {
 //            return new BaseResponse<>(exception.getStatus());
 //        }
 //    }
