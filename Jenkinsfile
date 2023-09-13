@@ -45,10 +45,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            environment {
-                DB_URL = credentials('db_url')
-                DB_PASS = credentials('db_pass')
-            }
             steps {
                 sh 'docker run -d --name ssgpointapp -p 8000:8000 -e DATASOURCE_URL=${DB_URL} -e DATASOURCE_PASS={DB_PASS} ssgpoint-be'
             }
