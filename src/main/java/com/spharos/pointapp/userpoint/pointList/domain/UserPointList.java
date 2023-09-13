@@ -5,16 +5,14 @@ import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.domain.PointTypeConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class UserPointList extends BaseTimeEntity {
 
     @Id
