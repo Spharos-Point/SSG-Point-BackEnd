@@ -24,6 +24,7 @@ public class CouponList {
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
+//    쿠폰 사용 여부
     @Column(nullable = false, name = "coupon_stat", columnDefinition = "boolean default false")
     private Boolean couponStat;
 

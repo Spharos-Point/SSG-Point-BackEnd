@@ -1,7 +1,5 @@
 package com.spharos.pointapp.userpoint.trans.vo;
 
-import com.spharos.pointapp.affiliatecard.domain.AffiliateCard;
-import com.spharos.pointapp.point.domain.Point;
 import lombok.*;
 
 @Getter
@@ -11,10 +9,7 @@ import lombok.*;
 @ToString
 public class PointTransAddRequest {
 
-    private Long id;
-    private Integer transMount;
+    private Long extraId;
     private Integer transPoint;
-    private Point point;
-    private AffiliateCard affiliateCard;
-    private String uuid;
+
 }

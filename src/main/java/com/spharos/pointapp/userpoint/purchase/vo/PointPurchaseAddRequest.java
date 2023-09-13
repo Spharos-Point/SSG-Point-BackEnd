@@ -9,7 +9,6 @@ import lombok.*;
 @ToString
 public class PointPurchaseAddRequest {
 
-    private String uuid;
     private Long branchId;
     private Integer purchaseMount;
     private Integer purchasePrice;

@@ -2,20 +2,19 @@ package com.spharos.pointapp.affiliatecard.application;
 
 import com.spharos.pointapp.affiliatecard.domain.AffiliateCard;
 import com.spharos.pointapp.affiliatecard.dto.AffiliateAddDto;
+import com.spharos.pointapp.affiliatecard.dto.AffiliateGetDto;
 import com.spharos.pointapp.affiliatecard.dto.AffiliateUpdateDto;
 import com.spharos.pointapp.affiliatecard.infrastructure.AffiliateRepository;
-import com.spharos.pointapp.extra.domain.Extra;
 import com.spharos.pointapp.extra.infrastructure.ExtraRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,76 +50,44 @@ public class AffiliateServiceImpl implements AffiliateService {
         return ResponseEntity.status(HttpStatus.CREATED).body("New card has been added");
     }
 
-//    제휴포인트 카드 수정
+
+    //    제휴포인트 카드 수정
     @Override
-    public void updateAffiliate(AffiliateUpdateDto affiliateupdateDto, String uuid) {
-        AffiliateCard affiliateCard = affiliateRepository.findTopByUuidAndExtraId(uuid, affiliateupdateDto.getExtraId());
+    public void updateAffiliate(AffiliateUpdateDto affiliateupdateDto) {
+        AffiliateCard affiliateCard = affiliateRepository.findTopByUuidAndExtraId(
+                affiliateupdateDto.getUuid(), affiliateupdateDto.getExtraId());
         affiliateRepository.save(
-          AffiliateCard.builder()
-                  .Id(affiliateCard.getId())
-                  .extra(affiliateCard.getExtra())
-                  .uuid(affiliateCard.getUuid())
-                  .affiliateNum(affiliateupdateDto.getAffiliateNum())
-                  .build()
+                AffiliateCard.builder()
+                        .Id(affiliateCard.getId())
+                        .extra(affiliateCard.getExtra())
+                        .uuid(affiliateCard.getUuid())
+                        .affiliateNum(affiliateupdateDto.getAffiliateNum())
+                        .build()
         );
         log.info("{}", affiliateCard);
 
     }
+
+    @Override
+    public List<AffiliateGetDto> getAllAffiliateCards(String uuid) {
+        List<AffiliateCard> affiliateCardList = affiliateRepository.findAllByUuid(uuid);
+        log.info("{}", affiliateCardList);
+        List<AffiliateGetDto> affiliateGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        affiliateCardList.forEach(
+                affiliateCard -> affiliateGetDtoList.add(
+                        mapper.map(affiliateCard, AffiliateGetDto.class)
+                )
+        );
+        log.info("{}", affiliateCardList);
+        return affiliateGetDtoList;
+    }
+
+    @Override
+    public void deleteAffiliate(Long affiliateId) {
+        affiliateRepository.deleteById(affiliateId);
+    }
+
 }
 
-//    @Override
-//    public void updateAffiliate(AffiliateUpdateDto affiliateupdateDto, String uuid, String affiliateCardId) {
-//        log.info("{}", affiliateCardId, uuid);
-//        AffiliateCard affiliateCard = affiliateRepository.findByUuidAndAffiliateId(uuid, affiliateCardId)
-//        affiliateRepository.save(
-//          AffiliateCard.builder()
-//                  .Id(affiliateupdateDto.getId())
-//                  .affiliateNum(affiliateupdateDto.getAffiliateNum())
-//                  .build()
-//        );
-//        log.info("{}", affiliateCard);
-//    }
-//}
 
-    //    제휴포인트 카드 수정
-//    UUID와 extraId가 동일한 항목을 찾아서 수정
-//    @Override
-//    public void updateAffiliate(AffiliateUpdateDto affiliateUpdateDto, String affiliateCardId, String uuid, Long extraId) {
-//        log.info("{}", affiliateCardId);
-//        Optional<AffiliateCard> optionalAffiliateCard  = affiliateRepository.findByUuidAndId(affiliateCardId, uuid);
-//
-//        if (optionalAffiliateCard .isPresent()) {
-//            AffiliateCard affiliateCard = optionalAffiliateCard.get();
-//            Extra extra = extraRepository.findById(extraId).orElse(null);
-//            affiliateRepository.save(AffiliateCard.builder()
-//                .Id(affiliateCard.getId())
-//                .uuid(affiliateCard.getUuid())
-//                .extra(extra)
-//                .affiliateNum(affiliateUpdateDto.getAffiliateNum())
-//                .build());
-//
-//            log.info("포인트카드 수정 완료: {}", affiliateCard);
-//        } else {
-//            log.error("해당 포인트카드를 찾지 못했습니다.");
-//        }
-
-//        affiliateRepository.save(AffiliateCard.builder()
-//                .Id(affiliateCard.getId())
-//                .uuid(affiliateCard.getUuid())
-//                .extra(affiliateUpdateDto.getExtraId())
-//                .affiliateNum(affiliateUpdateDto.getAffiliateNum())
-//                .build());
-
-
-
-    //    제휴 포인트카드 수정
-//    @Override
-//    public void updateAffiliate(AffiliateUpdateDto affiliateUpdateDto, String uuid) {
-//        affiliateRepository.save(AffiliateCard.builder()
-//                .affiliateId(affiliateUpdateDto.getAffiliateId())
-//                .extraId(affiliateUpdateDto.getExtraId())
-//                .affiliateNum(affiliateUpdateDto.getAffiliateNum())
-//                .uuid(uuid)
-//                .build());
-//    }
-//}

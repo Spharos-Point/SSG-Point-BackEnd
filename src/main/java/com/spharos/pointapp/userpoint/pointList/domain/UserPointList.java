@@ -22,6 +22,7 @@ public class UserPointList extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "point_id")
     private Point point;
 
     @Column(nullable = false)

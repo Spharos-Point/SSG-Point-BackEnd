@@ -1,6 +1,7 @@
 package com.spharos.pointapp.userpoint.purchase.presentaion;
 
 import com.spharos.pointapp.brand.infrastructure.BranchRepository;
+import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
@@ -24,11 +25,10 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
     private final PointRepository pointRepository;
 
     @Override
-    public void purchasePoint(PointPurchaseDto pointPurchaseDto) {
+    public void purchasePoint(PointPurchaseDto pointPurchaseDto, String uuid) {
 
         var setTotalPoint = 0;
-        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(
-                pointPurchaseDto.getUuid()
+        UserPointList lastPoint = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid
         ).orElse(null);
 
         log.info("lastPoint : {}", lastPoint);
@@ -60,7 +60,7 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
         userPointListRepository.save(
                 UserPointList.builder()
                         .point(point)
-                        .uuid(pointPurchaseDto.getUuid())
+                        .uuid(uuid)
                         .pointType(PointType.RECEIPT)
                         .build()
         );

@@ -2,6 +2,7 @@ package com.spharos.pointapp.coupon.application;
 
 import com.spharos.pointapp.coupon.domain.*;
 import com.spharos.pointapp.coupon.dto.CouponCreateDto;
+import com.spharos.pointapp.coupon.dto.CouponDownDto;
 import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
@@ -103,6 +104,18 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
     public void deleteCoupon(Long couponId) {
         couponRepository.deleteById(couponId);
     }
+
+
+//    사용자 쿠폰 다운로드
+    @Override
+    public void downCoupon(CouponDownDto couponDownDto) {
+        couponListRepository.save(
+                CouponList.builder()
+                        .coupon(couponDownDto.getCoupon())
+                        .build()
+        );
+
+}
 
 
 }

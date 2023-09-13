@@ -1,6 +1,5 @@
 package com.spharos.pointapp.event.domain;
 
-import com.spharos.pointapp.config.common.BaseTimeEntity;
 import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;

@@ -6,7 +6,7 @@ import lombok.*;
 @ToString
 public class PointGiftInVo {
 
-    private String giverLoginId;
+    private String receiverLoginId;
     private Integer giftPoint;
     private String pointPassword;
     private String giftMessage;

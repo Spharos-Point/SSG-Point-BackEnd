@@ -1,10 +1,12 @@
 package com.spharos.pointapp.coupon.presentation;
 
+import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.coupon.application.CouponService;
 import com.spharos.pointapp.coupon.dto.CouponCreateDto;
 import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.vo.CouponCreate;
+import com.spharos.pointapp.coupon.vo.CouponDown;
 import com.spharos.pointapp.coupon.vo.CouponGetOut;
 import com.spharos.pointapp.coupon.vo.CouponUpdate;
 import com.spharos.pointapp.event.dto.EventUpdateDto;
@@ -12,6 +14,7 @@ import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.event.vo.EventUpdate;
 import com.spharos.pointapp.partner.domain.Partner;
 import com.spharos.pointapp.partner.infrastructure.PartnerRepository;
+import com.spharos.pointapp.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -30,12 +33,8 @@ public class CouponController {
 
     private final CouponService couponService;
     private final PartnerRepository partnerRepository;
+    private final TokenUtils tokenUtils;
 
-    @Autowired
-    public CouponController(PartnerRepository partnerRepository, CouponService couponService) {
-        this.partnerRepository = partnerRepository;
-        this.couponService = couponService;
-    }
 
 //    쿠폰 생성
     @PostMapping("/coupon")
@@ -102,5 +101,13 @@ public class CouponController {
         );
         return couponGetOutList;
     }
+
+//    @PostMapping("/couponPage")
+//    public void downCoupon(@RequestHeader("Authorization") String token,
+//                           @RequestBody CouponDown couponDown) {
+//        String uuid = tokenUtils.extractUuidFromToken(token);
+//        log.info("{}", uuid);
+//        User user
+//    }
 
 }
