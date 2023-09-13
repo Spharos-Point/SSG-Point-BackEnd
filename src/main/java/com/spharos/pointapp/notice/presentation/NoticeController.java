@@ -45,7 +45,7 @@ public class NoticeController {
         return noticeGetOutList;
     }
 
-    // 공지사항 삭제
+    // notice 삭제
     @DeleteMapping("/notice")
     private void deleteNotice(@RequestParam(name = "noticeId", defaultValue = "") Long noticeId) {
         noticeService.deleteNotice(noticeId);

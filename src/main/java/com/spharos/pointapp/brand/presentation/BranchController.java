@@ -20,6 +20,7 @@ public class BranchController {
     private final BranchService branchService;
     private final BrandService brandService;
 
+//    계열사 등록
     @PostMapping("/branch")
     public void addBranch(@RequestBody BranchAddInput branchAddInput) {
         log.info("branchAddInput: {}", branchAddInput);

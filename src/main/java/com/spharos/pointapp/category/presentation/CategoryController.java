@@ -21,6 +21,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    //    1:1 상담, FAQ 카테고리 생성
     @PostMapping("/category")
     public void addCategory(@RequestBody CategoryAdd categoryAdd) {
 
@@ -29,6 +30,7 @@ public class CategoryController {
         categoryService.addCategory(categoryAddDto);
     }
 
+    //    1:1 상담, FAQ 카테고리 조회
     @GetMapping("/category/parent")
     public List<CategoryGet> getCategoryByNotParentId() {
         List<CategoryGetDto> categoryGetDtos = categoryService.getCategoryByNotParentId();

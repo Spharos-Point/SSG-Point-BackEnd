@@ -24,6 +24,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
+//    board 생성
     @PostMapping("/board")
     public ResponseEntity<String> addBoard(
             @RequestBody BoardCreate BoardCreate) {
@@ -36,7 +37,7 @@ public class BoardController {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
-    //board 조회
+    //  관리자 1:1상담 답변 생성
     @GetMapping("/board")
     public List<BoardGetOut> getAllBoards() {
         ModelMapper mapper = new ModelMapper();

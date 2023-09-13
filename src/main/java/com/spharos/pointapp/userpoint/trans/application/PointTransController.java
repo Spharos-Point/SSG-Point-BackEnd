@@ -29,7 +29,7 @@ public class PointTransController {
 
     @Operation(summary = "포인트 전환", description = "포인트를 전환합니다")
     @SecurityRequirement(name = "Bearer Auth")
-    @PostMapping("/point-trans")
+    @PostMapping("/point/trans")
     public BaseResponse<?> transPoint(@RequestHeader("Authorization") String token,
             @RequestBody PointTransAddRequest pointTransAddRequest) {
         log.info("transPoint");
@@ -48,9 +48,9 @@ public class PointTransController {
         }
     }
 
-    @Operation(summary = "포인트전환 POINTTRANSID로 데이터 가져오기", description = "포인트전환 POINTTRANSID로 데이터를 가져옵니다.")
+    @Operation(summary = "포인트전환 조회", description = "포인트전환을 조회합니다.")
     @SecurityRequirement(name = "Bearer Auth")
-    @GetMapping("/point-trans")
+    @GetMapping("/point/trans")
     public BaseResponse<PointTransResponse> getPointTrans(
             @RequestParam(name = "pointTransId") Long pointTransId
     ) {

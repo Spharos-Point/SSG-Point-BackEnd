@@ -20,6 +20,7 @@ public class BrandController {
 
     private final BrandService brandService;
 
+//    브랜드 등록
     @PostMapping("/brand")
     public void addBrand(@RequestBody BrandAddInput brandAddInput) {
         log.info("brandAddInput: {}", brandAddInput);
@@ -28,7 +29,7 @@ public class BrandController {
         brandService.addStore(brandAddDto);
     }
 
-
+//  브랜드 조회
     @GetMapping("/brand/{brandId}")
     public ResponseEntity<BrandResOut> getBrand(@PathVariable("brandId") Integer brandId) {
         BrandGetDto brandGetDto = brandService.getBrandById(brandId);

@@ -23,7 +23,7 @@ public class PointPurchaseController {
     private final ModelMapper modelMapper;
     private final TokenUtils tokenUtils; // TokenUtils를 주입받음
 
-    @Operation(summary = "포인트 일반 적립", description = "영수증 등으로 구매하여 포인트 적립")
+    @Operation(summary = "영수증 적립", description = "영수증으로 포인트 적립을 합니다.")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
     @PostMapping("/point-purchase")
     public BaseResponse<String> purchasePoint(@RequestHeader("Authorization") String token,
