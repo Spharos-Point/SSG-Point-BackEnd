@@ -35,8 +35,12 @@ public interface EventService {
 //    역순 정렬 조회
     List<EventGetDto> getEventByDesc();
 
-//    참여형 이벤트 조회 (당첨자 발표가 필요한 이벤트)
+//    진행 중 이벤트 조회
     List<EventGetDto> getEventByWin();
+
+//    종료된 이벤트를 제외한 이벤트 조회
+    List<EventGetDto> getEventByNotExpired();
+
 
 
 }

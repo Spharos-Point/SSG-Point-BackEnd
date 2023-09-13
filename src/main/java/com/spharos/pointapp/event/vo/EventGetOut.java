@@ -8,6 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class EventGetOut {
+    private Long id;
     private String eventName;
     private String regDate;
     private String endDate;

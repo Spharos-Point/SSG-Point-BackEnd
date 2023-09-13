@@ -42,7 +42,7 @@ public class Event extends BaseTimeEntity {
     @Column(nullable = false, length = 500, name = "img")
     private String img;
 
-    // 마감 여부
+    // 마감 여부 마감이 되었다면 TRUE 마감되지 않았다면 FALSE
     @Column(nullable = false)
     private Boolean expired;
 
