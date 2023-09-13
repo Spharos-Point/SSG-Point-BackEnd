@@ -41,5 +41,5 @@ master/
 slave/
 replication/
 
-### yml ###
-*.yml
+#### yml ###
+#*.yml
