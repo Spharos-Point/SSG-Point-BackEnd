@@ -1,24 +1,13 @@
 package com.spharos.pointapp.point.application;
 
-import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
-import com.spharos.pointapp.point.domain.PointType;
-import com.spharos.pointapp.point.domain.PointTypeConverter;
-import com.spharos.pointapp.point.dto.PointAddDto;
-import com.spharos.pointapp.point.infrastructure.PointRepository;
-import com.spharos.pointapp.user.domain.User;
-import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
-import jakarta.persistence.Convert;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
-
-import static com.spharos.pointapp.config.common.BaseResponseStatus.NO_EXIST_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -27,65 +16,33 @@ import static com.spharos.pointapp.config.common.BaseResponseStatus.NO_EXIST_USE
 //@Transactional(readOnly = true)
 public class PointServiceImple implements PointService{
 
-    private final PointRepository pointRepository;
     private final UserPointListRepository userPointListRepository;
-    private final UserRepository userRepository;
 
     /**
      * 1. 토탈 포인트 조회
-     * 2. 포인트 계산
-     * 3. 포인트 타입별 적립/사용
-     * 4. 포인트 적립/사용 조회 (전환, 선물 제회)
-     * 5. 포인트 전체 조회
+     * 2. 포인트 전체 조회
      */
 
     //  1. 토탈 포인트 조회
     @Override
-    public Integer getPointTotalByUser(String uuid) throws BaseException {
-        User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        Optional<UserPointList> latestUserPointList = userPointListRepository.findTopByUuidOrderByCreateAtDesc(user.getUuid());
+    public Integer getPointTotalByUser(String uuid) {
 
-        if (latestUserPointList.isEmpty() || latestUserPointList.get().equals(0)) {
+        // 사용자의 가장 최근 포인트 기록을 찾습니다.
+        Optional<UserPointList> userPointList = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid);
+
+        if (userPointList.isPresent()) {
+            UserPointList latestUserPointList = userPointList.get();
+
+            // UserPointList에서 포인트 정보를 가져옵니다.
+            Point point = latestUserPointList.getPoint();
+
+            // 포인트 총합을 반환합니다.
+            return point.getTotalPoint();
+        } else {
+            // 최근 포인트 기록이 없는 경우 0을 반환합니다.
             return 0;
-        } else {
-            Point pointTotal = pointRepository.findById(latestUserPointList.get().getPoint().getId()).get();
-            return pointTotal.getTotalPoint();
         }
     }
-
-    //  2. 포인트 계산
-    @Override
-    public Integer calcPointTotal(Boolean used, Integer totalPoint, Integer updatePoint) {
-        if (!used) {
-            totalPoint += updatePoint;
-        } else {
-            totalPoint -= updatePoint;
-        }
-        return totalPoint;
-    }
-
-    //  3. 포인트 타입별 적립/사용 (이벤트, 선물, 쿠폰, 출석, 룰렛, 전환, 제휴사, 영수증, 바코드, 소멸)
-    @Override
-    @Convert(converter = PointTypeConverter.class)
-    public void createPoint(PointAddDto pointAddDto, String uuid) throws BaseException {
-
-        //  포인트 토탈 계산
-        Integer updateTotalPoint = calcPointTotal(pointAddDto.getUsed(),
-                getPointTotalByUser(uuid),
-                pointAddDto.getPoint());
-
-        //  포인트 타입 설정
-        PointType pointType = new PointTypeConverter().convertToEntityAttribute(pointAddDto.getPointType());
-
-        pointRepository.save(Point.builder()
-                .point(pointAddDto.getPoint())
-                .totalPoint(updateTotalPoint)
-                .used(pointAddDto.getUsed())
-                .pointType(pointType)
-                .build());
-    }
-
 
 
 
