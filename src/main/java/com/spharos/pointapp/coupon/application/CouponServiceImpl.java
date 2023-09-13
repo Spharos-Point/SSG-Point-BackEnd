@@ -7,7 +7,11 @@ import com.spharos.pointapp.coupon.dto.CouponGetDto;
 import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
+import com.spharos.pointapp.event.domain.Event;
+import com.spharos.pointapp.event.dto.EventGetDto;
 import com.spharos.pointapp.partner.domain.Partner;
+import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import jakarta.persistence.Convert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +20,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.spharos.pointapp.coupon.domain.QCoupon.coupon;
+import static com.spharos.pointapp.user.domain.QUser.user;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +30,7 @@ public class CouponServiceImpl implements CouponService {
 
     private final CouponRepository couponRepository;
     private final CouponListRepository couponListRepository;
+    private final UserRepository userRepository;
 
 
 
@@ -35,10 +43,15 @@ public class CouponServiceImpl implements CouponService {
         couponRepository.save(Coupon.builder()
                 .couponName(couponCreateDto.getCouponName())
                 .couponDesc(couponCreateDto.getCouponDesc())
+                .regDate(couponCreateDto.getRegDate())
+                .endDate(couponCreateDto.getEndDate())
                 .partner(couponCreateDto.getPartner())
                 .couponNum(couponCreateDto.getCouponNum())
                 .couponType(couponType)
                 .couponValue(couponCreateDto.getCouponValue())
+                .couponImg(couponCreateDto.getCouponImg())
+                .couponLogoImg(couponCreateDto.getCouponLogoImg())
+                .couponValueImg(couponCreateDto.getCouponValueImg())
                 .build());
     }
 
@@ -51,10 +64,15 @@ public class CouponServiceImpl implements CouponService {
                 .Id(couponId)
                 .couponName(couponUpdateDto.getCouponName())
                 .couponDesc(couponUpdateDto.getCouponDesc())
+                .regDate(couponUpdateDto.getRegDate())
+                .endDate(couponUpdateDto.getEndDate())
                 .partner(couponUpdateDto.getPartner())
                 .couponNum(couponUpdateDto.getCouponNum())
                 .couponType(couponType)
                 .couponValue(couponUpdateDto.getCouponValue())
+                .couponImg(couponUpdateDto.getCouponImg())
+                .couponLogoImg(couponUpdateDto.getCouponLogoImg())
+                .couponValueImg(couponUpdateDto.getCouponValueImg())
                 .build());
     }
 
@@ -86,10 +104,15 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
         return CouponGetDto.builder()
                 .couponName(coupon.getCouponName())
                 .couponDesc(coupon.getCouponDesc())
+                .regDate(coupon.getRegDate())
+                .endDate(coupon.getEndDate())
                 .partnerId(coupon.getPartner().getId())
                 .partnerName(coupon.getPartner().getPartnerName())
                 .couponNum(coupon.getCouponNum())
                 .couponType(couponType)
+                .couponImg(coupon.getCouponImg())
+                .couponLogoImg(coupon.getCouponLogoImg())
+                .couponValue(coupon.getCouponValue())
                 .couponValue(coupon.getCouponValue())
                 .build();
     }).toList();
@@ -106,16 +129,35 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
     }
 
 
-//    사용자 쿠폰 다운로드
+//    쿠폰 다운로드
     @Override
-    public void downCoupon(CouponDownDto couponDownDto) {
-        couponListRepository.save(
-                CouponList.builder()
-                        .coupon(couponDownDto.getCoupon())
-                        .build()
+    public void downCoupon(CouponDownDto couponDownDto, String uuid) {
+        if (uuid != null && couponDownDto.getCoupon() != null) {
+            // CouponList 엔티티를 생성하고 User와 Coupon을 연결한 후 저장
+            CouponList couponList = CouponList.builder()
+                    .user(couponDownDto.getUser())
+                    .coupon(couponDownDto.getCoupon())
+                    .couponStat(false)
+                    .build();
+
+            couponListRepository.save(couponList);
+        }
+    }
+
+//    마감 임박순 쿠폰 조회
+    @Override
+    public List<CouponGetDto> getCouponByAsc() {
+        List<Coupon> couponList = couponRepository.findAllByOrderByEndDateAsc();
+        log.info("{}", couponList);
+        List<CouponGetDto> couponGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        couponList.forEach(
+                coupon -> couponGetDtoList.add(
+                        mapper.map(coupon, CouponGetDto.class)
+                )
         );
-
-}
-
+        log.info("{}", couponGetDtoList);
+        return couponGetDtoList;
+    }
 
 }

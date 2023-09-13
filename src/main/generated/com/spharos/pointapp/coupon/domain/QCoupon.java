@@ -26,6 +26,10 @@ public class QCoupon extends EntityPathBase<Coupon> {
 
     public final StringPath couponDesc = createString("couponDesc");
 
+    public final StringPath couponImg = createString("couponImg");
+
+    public final StringPath couponLogoImg = createString("couponLogoImg");
+
     public final StringPath couponName = createString("couponName");
 
     public final StringPath couponNum = createString("couponNum");
@@ -34,12 +38,18 @@ public class QCoupon extends EntityPathBase<Coupon> {
 
     public final NumberPath<Integer> couponValue = createNumber("couponValue", Integer.class);
 
+    public final StringPath couponValueImg = createString("couponValueImg");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createAt = _super.createAt;
+
+    public final StringPath endDate = createString("endDate");
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
     public final com.spharos.pointapp.partner.domain.QPartner partner;
+
+    public final StringPath regDate = createString("regDate");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateAt = _super.updateAt;

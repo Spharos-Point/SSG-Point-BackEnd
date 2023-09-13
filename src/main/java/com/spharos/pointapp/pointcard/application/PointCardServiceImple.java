@@ -5,12 +5,15 @@ import com.spharos.pointapp.pointcard.dto.PointCardCreateDto;
 import com.spharos.pointapp.pointcard.dto.PointCardOutDto;
 import com.spharos.pointapp.pointcard.infrastructure.PointCardRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 //@Transactional(readOnly = true)
 public class PointCardServiceImple implements PointCardService {
@@ -39,21 +42,19 @@ public class PointCardServiceImple implements PointCardService {
         pointCardRepository.save(pointcard);
     }
 
-//    2. 포인트 카드 조회
+    // 2. 포인트 카드 조회
     @Override
     public List<PointCardOutDto> getPointCardByUser(String uuid) {
-
-//        List<PointCard> pointCards = pointCardRepository.findByUuid(uuid);
-//
-//        List<PointCardOutDto> pointCardOutDto = pointCards.stream().map(
-//                pointCard -> modelMapper.map(pointCard, PointCardOutDto.class)
-//        ).toList();
-//        return pointCardOutDto;
-
-        return null;
-
-
+            List<PointCard> PointCardList = pointCardRepository.findAllByUuidOrderByCreateAtDesc(uuid);
+            log.info("PointCardList {} ", PointCardList);
+            List<PointCardOutDto> pointCardOutDtoList = new ArrayList<>();
+            ModelMapper mapper = new ModelMapper();
+            PointCardList.forEach(
+                    pointCard -> pointCardOutDtoList.add(
+                            mapper.map(pointCard, PointCardOutDto.class)
+                    )
+            );
+            return pointCardOutDtoList;
     }
-
 
 }

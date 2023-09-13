@@ -75,6 +75,7 @@ public class AuthenticationService {
         String validatedBarcode = validateBarcode(pointCardBarcode);
 
         PointCard pointCard = PointCard.builder()
+                .brandId(7)
                 .cardnumber(validatedBarcode)
                 .uuid(uuidString)
                 .build();
@@ -106,7 +107,7 @@ public class AuthenticationService {
         Optional<PointCard> byBarCode = pointCardRepository.findByCardnumber(checkCardNumber);
         log.info("byBarCode is : {}", byBarCode);
 
-        // DB에 없다면 무한 반복 todo: 반복 제한 생성
+        // DB에 있다면 반복 todo: 반복 제한 생성
         if (byBarCode.isPresent()) {
             String substring = checkCardNumber.substring(12, 15);
             int endbarcode = Integer.parseInt(substring) + 1;

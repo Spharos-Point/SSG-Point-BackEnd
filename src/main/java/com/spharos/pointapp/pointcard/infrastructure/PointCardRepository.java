@@ -13,6 +13,6 @@ public interface PointCardRepository extends JpaRepository<PointCard, Long> {
     Optional<PointCard> findByCardnumber(String cardnumber);
 
 //    2. 포인트 카드 조회
-    List<PointCard> findByUuid(String uuid);
+    List<PointCard> findAllByUuidOrderByCreateAtDesc(String uuid);
 
 }

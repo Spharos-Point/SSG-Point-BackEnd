@@ -1,13 +1,13 @@
 package com.spharos.pointapp.pointcard.vo;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class PointCardOutVo {
 
     private String cardNumber;
-    private String brandName;
+    private Integer brandId;
     private String createAt;
-    private String branchName;
-
 }

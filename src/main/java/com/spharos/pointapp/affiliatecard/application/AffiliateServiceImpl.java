@@ -71,7 +71,6 @@ public class AffiliateServiceImpl implements AffiliateService {
     @Override
     public List<AffiliateGetDto> getAllAffiliateCards(String uuid) {
         List<AffiliateCard> affiliateCardList = affiliateRepository.findAllByUuid(uuid);
-        log.info("{}", affiliateCardList);
         List<AffiliateGetDto> affiliateGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         affiliateCardList.forEach(
@@ -79,7 +78,6 @@ public class AffiliateServiceImpl implements AffiliateService {
                         mapper.map(affiliateCard, AffiliateGetDto.class)
                 )
         );
-        log.info("{}", affiliateCardList);
         return affiliateGetDtoList;
     }
 

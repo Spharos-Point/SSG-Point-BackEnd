@@ -9,6 +9,7 @@ import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
 import com.spharos.pointapp.userpoint.purchase.domain.PointPurchase;
 import com.spharos.pointapp.userpoint.purchase.dto.PointPurchaseDto;
+import com.spharos.pointapp.userpoint.purchase.dto.PointPurchaseResDto;
 import com.spharos.pointapp.userpoint.purchase.infrastructure.PointPurchaseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,4 +66,20 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
                         .build()
         );
     }
+
+    @Override
+    public PointPurchaseResDto getPointPurchaseByPointPurchaseId(Long pointPurchaseId) throws BaseException {
+        return null;
+    }
+
+//    @Override
+//    public PointPurchaseResDto getPointPurchaseByPointPurchaseId(Long pointPurchaseId) {
+//        PointPurchase pointPurchase = pointPurchaseRepository.findById(pointPurchaseId).orElse(null);
+//        PointPurchaseResDto pointPurchaseResDto = PointPurchaseResDto.builder()
+//                .id(pointPurchase.getId())
+////                .point(pointRepository.findById(pointPurchase.getPoint().getId()).get())
+////                .branch(branchRepository.findById(pointPurchase.getBranch().getId()).get())
+//                .build();
+//        return null;
+//    }
 }
