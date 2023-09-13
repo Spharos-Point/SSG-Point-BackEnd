@@ -38,6 +38,25 @@ public class PointPurchaseController {
             return new BaseResponse<>(exception.getStatus());
 
         }
-
     }
+
+//    @Operation(summary = "포인트 일반 적립 조회", description = "구매한 포인트 적립 조회")
+//    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
+//    @PostMapping("/point-purchase")
+//    public BaseResponse<PointPurchaseResponse> getPointPurchase(
+//            @RequestParam(name = "pointPurchaseId") Long pointPurchaseId
+//    ) {
+////        try {
+////            PointPurchaseResDto pointPurchaseResDto = pointPurchaseService.getPointPurchaseByPointPurchaseId(pointPurchaseId);
+////            PointPurchaseResponse pointPurchaseResponse = PointPurchaseResponse.builder()
+////                    .id(pointPurchase.getId())
+////                    .pointId(pointPurchaseResDto.getPoint().getId())
+////                    .transPoint(pointPurchaseResDto.getPurchasePoint())
+////                    .build();
+////            return new BaseResponse<>(pointPurchaseResponse);
+////        } catch (BaseException exception) {
+////            return new BaseResponse<>(exception.getStatus());
+////        }
+//        return null;
+//    }
 }
