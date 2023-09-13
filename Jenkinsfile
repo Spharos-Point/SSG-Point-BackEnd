@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d --name ssgpointapp -p 8000:8000 -e DATASOURCE_URL=${DB_URL} -e DATASOURCE_USER=${DB_USER} -e DATASOURCE_PASS={DB_PASS} -e JWT_SECRET_KEY={JWT_SECRET_KEY} ssgpoint-be'
+                sh 'docker run -d --name ssgpointapp --network ssgpoint-network -p 8000:8000 -e DATASOURCE_URL=${DB_URL} -e DATASOURCE_USER=${DB_USER} -e DATASOURCE_PASS={DB_PASS} -e JWT_SECRET_KEY={JWT_SECRET_KEY} ssgpoint-be'
             }
         }
     }
