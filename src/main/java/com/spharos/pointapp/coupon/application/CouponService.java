@@ -24,7 +24,9 @@ public interface CouponService {
 //    사용자가 보유한 쿠폰 조회
     List<CouponGetDto> getCouponByUser(Long userId);
 
-    //    사용자 쿠폰 다운로드
-    void downCoupon(CouponDownDto couponDownDto);
+    //  쿠폰 다운로드
+    void downCoupon(CouponDownDto couponDownDto, String uuid);
 
+//    마감 임박순 쿠폰 조회
+    List<CouponGetDto> getCouponByAsc();
 }

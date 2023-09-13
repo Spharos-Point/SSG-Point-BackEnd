@@ -47,8 +47,6 @@ public class EventServiceImpl implements EventService{
 
     //    이벤트 수정
     public void updateEvent(EventUpdateDto eventUpdateDto, Long eventId) {
-        log.info("{}", eventId);
-
         Event event = eventRepository.findById(eventId).get();
         eventRepository.save(
           Event.builder()
@@ -63,17 +61,14 @@ public class EventServiceImpl implements EventService{
                   .expired(eventUpdateDto.getExpired())
                   .build()
         );
-        log.info("{}", event);
     }
 
     //    이벤트 개별 조회
     @Override
     public EventGetDto getEvent(Long eventId) {
         Event event = eventRepository.findById(eventId).get();
-        log.info("{}", event);
         ModelMapper mapper = new ModelMapper();
         EventGetDto eventGetDto = mapper.map(event, EventGetDto.class);
-        log.info("{}", eventGetDto);
         return eventGetDto;
     }
 
@@ -81,7 +76,6 @@ public class EventServiceImpl implements EventService{
     @Override
     public List<EventGetDto> getEvents() {
         List<Event> eventList = eventRepository.findAll();
-        log.info("{}", eventList);
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(
@@ -89,7 +83,6 @@ public class EventServiceImpl implements EventService{
                         mapper.map(event, EventGetDto.class)
                 )
         );
-        log.info("{}", eventGetDtoList);
         return eventGetDtoList;
     }
 
@@ -103,7 +96,6 @@ public class EventServiceImpl implements EventService{
     @Override
     public List<EventListGetDto> getEventByUser(Long userId) {
         List<EventList> eventListList = eventListRepository.findAllByUserId(userId);
-        log.info("{}", eventListList);
         List<EventListGetDto> eventListGetDtoList = eventListList.stream().map(item -> {
             Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
             User user = userRepository.findById(item.getUser().getId()).orElseThrow();
@@ -115,8 +107,6 @@ public class EventServiceImpl implements EventService{
                     .prize(item.getPrize())
                     .build();
         }).toList();
-
-        log.info("Event List is : {}", eventListGetDtoList);
         return eventListGetDtoList;
     }
 
@@ -124,7 +114,6 @@ public class EventServiceImpl implements EventService{
     @Override
     public List<EventGetDto> getEventByExpired() {
         List<Event> eventList = eventRepository.findAllByExpired();
-        log.info("{}", eventList);
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(
@@ -132,7 +121,6 @@ public class EventServiceImpl implements EventService{
                         mapper.map(event, EventGetDto.class)
                 )
         );
-        log.info("{}", eventGetDtoList);
         return eventGetDtoList;
     }
 
@@ -140,7 +128,6 @@ public class EventServiceImpl implements EventService{
     @Override
     public List<EventGetDto> getEventByDesc() {
         List<Event> eventList = eventRepository.findAllByOrderByEndDateAsc();
-        log.info("{}", eventList);
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(
@@ -148,15 +135,13 @@ public class EventServiceImpl implements EventService{
                         mapper.map(event, EventGetDto.class)
                 )
         );
-        log.info("{}", eventGetDtoList);
         return eventGetDtoList;
     }
 
-    //    참여형 이벤트 조회 (당첨자 발표가 필요한 이벤트)
+    //    진행중 이벤트 조회
     @Override
     public List<EventGetDto> getEventByWin() {
-        List<Event> eventList = eventRepository.findByEventType();
-        log.info("{}", eventList);
+        List<Event> eventList = eventRepository.findByEventTypeAndExpired();
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(
@@ -164,7 +149,20 @@ public class EventServiceImpl implements EventService{
                         mapper.map(event, EventGetDto.class)
                 )
         );
-        log.info("{}", eventGetDtoList);
+        return eventGetDtoList;
+    }
+
+//    종료된 이벤트를 제외한 이벤트 조회
+    @Override
+    public List<EventGetDto> getEventByNotExpired() {
+        List<Event> eventList = eventRepository.findAllByNotExpired();
+        List<EventGetDto> eventGetDtoList = new ArrayList<>();
+        ModelMapper mapper = new ModelMapper();
+        eventList.forEach(
+                event -> eventGetDtoList.add(
+                        mapper.map(event, EventGetDto.class)
+                )
+        );
         return eventGetDtoList;
     }
 

@@ -115,6 +115,7 @@ public class EventController {
     }
 
 //    종료 이벤트 조회
+    @Operation(summary = "종료된 이벤트 조회", description = "종료된 이벤트를 조회합니다.", tags = { "Event Controller" })
     @GetMapping("/endevents")
     public List<EventGetOut> getEventByExpired() {
         ModelMapper mapper = new ModelMapper();
@@ -129,7 +130,8 @@ public class EventController {
     }
 
 //    마감 임박순 조회
-    @GetMapping("/inevents")
+    @Operation(summary = "마감 임박순 조회", description = "이벤트를 마감 임박순으로 조회합니다.", tags = { "Event Controller" })
+    @GetMapping("/inevents/expired")
     public List<EventGetOut> getEventByDesc() {
         ModelMapper mapper = new ModelMapper();
         List<EventGetDto> eventGetDtoList = eventService.getEventByDesc();
@@ -142,11 +144,27 @@ public class EventController {
         return eventGetOutList;
 }
 
-//    참여형 이벤트 조회 (당첨자 발표가 필요한 이벤트)
+//    종료된 참여형 이벤트 조회
+    @Operation(summary = "종료된 이벤트 조회", description = "종료된 참여형 이벤트를 조회합니다.", tags = { "Event Controller" })
     @GetMapping("/winevents")
     public List<EventGetOut> getEventByWin() {
         ModelMapper mapper = new ModelMapper();
         List<EventGetDto> eventGetDtoList = eventService.getEventByWin();
+        log.info("{}", eventGetDtoList);
+        List<EventGetOut> eventGetOutList = new ArrayList<>();
+        eventGetDtoList.forEach(
+                eventGetDto -> eventGetOutList.add(
+                        mapper.map(eventGetDto, EventGetOut.class)
+                ));
+        return eventGetOutList;
+    }
+
+//    종료된 이벤트를 제외한 이벤트 조회
+    @Operation(summary = "진행중 이벤트 조회", description = "종료되지 않은 진행중 이벤트를 조회합니다.", tags = { "Event Controller" })
+    @GetMapping("/inevents")
+    public List<EventGetOut> getEventByNotExpired() {
+        ModelMapper mapper = new ModelMapper();
+        List<EventGetDto> eventGetDtoList = eventService.getEventByNotExpired();
         log.info("{}", eventGetDtoList);
         List<EventGetOut> eventGetOutList = new ArrayList<>();
         eventGetDtoList.forEach(

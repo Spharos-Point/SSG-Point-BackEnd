@@ -1,6 +1,5 @@
 package com.spharos.pointapp.userpoint.trans.presentation;
 
-import com.spharos.pointapp.brand.infrastructure.BranchRepository;
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.extra.infrastructure.ExtraRepository;
 import com.spharos.pointapp.point.domain.Point;
@@ -23,7 +22,6 @@ public class PointTransServiceImple implements PointTransService {
     private final PointTransRepository pointTransRepository;
     private final ExtraRepository extraRepository;
     private final UserPointListRepository userPointListRepository;
-    private final BranchRepository branchRepository;
     private final PointRepository pointRepository;
 
     @Override
@@ -64,11 +62,15 @@ public class PointTransServiceImple implements PointTransService {
     @Override
     public PointTransResDto getPointTransByPointTransId(Long pointTransId) {
         PointTrans pointTrans = pointTransRepository.findById(pointTransId).orElse(null);
+        log.info("{}", pointTrans);
         PointTransResDto pointTransResDto = PointTransResDto.builder()
                 .id(pointTrans.getId())
+                .transPoint(pointTrans.getTransPoint())
                 .point(pointRepository.findById(pointTrans.getPoint().getId()).get())
                 .extra(extraRepository.findById(pointTrans.getExtra().getId()).get())
                 .build();
+
+        log.info("asdasd {}", pointTransResDto);
         return pointTransResDto;
     }
 
