@@ -69,7 +69,7 @@ public class PointGiftController {
 
     @Operation(summary = "포인트 선물 대기 조회", description = "가장 최근 포인트 선물 기록 조회")
     @SecurityRequirement(name = "Bearer Auth")
-    @GetMapping("/gift/Pending")
+    @GetMapping("/gift/waiting")
     public BaseResponse<PointGiftLastOutVo> searchPendingGift(@RequestHeader("Authorization") String token) {
         String receiverUuid = tokenUtils.extractUuidFromToken(token);
         log.info("receiverUuid : {}", receiverUuid);
@@ -83,10 +83,10 @@ public class PointGiftController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-    @Operation(summary = "포인트 선물 수락", description = "선물 상태 변경 W -> S")
+    @Operation(summary = "포인트 선물 수락", description = "선물 상태 변경 W -> A")
     @SecurityRequirement(name = "Bearer Auth")
-    @PutMapping("/gift/Success")
-    public BaseResponse<String> giftSuccess(@RequestHeader("Authorization") String token) {
+    @PutMapping("/gift/accept")
+    public BaseResponse<String> giftAccept(@RequestHeader("Authorization") String token) {
         String receiverUuid = tokenUtils.extractUuidFromToken(token);
 
         try {
@@ -97,10 +97,10 @@ public class PointGiftController {
         }
     }
 
-    @Operation(summary = "포인트 선물 거절", description = "선물 상태 변경 W -> C")
+    @Operation(summary = "포인트 선물 거절", description = "선물 상태 변경 W -> R")
     @SecurityRequirement(name = "Bearer Auth")
-    @PutMapping("/gift/Cancel")
-    public BaseResponse<String> giftCancel(@RequestHeader("Authorization") String token) {
+    @PutMapping("/gift/refuse")
+    public BaseResponse<String> giftRefuse(@RequestHeader("Authorization") String token) {
         String receiverUuid = tokenUtils.extractUuidFromToken(token);
         try {
             pointGiftService.updateCancelGiftPoint(receiverUuid);
@@ -109,5 +109,19 @@ public class PointGiftController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+//    @Operation(summary = "포인트 선물 조회", description = "포인트 선물 조회")
+//    @SecurityRequirement(name = "Bearer Auth")
+//    @GetMapping("/gift/search")
+//    public BaseResponse<String> giftSearch(@RequestHeader("Authorization") String token) {
+//        String receiverUuid = tokenUtils.extractUuidFromToken(token);
+//        try {
+//            pointGiftService.updateCancelGiftPoint(receiverUuid);
+//            return new BaseResponse<>();
+//        } catch (BaseException exception){
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
+
 }
 
