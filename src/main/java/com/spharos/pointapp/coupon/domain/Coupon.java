@@ -25,6 +25,12 @@ public class Coupon extends BaseTimeEntity {
     @Column(nullable = false, length = 300, name = "coupon_desc")
     private String couponDesc;
 
+    @Column(nullable = false, name = "reg_date")
+    private String regDate;
+
+    @Column(nullable = false, name = "end_date")
+    private String endDate;
+
     @ManyToOne
     @JoinColumn(name = "partner_id")
     private Partner partner;
@@ -38,5 +44,14 @@ public class Coupon extends BaseTimeEntity {
 
     @Column(nullable = false, name = "coupon_value")
     private Integer couponValue; // tinyint
+
+    @Column(nullable = false, name = "coupon_logo_img")
+    private String couponLogoImg;
+
+    @Column(nullable = false, name = "coupon_img")
+    private String couponImg;
+
+    @Column(nullable = false, name = "coupon_value_img")
+    private String couponValueImg;
 
 }

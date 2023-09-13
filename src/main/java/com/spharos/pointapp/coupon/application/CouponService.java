@@ -25,6 +25,8 @@ public interface CouponService {
     List<CouponGetDto> getCouponByUser(Long userId);
 
     //  쿠폰 다운로드
-//    void downCoupon(CouponDownDto couponDownDto, String uuid);
+    void downCoupon(CouponDownDto couponDownDto, String uuid);
 
+//    마감 임박순 쿠폰 조회
+    List<CouponGetDto> getCouponByAsc();
 }

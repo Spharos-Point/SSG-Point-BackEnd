@@ -12,8 +12,13 @@ import lombok.*;
 public class CouponCreateDto {
     private String couponName;
     private String couponDesc;
+    private String regDate;
+    private String endDate;
     private Partner partner;
     private String couponNum;
     private String couponType;
     private Integer couponValue;
+    private String couponLogoImg;
+    private String couponImg;
+    private String couponValueImg;
 }
