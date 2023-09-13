@@ -11,5 +11,6 @@ import java.util.UUID;
 public interface PointGiftRepository extends JpaRepository<PointGift, Long> {
     Optional<PointGift> findTopByReceiverUuidAndPointGiftTypeOrderByIdDesc(String receiverUuid, PointGiftType pointGiftType);
 
+    Optional<PointGift> findByPointId(Long pointId);
 
 }
