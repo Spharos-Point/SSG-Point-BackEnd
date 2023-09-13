@@ -40,3 +40,6 @@ out/
 master/
 slave/
 replication/
+
+### yml ###
+*.yml

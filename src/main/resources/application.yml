@@ -1,3 +1,0 @@
-spring:
-  profiles:
-    active: local #기본값을 설정하는 부분 개발자 로컬 환경은 local, 테스트 배포시에는 dev 변경 후 컴파일 해서 배포
