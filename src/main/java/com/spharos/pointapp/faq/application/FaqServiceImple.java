@@ -31,18 +31,8 @@ public class FaqServiceImple implements FaqService {
                         .build());
     }
 
-//    // faq 개별 조회
-//    @Override
-//    public FaqGetDto getFaq(Long faqId) {
-//        Faq event = faqRepository.findById(faqId).get();
-//        log.info("{}", faq);
-//        ModelMapper mapper = new ModelMapper();
-//        FaqGetDto faqGetDto = mapper.map(faq, FaqGetDto.class);
-//        log.info("{}", faqGetDto);
-//        return faqGetDto;
-//    }
+    //faq 전체 조회
 
-    //  faq 전체 조회
     @Override
     public List<FaqGetDto> getFaqs() {
         List<Faq> faqList = faqRepository.findAll();

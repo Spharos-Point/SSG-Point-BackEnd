@@ -33,7 +33,7 @@ public class BrandController {
 
     @Operation(summary = "브랜드 조회", description = "신세계 계열사의 브랜드를 조회합니다.", tags = { "Brand Controller" })
     @GetMapping("/brand/{brandId}")
-    public ResponseEntity<BrandResOut> getBrand(@PathVariable("brandId") Integer brandId) {
+    public ResponseEntity<BrandResOut> getBrand(@PathVariable("brandId") Long brandId) {
         BrandGetDto brandGetDto = brandService.getBrandById(brandId);
         log.info("brandGetDto: {}", brandGetDto);
         BrandResOut brandResOut = BrandResOut.builder()
