@@ -1,5 +1,6 @@
 package com.spharos.pointapp.event.presentation;
 
+import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.event.application.EventService;
 import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.dto.EventCreateDto;
@@ -10,15 +11,14 @@ import com.spharos.pointapp.event.vo.EventCreate;
 import com.spharos.pointapp.event.vo.EventGetOut;
 import com.spharos.pointapp.event.vo.EventListRes;
 import com.spharos.pointapp.event.vo.EventUpdate;
+import com.spharos.pointapp.user.domain.User;
+import com.spharos.pointapp.user.infrastructure.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +29,8 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
-
+    private final UserRepository userRepository;
+    private final TokenUtils tokenUtils;
 //    이벤트 생성
     @Operation(summary = "이벤트 생성", description = "새로운 이벤트를 등록합니다.", tags = { "Event Controller" })
     @PostMapping("/event")
@@ -87,10 +88,12 @@ public class EventController {
 //    사용자가 참여한 이벤트 조회
     @Operation(summary = "사용자 이벤트 조회", description = "사용자가 참여한 이벤트를 조회합니다.", tags = { "Event Controller" })
     @Transactional(readOnly = true)
-    @GetMapping("/benefits/myEvent/{userId}")
-    public List<EventListRes> getEventByUser(@PathVariable("userId") Long userId) {
-        log.info("{}", userId);
-        List<EventListGetDto> eventLiatGetDtoList = eventService.getEventByUser(userId);
+    @GetMapping("/benefits/myEvent")
+    public List<EventListRes> getEventByUser(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("{}", user);
+        List<EventListGetDto> eventLiatGetDtoList = eventService.getEventByUser(user.getId());
         ModelMapper mapper = new ModelMapper();
         log.info("{}", eventLiatGetDtoList);
 //        List<EventListRes> eventListResList = new ArrayList<>();
@@ -104,13 +107,19 @@ public class EventController {
 //                            .prize(eventListGetDtoItem.getPrize())
 //                            .build())
 //            );
-        List<EventListRes> eventListResList = eventLiatGetDtoList.stream().map(
-                item -> {
-                    EventListRes eventListRes = mapper.map(item, EventListRes.class);
-                    return eventListRes;
-                }
-        ).toList();
+//        List<EventListRes> eventListResList = eventLiatGetDtoList.stream().map(
+//                item -> {
+//                    EventListRes eventListRes = mapper.map(item, EventListRes.class);
+//                    return eventListRes;
+//                }
+//        ).toList();
 
+        List<EventListRes> eventListResList = new ArrayList<>();
+        eventLiatGetDtoList.forEach(
+                EventListGetDto -> eventListResList.add(
+                        mapper.map(EventListGetDto, EventListRes.class)
+                )
+        );
         return eventListResList;
     }
 

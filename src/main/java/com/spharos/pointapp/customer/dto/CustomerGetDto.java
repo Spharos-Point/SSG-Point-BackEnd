@@ -17,5 +17,4 @@ public class CustomerGetDto {
     private String context;
     private String phone;
     private String answer;
-    private String writeDatetime;
 }

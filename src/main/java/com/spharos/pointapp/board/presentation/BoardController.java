@@ -6,6 +6,7 @@ import com.spharos.pointapp.board.dto.BoardCreateDto;
 import com.spharos.pointapp.board.dto.BoardGetDto;
 import com.spharos.pointapp.board.vo.BoardGetOut;
 import com.spharos.pointapp.board.vo.BoardCreate;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,7 @@ public class BoardController {
     private final BoardService boardService;
 
 //    board 생성
+    @Operation(summary = "고객상담 답변 작성", description = "고객상담 답변을 작성합니다.", tags = { "Board Controller" })
     @PostMapping("/board")
     public ResponseEntity<String> addBoard(
             @RequestBody BoardCreate BoardCreate) {
@@ -37,7 +39,8 @@ public class BoardController {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
-    //  관리자 1:1상담 답변 생성
+    //  관리자 1:1상담 답변 조회
+    @Operation(summary = "고객상담 답변 조회", description = "고객상담 답변을 조회합니다.", tags = { "Board Controller" })
     @GetMapping("/board")
     public List<BoardGetOut> getAllBoards() {
         ModelMapper mapper = new ModelMapper();

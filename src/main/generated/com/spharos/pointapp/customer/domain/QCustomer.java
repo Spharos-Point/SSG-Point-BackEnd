@@ -22,6 +22,8 @@ public class QCustomer extends EntityPathBase<Customer> {
 
     public static final QCustomer customer = new QCustomer("customer");
 
+    public final com.spharos.pointapp.config.common.QBaseTimeEntity _super = new com.spharos.pointapp.config.common.QBaseTimeEntity(this);
+
     public final NumberPath<Long> adminId = createNumber("adminId", Long.class);
 
     public final StringPath answer = createString("answer");
@@ -30,13 +32,17 @@ public class QCustomer extends EntityPathBase<Customer> {
 
     public final StringPath context = createString("context");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createAt = _super.createAt;
+
     public final NumberPath<Integer> customerId = createNumber("customerId", Integer.class);
 
     public final StringPath phone = createString("phone");
 
     public final StringPath title = createString("title");
 
-    public final StringPath writeDatetime = createString("writeDatetime");
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updateAt = _super.updateAt;
 
     public QCustomer(String variable) {
         this(Customer.class, forVariable(variable), INITS);

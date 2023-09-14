@@ -42,7 +42,7 @@ public class FaqServiceImple implements FaqService {
 //        return faqGetDto;
 //    }
 
-    //faq 전체 조회
+    //  faq 전체 조회
     @Override
     public List<FaqGetDto> getFaqs() {
         List<Faq> faqList = faqRepository.findAll();
