@@ -21,7 +21,7 @@ public class BranchController {
     private final BranchService branchService;
     private final BrandService brandService;
 
-//    계열사 등록
+    @Operation(summary = "1:1상담 답변 조회", description = "1:1상담 답변을 조회합니다.", tags = { "board Controller" })
     @PostMapping("/branch")
     public void addBranch(@RequestBody BranchAddInput branchAddInput) {
         log.info("branchAddInput: {}", branchAddInput);
@@ -30,7 +30,6 @@ public class BranchController {
         branchService.addBranch(branchAddDto);
     }
 
-    @Operation(summary = "지점 조회", description = "게열사의 지점을 조회합니다.", tags = { "Branch Controller" })
     @GetMapping("/branch/{branchId}")
     public ResponseEntity<BranchResOut> getBranch(@PathVariable("branchId") Long branchId) {
 //        BranchGetDto branchGetDto = branchService.getBranchById(branchId);
@@ -45,5 +44,5 @@ public class BranchController {
 //                .build();
         return null;
     }
-    
+
 }
