@@ -15,8 +15,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByOrderByEndDateAsc();
 
 //    종료된 이벤트
-    @Query(value = "SELECT * FROM event where event.expired = 1 order by end_date", nativeQuery = true)
-    List<Event> findAllByExpired();
+    @Query(value = "SELECT e FROM Event e where e.expired = true AND e.eventType != '참여'")
+    List<Event> findAllByExpiredAndEventType();
 
 //    종료된 이벤트를 제외한 이벤트 조회
     @Query(value = "SELECT e FROM Event e where e.expired != true")

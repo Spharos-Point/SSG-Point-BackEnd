@@ -19,13 +19,19 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public static final QNotice notice = new QNotice("notice");
 
+    public final com.spharos.pointapp.config.common.QBaseTimeEntity _super = new com.spharos.pointapp.config.common.QBaseTimeEntity(this);
+
     public final StringPath context = createString("context");
 
-    public final DateTimePath<java.time.LocalDateTime> createAt = createDateTime("createAt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createAt = _super.createAt;
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
     public final StringPath title = createString("title");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updateAt = _super.updateAt;
 
     public QNotice(String variable) {
         super(Notice.class, forVariable(variable));

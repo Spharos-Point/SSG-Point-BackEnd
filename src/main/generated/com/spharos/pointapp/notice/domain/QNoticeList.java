@@ -22,13 +22,11 @@ public class QNoticeList extends EntityPathBase<NoticeList> {
 
     public static final QNoticeList noticeList = new QNoticeList("noticeList");
 
-    public final DateTimePath<java.time.LocalDateTime> createAt = createDateTime("createAt", java.time.LocalDateTime.class);
+    public final com.spharos.pointapp.admin.administrator.domain.QAdministrator administrator;
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
     public final QNotice notice;
-
-    public final com.spharos.pointapp.user.domain.QUser user;
 
     public QNoticeList(String variable) {
         this(NoticeList.class, forVariable(variable), INITS);
@@ -48,8 +46,8 @@ public class QNoticeList extends EntityPathBase<NoticeList> {
 
     public QNoticeList(Class<? extends NoticeList> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.administrator = inits.isInitialized("administrator") ? new com.spharos.pointapp.admin.administrator.domain.QAdministrator(forProperty("administrator")) : null;
         this.notice = inits.isInitialized("notice") ? new QNotice(forProperty("notice")) : null;
-        this.user = inits.isInitialized("user") ? new com.spharos.pointapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }

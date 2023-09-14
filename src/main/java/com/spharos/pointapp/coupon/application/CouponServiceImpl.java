@@ -102,6 +102,7 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
         Coupon coupon = couponRepository.findById(item.getId()).orElseThrow();
         String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
         return CouponGetDto.builder()
+                .id(coupon.getId())
                 .couponName(coupon.getCouponName())
                 .couponDesc(coupon.getCouponDesc())
                 .regDate(coupon.getRegDate())
@@ -113,7 +114,7 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
                 .couponImg(coupon.getCouponImg())
                 .couponLogoImg(coupon.getCouponLogoImg())
                 .couponValue(coupon.getCouponValue())
-                .couponValue(coupon.getCouponValue())
+                .couponValueImg(coupon.getCouponValueImg())
                 .build();
     }).toList();
 

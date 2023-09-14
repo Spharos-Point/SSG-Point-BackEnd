@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface NoticeListRepository extends JpaRepository<NoticeList, Long> {
-    List<NoticeList> findByUserId(Long userId);
+    List<NoticeList> findByAdministratorId(Long administratorId);
 
-    List<NoticeList> findAllByUserId(Long userId);
+    List<NoticeList> findAllByAdministratorId(Long administratorId);
 
 }

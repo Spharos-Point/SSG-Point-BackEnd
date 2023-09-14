@@ -107,11 +107,13 @@ public class CouponController {
 //    사용자가 보유한 쿠폰 조회
     @Operation(summary = "사용자가 보유한 쿠폰 조회", description = "기간에 상관없이 사용자가 보유한 모든 쿠폰을 조회합니다.", tags = { "Coupon Controller" })
     @Transactional(readOnly = true)
-    @GetMapping("/benefits/myCoupon/{userId}")
-    public List<CouponGetOut> getCouponByUser(@PathVariable("userId") Long userId) {
-        log.info("{}", userId);
+    @GetMapping("/benefits/myCoupon")
+    public List<CouponGetOut> getCouponByUser(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        log.info("{}", uuid);
+        User user = userRepository.findByUuid(uuid).get();
         ModelMapper mapper = new ModelMapper();
-        List<CouponGetDto> couponGetDtoList = couponService.getCouponByUser(userId);
+        List<CouponGetDto> couponGetDtoList = couponService.getCouponByUser(user.getId());
         List<CouponGetOut> couponGetOutList = new ArrayList<>();
         couponGetDtoList.forEach(
                 couponGetDto -> couponGetOutList.add(
@@ -127,7 +129,7 @@ public class CouponController {
     @PostMapping("/couponPage")
     public void downCoupon(@RequestHeader("Authorization") String token,
                            @RequestBody CouponDown couponDown) {
-        String uuid = tokenUtils.extractUuidFromToken(token);
+            String uuid = tokenUtils.extractUuidFromToken(token);
         User user = userRepository.findByUuid(uuid).get();
         log.info("{}", uuid);
         Coupon coupon = couponRepository.findById(couponDown.getCouponId()).get();

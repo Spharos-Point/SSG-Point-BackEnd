@@ -27,7 +27,7 @@ public class BrandServiceImple implements BrandService {
     }
 
     @Override
-    public BrandGetDto getBrandById(Integer id) {
+    public BrandGetDto getBrandById(Long id) {
         Brand brand = brandRepository.findById(id).get();
         log.info("brand: {}", brand);
         ModelMapper modelMapper = new ModelMapper();

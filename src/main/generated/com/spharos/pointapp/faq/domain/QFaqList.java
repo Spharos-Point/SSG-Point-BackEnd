@@ -22,11 +22,11 @@ public class QFaqList extends EntityPathBase<FaqList> {
 
     public static final QFaqList faqList = new QFaqList("faqList");
 
+    public final com.spharos.pointapp.admin.administrator.domain.QAdministrator administrator;
+
     public final QFaq faq;
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
-
-    public final com.spharos.pointapp.user.domain.QUser user;
 
     public QFaqList(String variable) {
         this(FaqList.class, forVariable(variable), INITS);
@@ -46,8 +46,8 @@ public class QFaqList extends EntityPathBase<FaqList> {
 
     public QFaqList(Class<? extends FaqList> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.administrator = inits.isInitialized("administrator") ? new com.spharos.pointapp.admin.administrator.domain.QAdministrator(forProperty("administrator")) : null;
         this.faq = inits.isInitialized("faq") ? new QFaq(forProperty("faq")) : null;
-        this.user = inits.isInitialized("user") ? new com.spharos.pointapp.user.domain.QUser(forProperty("user")) : null;
     }
 
 }
