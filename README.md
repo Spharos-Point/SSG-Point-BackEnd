@@ -22,7 +22,7 @@ Spharos Academy 3기 뉴비 5인방의 신세계 포인트 앱 클론코딩프�
 <h5> ✔ 이벤트 스토밍 </h5>
 https://miro.com/app/board/uXjVMyZzdT4=/?share_link_id=356913328141
 <h5> ✔ ERD CROUD </h5>
-https://www.erdcloud.com/d/myQufkJ2niWb5uzXN
+https://www.erdcloud.com/d/dGTe2sLCWJmDJQW4g
 
 <h4> 🐥 역할 </h4>
 <h5> 🦒 조장 양창민 - BackEnd </h5>
