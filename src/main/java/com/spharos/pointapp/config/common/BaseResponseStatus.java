@@ -26,6 +26,7 @@ public enum BaseResponseStatus {
     JWT_CREATE_FAILED(false, 3002, "토큰 생성에 실패했습니다."),
     NO_EXIST_USER(false, 3003, "존재하지 않는 유저 정보입니다."),
     NO_POINT_HISTORY(false, 3004, "포인트 내역 조회에 실패했습니다."),
+    FAILED_TO_CARD_NUMBER(false, 3005, "바코드 생성에 실패했습니다"),
 
     // User
     USER_INSERT_FAILED(false, 4000, "사용자 회원가입에 실패했습니다."),
@@ -38,6 +39,7 @@ public enum BaseResponseStatus {
     POINT_PASSWORD_RETRIEVE_FAILED(false, 4007,"포인트 비밀번호 조회에 실패했습니다."),
     POINT_PASSWORD_UPDATE_FAILED(false, 4008, "포인트 비밀번호 변경에 실패했습니다."),
     NO_USER_POINT_LIST_HISTORY_FAILED(false, 4009, "해당하는 유저 포인트 리스트가 없습니다."),
+    WITHDRAWAL_USER(false, 4010, "탈퇴한 회원입니다."),
 
 
     // Gift

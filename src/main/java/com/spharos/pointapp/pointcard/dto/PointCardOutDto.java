@@ -11,6 +11,6 @@ import lombok.*;
 public class PointCardOutDto {
 
     private String cardNumber;
-    private Integer brandId;
+    private String brandName;
     private String createAt;
 }

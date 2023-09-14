@@ -8,6 +8,6 @@ import lombok.*;
 public class PointCardOutVo {
 
     private String cardNumber;
-    private Integer brandId;
+    private String brandName;
     private String createAt;
 }

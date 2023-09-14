@@ -2,13 +2,13 @@ package com.spharos.pointapp.auth;
 
 import com.spharos.pointapp.auth.vo.AuthenticationRequest;
 import com.spharos.pointapp.auth.vo.AuthenticationResponse;
+import com.spharos.pointapp.config.common.BaseException;
+import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -17,18 +17,28 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    @Operation(summary = "회원가입", description = "회원가입", tags = { "User Sign" })
     @PostMapping("/signup")
-    public ResponseEntity<AuthenticationResponse> signup(
-            @RequestBody UserSignUpDto userSignUpDto
-    ) {
-        return ResponseEntity.ok(authenticationService.signup(userSignUpDto));
+    public BaseResponse<AuthenticationResponse> signup (@RequestBody UserSignUpDto userSignUpDto) {
+        try {
+            AuthenticationResponse authenticationResponse = authenticationService.signup(userSignUpDto);
+            return new BaseResponse<>(authenticationResponse);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+
     }
 
+    @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody AuthenticationRequest authenticationRequest
-    ) {
-        return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    public BaseResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
+        try {
+            AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequest);
+            return new BaseResponse<>(authenticationResponse);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+
     }
 
 }

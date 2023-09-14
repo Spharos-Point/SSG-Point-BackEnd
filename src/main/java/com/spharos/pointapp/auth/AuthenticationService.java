@@ -1,6 +1,8 @@
 package com.spharos.pointapp.auth;
 import com.spharos.pointapp.auth.vo.AuthenticationRequest;
 import com.spharos.pointapp.auth.vo.AuthenticationResponse;
+import com.spharos.pointapp.config.common.BaseException;
+import com.spharos.pointapp.config.common.BaseResponseStatus;
 import com.spharos.pointapp.config.security.JwtTokenProvider;
 import com.spharos.pointapp.pointcard.domain.PointCard;
 import com.spharos.pointapp.pointcard.infrastructure.PointCardRepository;
@@ -11,14 +13,13 @@ import com.spharos.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
 
 @Slf4j
 @Service
@@ -42,7 +43,7 @@ public class AuthenticationService {
 
 //    1. 시큐리티 로그인
 //    @Transactional(readOnly = false)
-    public AuthenticationResponse signup(UserSignUpDto userSignUpDto) {
+    public AuthenticationResponse signup(UserSignUpDto userSignUpDto) throws BaseException {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
 
@@ -70,7 +71,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    private void createAndSavePointCard(User user, String uuidString) {
+    private void createAndSavePointCard(User user, String uuidString) throws BaseException {
         String pointCardBarcode = pointCardBarcodeGenerator(user);
         String validatedBarcode = validateBarcode(pointCardBarcode);
 
@@ -103,50 +104,42 @@ public class AuthenticationService {
     }
 
     //    3. 바코드 유효성 검사
-    private String validateBarcode(String checkCardNumber) {
+    private String validateBarcode(String checkCardNumber) throws BaseException{
         Optional<PointCard> byBarCode = pointCardRepository.findByCardnumber(checkCardNumber);
         log.info("byBarCode is : {}", byBarCode);
-
-        // DB에 있다면 반복 todo: 반복 제한 생성
         if (byBarCode.isPresent()) {
-            String substring = checkCardNumber.substring(12, 15);
-            int endbarcode = Integer.parseInt(substring) + 1;
+            throw new BaseException(BaseResponseStatus.FAILED_TO_CARD_NUMBER);
 
-            String barcode = checkCardNumber.substring(0, 12) + String.format("%04d", endbarcode);
-            return validateBarcode(barcode);
-        } else {
-            log.info("checkBarcode is : {}", checkCardNumber);
-
-            return checkCardNumber;
         }
+        String substring = checkCardNumber.substring(12, 15);
+        int endbarcode = Integer.parseInt(substring) + 1;
+
+        String barcode = checkCardNumber.substring(0, 12) + String.format("%04d", endbarcode);
+        return barcode;
+
     }
 
     //    4. 로그인 기능
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws AuthenticationException {
-        log.info("userlogin is : {}", authenticationRequest);
-
-        User user = userRepository.findByLoginId(authenticationRequest.getLoginId()).orElseThrow();
-        log.info("{}", user);
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws BaseException {
+        User user = userRepository.findByLoginId(authenticationRequest.getLoginId())
+                .orElseThrow(() -> new BaseException(FAILED_TO_LOGIN));
         String JwtToken = jwtTokenProvider.generateToken(user);
-        log.info("{}", JwtToken);
 
-
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            // uuid로 로그인 가능
-                            user.getUsername(),
-                            authenticationRequest.getPassword()
-                    )
-            );
-            return AuthenticationResponse.builder()
-                    .token(JwtToken)
-                    .name(user.getName())
-                    .build();
-        } catch (AuthenticationException ex) {
-            log.error("로그인 정보가 일치하지 않습니다.");
-            throw new BadCredentialsException("Authentication failed", ex);
+        if(user.getStatus() == 0) {
+            throw new BaseException(BaseResponseStatus.WITHDRAWAL_USER);
         }
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        // uuid로 로그인 가능
+                        user.getUsername(),
+                        authenticationRequest.getPassword()
+                )
+        );
+        return AuthenticationResponse.builder()
+                .token(JwtToken)
+                .name(user.getName())
+                .build();
 
     }
 
