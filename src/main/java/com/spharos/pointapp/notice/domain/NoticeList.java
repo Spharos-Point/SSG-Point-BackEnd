@@ -1,5 +1,6 @@
 package com.spharos.pointapp.notice.domain;
 
+import com.spharos.pointapp.admin.administrator.domain.Administrator;
 import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,12 +19,9 @@ public class NoticeList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "administator_id")
+    private Administrator administrator;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id")
     private Notice notice;
-    @CreatedDate // 최초 생성 시점
-    @Column(updatable = false)
-    private LocalDateTime createAt;
 }

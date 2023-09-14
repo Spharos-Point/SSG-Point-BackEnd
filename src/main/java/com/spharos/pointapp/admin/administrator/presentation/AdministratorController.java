@@ -3,6 +3,7 @@ package com.spharos.pointapp.admin.administrator.presentation;
 import com.spharos.pointapp.admin.administrator.application.AdministratorServiceImple;
 import com.spharos.pointapp.admin.administrator.dto.AdministratorCreateDto;
 import com.spharos.pointapp.admin.administrator.vo.InAdministrator;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class AdministratorController {
 
     private final AdministratorServiceImple administratorServiceImple;
 
+    @Operation(summary = "어드민 계정 생성", description = "어드민 게정을 생성합니다.", tags = { "Administrator Controller" })
     @PostMapping("/administrator")
     public ResponseEntity<String> addAdmin(
             @RequestBody InAdministrator inAdministrator

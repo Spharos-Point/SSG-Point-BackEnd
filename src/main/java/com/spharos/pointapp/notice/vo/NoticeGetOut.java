@@ -13,5 +13,4 @@ public class NoticeGetOut {
     private String title;
     private String context;
     private Long noticeId;
-    private LocalDateTime createAt;
 }

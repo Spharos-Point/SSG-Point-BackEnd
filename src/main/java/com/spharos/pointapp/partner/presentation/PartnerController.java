@@ -8,6 +8,7 @@ import com.spharos.pointapp.partner.dto.PartnerCreateDto;
 import com.spharos.pointapp.partner.dto.PartnerGetDto;
 import com.spharos.pointapp.partner.vo.PartnerCreate;
 import com.spharos.pointapp.partner.vo.PartnerGet;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,7 @@ public class PartnerController {
     private final PartnerService partnerService;
 
 //    파트너 생성
+    @Operation(summary = "파트너 생성", description = "파트너를 생성합니다.", tags = { "Partner Controller" })
     @PostMapping("/partner")
     public void createPartner(@RequestBody PartnerCreate partnerCreate) {
         log.info("{}", partnerCreate);
@@ -34,6 +36,7 @@ public class PartnerController {
     }
 
 //    파트너 조회
+    @Operation(summary = "파트너 조회", description = "파트너를 조회합니다.", tags = { "Partner Controller" })
     @GetMapping("/partner/all")
     public List<PartnerGet> getAllPartners() {
         ModelMapper mapper = new ModelMapper();

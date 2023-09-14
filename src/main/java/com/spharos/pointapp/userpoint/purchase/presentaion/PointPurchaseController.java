@@ -3,6 +3,7 @@ package com.spharos.pointapp.userpoint.purchase.presentaion;
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.config.security.TokenUtils;
+
 import com.spharos.pointapp.event.vo.EventListRes;
 import com.spharos.pointapp.user.dto.UserUpdateInfoDto;
 import com.spharos.pointapp.userpoint.purchase.dto.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class PointPurchaseController {
         }
     }
 
+
     @Operation(summary = "포인트 일반 적립 조회", description = "구매한 포인트 적립 조회")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
     @GetMapping("/point/PurchaseUserHistory")
@@ -67,4 +70,5 @@ public class PointPurchaseController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
 }
