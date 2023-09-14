@@ -30,7 +30,7 @@ public class BrandController {
 
 
     @GetMapping("/brand/{brandId}")
-    public ResponseEntity<BrandResOut> getBrand(@PathVariable("brandId") Integer brandId) {
+    public ResponseEntity<BrandResOut> getBrand(@PathVariable("brandId") Long brandId) {
         BrandGetDto brandGetDto = brandService.getBrandById(brandId);
         log.info("brandGetDto: {}", brandGetDto);
         BrandResOut brandResOut = BrandResOut.builder()

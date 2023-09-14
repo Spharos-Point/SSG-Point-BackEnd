@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class BrandResOut {
 
-    private Integer id;
+    private Long id;
     private String brandName;
     private String logoImage;
 

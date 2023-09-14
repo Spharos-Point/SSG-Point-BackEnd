@@ -26,7 +26,7 @@ public class QBrand extends EntityPathBase<Brand> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createAt = _super.createAt;
 
-    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath logoImage = createString("logoImage");
 
