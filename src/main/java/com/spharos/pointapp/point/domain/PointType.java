@@ -9,7 +9,7 @@ public enum PointType implements CodeValue{
     COUPON("CO", "쿠폰"),
     ATTENDANCE("AT", "출석"),
     ROULETTE("RL", "룰렛"),
-    CONVERT("CN", "전환"),
+    TRANCE("TR", "전환"),
     AFFILIATE("AF", "제휴사"),
     RECEIPT("RE", "영수증"),
     BARCODE("BC","바코드"),

@@ -1,5 +1,6 @@
 package com.spharos.pointapp.notice.domain;
 
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Notice {
+public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +21,7 @@ public class Notice {
     @Column(nullable = false, length = 45 , name = "title")
     private String title;
 
-    @Column(nullable = false, length = 100 , name = "context")
+    @Column(nullable = false, length = 500 , name = "context")
     private String context;
 
-    @Column(nullable = false, length = 200, name ="date")
-    private LocalDateTime createAt;
 }

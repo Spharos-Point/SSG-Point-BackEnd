@@ -31,7 +31,6 @@ public class FaqServiceImple implements FaqService {
                         .build());
     }
 
-    //faq 전체 조회
     @Override
     public List<FaqGetDto> getFaqs() {
         List<Faq> faqList = faqRepository.findAll();

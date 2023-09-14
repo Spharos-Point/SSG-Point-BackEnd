@@ -1,6 +1,7 @@
 package com.spharos.pointapp.customer.domain;
 
 import com.spharos.pointapp.category.domain.Category;
+import com.spharos.pointapp.config.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Customer extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +22,6 @@ public class Customer {
     private String context;
     private String phone;
     private String answer;
-    private String writeDatetime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
