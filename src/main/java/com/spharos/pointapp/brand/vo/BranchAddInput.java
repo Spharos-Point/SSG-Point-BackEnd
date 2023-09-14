@@ -15,7 +15,7 @@ public class BranchAddInput {
     private String phone;
     private String latitude;
     private String longitude;
-    private Integer brandId;
+    private Long brandId;
 
 
 }

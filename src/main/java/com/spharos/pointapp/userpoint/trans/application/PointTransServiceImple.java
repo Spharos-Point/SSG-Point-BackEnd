@@ -1,4 +1,4 @@
-package com.spharos.pointapp.userpoint.trans.presentation;
+package com.spharos.pointapp.userpoint.trans.application;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.extra.infrastructure.ExtraRepository;
@@ -70,7 +70,6 @@ public class PointTransServiceImple implements PointTransService {
                 .extra(extraRepository.findById(pointTrans.getExtra().getId()).get())
                 .build();
 
-        log.info("asdasd {}", pointTransResDto);
         return pointTransResDto;
     }
 

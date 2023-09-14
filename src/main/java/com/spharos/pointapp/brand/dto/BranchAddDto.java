@@ -15,6 +15,6 @@ public class BranchAddDto {
     private String latitude;
     private String longitude;
 
-    private Integer brandId;
+    private Long brandId;
 
 }

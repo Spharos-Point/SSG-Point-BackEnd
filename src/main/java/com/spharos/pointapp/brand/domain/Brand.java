@@ -14,7 +14,7 @@ public class Brand extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String brandName;
     private String logoImage;
 
