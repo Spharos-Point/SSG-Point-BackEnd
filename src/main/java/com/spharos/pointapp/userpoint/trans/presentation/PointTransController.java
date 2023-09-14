@@ -1,11 +1,11 @@
-package com.spharos.pointapp.userpoint.trans.application;
+package com.spharos.pointapp.userpoint.trans.presentation;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.userpoint.trans.dto.PointTransDto;
 import com.spharos.pointapp.userpoint.trans.dto.PointTransResDto;
-import com.spharos.pointapp.userpoint.trans.presentation.PointTransService;
+import com.spharos.pointapp.userpoint.trans.application.PointTransService;
 import com.spharos.pointapp.userpoint.trans.vo.PointTransAddRequest;
 import com.spharos.pointapp.userpoint.trans.vo.PointTransResponse;
 import io.swagger.v3.oas.annotations.Operation;

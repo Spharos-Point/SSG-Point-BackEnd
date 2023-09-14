@@ -1,6 +1,8 @@
-package com.spharos.pointapp.userpoint.purchase.presentaion;
+package com.spharos.pointapp.userpoint.purchase.application;
 
+import com.spharos.pointapp.brand.domain.Branch;
 import com.spharos.pointapp.brand.infrastructure.BranchRepository;
+import com.spharos.pointapp.brand.infrastructure.BrandRepository;
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
@@ -15,6 +17,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+import static com.spharos.pointapp.config.common.BaseResponseStatus.NO_POINT_HISTORY;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +30,7 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
     private final PointPurchaseRepository pointPurchaseRepository;
     private final UserPointListRepository userPointListRepository;
     private final BranchRepository branchRepository;
+    private final BrandRepository brandRepository;
     private final PointRepository pointRepository;
 
     @Override
@@ -68,18 +76,37 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
     }
 
     @Override
-    public PointPurchaseResDto getPointPurchaseByPointPurchaseId(Long pointPurchaseId) throws BaseException {
-        return null;
-    }
+    public List<PointPurchaseResDto> getPointPurchaseByUuid(String uuid){
+        List<UserPointList> userPointList = userPointListRepository.findByUuid(uuid);
 
-//    @Override
-//    public PointPurchaseResDto getPointPurchaseByPointPurchaseId(Long pointPurchaseId) {
-//        PointPurchase pointPurchase = pointPurchaseRepository.findById(pointPurchaseId).orElse(null);
-//        PointPurchaseResDto pointPurchaseResDto = PointPurchaseResDto.builder()
-//                .id(pointPurchase.getId())
-////                .point(pointRepository.findById(pointPurchase.getPoint().getId()).get())
-////                .branch(branchRepository.findById(pointPurchase.getBranch().getId()).get())
-//                .build();
-//        return null;
-//    }
+        List<PointPurchaseResDto> PointPurchaseResDtoList = userPointList.stream().map(userPoint -> {
+            if(userPoint.getPointType().getCode() == "RE") {
+                PointPurchase pointPurchase = pointPurchaseRepository.findByPointId(userPoint.getPoint().getId()).orElse(null);
+
+                if (pointPurchase != null) {
+
+                    Optional<Point> point = pointRepository.findById(
+                            userPoint.getPoint().getId());
+
+                    Branch branch = branchRepository.findById(pointPurchase.getBranch().getId()).orElse(null);
+                    assert branch != null;
+                    assert point.isPresent();
+                    return PointPurchaseResDto.builder()
+                            .id(userPoint.getId())
+                            .pointId(pointRepository.findById(userPoint.getPoint().getId()).orElse(null).getId())
+                            .branchName(branch.getBranchName())
+                            .brandName(brandRepository.findById(branch.getBrand().getId()).orElse(null).getBrandName())
+                            .pointType("RE")
+                            .used(point.get().getUsed())
+                            .purchaseMount(pointPurchase.getPurchaseMount())
+                            .purchasePrice(pointPurchase.getPurchasePrice())
+                            .purchasePoint(point.get().getPoint())
+                            .build();
+                }
+            }
+            return null;
+        }).toList();
+        return PointPurchaseResDtoList;
+
+    }
 }

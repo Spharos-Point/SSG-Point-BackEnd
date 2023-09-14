@@ -40,15 +40,14 @@ public class UserPointListServiceImple implements UserPointListService {
                         userPoint.getPoint().getId()).orElse(null).getId();
             } else if(userPoint.getPointType().getCode() == "TR") {
                 pointTypeId =  pointTransRepository.findByPointId(
-                        userPoint.getPoint().getId()).orElse(null
-                ).getId();
+                        userPoint.getPoint().getId()).orElse(null).getId();
             }
             return UserPointListResDto.builder()
                     .id(userPoint.getId())
                     .pointId(pointRepository.findById(userPoint.getPoint().getId()).orElse(null).getId())
                     .pointType(userPoint.getPointType().getValue())
                     .pointTypeById(pointTypeId)
-                    .createAt(userPoint.getCreateAt())
+                    .createAt(userPoint.getCreateAt().toString())
                     .build();
         }).toList();
         log.info("userPointList : {}", userPointListResDtoList);

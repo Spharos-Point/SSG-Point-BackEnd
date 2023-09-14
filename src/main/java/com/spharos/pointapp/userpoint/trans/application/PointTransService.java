@@ -1,4 +1,4 @@
-package com.spharos.pointapp.userpoint.trans.presentation;
+package com.spharos.pointapp.userpoint.trans.application;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.userpoint.trans.dto.PointTransDto;

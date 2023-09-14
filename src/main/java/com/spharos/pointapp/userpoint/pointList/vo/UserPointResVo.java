@@ -15,7 +15,7 @@ public class UserPointResVo {
     private Long pointId;
     private String pointType;
     private Long pointTypeById;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private String createAt;
+    private String updateAt;
 
 }
