@@ -132,6 +132,7 @@ public class UserController {
 
     // 6. 유저 탈퇴(상태변경)
     @Operation(summary = "유저 탈퇴", description = "상태를 변경 해준다.", tags = { "User Controller" })
+    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
     @PutMapping("/leaveOnline")
     public BaseResponse<String> leaveOnilne(@RequestHeader("Authorization") String token) {
         String uuid = tokenUtils.extractUuidFromToken(token);

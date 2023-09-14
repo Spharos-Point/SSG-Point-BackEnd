@@ -36,8 +36,8 @@ public class UserServiceImple implements UserService{
     //  1. 유저 정보 변경
     @Override
     public void updateUserInfo(UserUpdateInfoDto userUpdateInfoDto, String uuid) throws BaseException {
-        User user = userRepository.findByUuid(uuid).orElseThrow(() ->
-                new BaseException(NO_EXIST_USER));
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
         userRepository.save(
                 User.builder()
                         .id(user.getId())
@@ -105,7 +105,7 @@ public class UserServiceImple implements UserService{
     @Override
     public void updateUserPointPwd(UserUpdatePointPwdDto userUpdatePointPwdDto, String uuid) throws BaseException{
         User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new BaseException (NO_EXIST_USER));
+                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
         // 새로운 포인트 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
         user.hashPointPassword(userUpdatePointPwdDto.getNewPointPassword());
     }
@@ -114,7 +114,7 @@ public class UserServiceImple implements UserService{
     @Override
     public void userLeavePwd(String password, String uuid) throws BaseException{
         User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new BaseException (NO_EXIST_USER));
+                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
         if(new BCryptPasswordEncoder().matches(password, user.getPassword())) {
             throw new BaseException(PASSWORD_RETRIEVE_FAILED);
         }
@@ -124,7 +124,7 @@ public class UserServiceImple implements UserService{
     @Override
     public void userLeaveOnline(String uuid) throws BaseException{
         User user = userRepository.findByUuid(uuid)
-                .orElseThrow(() -> new BaseException (NO_EXIST_USER));
+                .orElseThrow(() -> new BaseException(NO_EXIST_USER));
 
         user.leaveOnlineStatus();
     }
