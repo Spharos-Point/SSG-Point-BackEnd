@@ -27,7 +27,7 @@ public class PointTransController {
     @SecurityRequirement(name = "Bearer Auth")
     @PostMapping("/point/trans")
     public BaseResponse<?> transPoint(@RequestHeader("Authorization") String token,
-                                      @RequestBody PointTransAddRequest pointTransAddRequest) {
+            @RequestBody PointTransAddRequest pointTransAddRequest) {
         log.info("transPoint");
         String uuid = tokenUtils.extractUuidFromToken(token);
 

@@ -1,5 +1,6 @@
 package com.spharos.pointapp.userpoint.gift.application;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
@@ -13,13 +14,15 @@ import com.spharos.pointapp.userpoint.gift.dto.*;
 import com.spharos.pointapp.userpoint.gift.infrastructure.PointGiftRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
+import com.spharos.pointapp.userpoint.trans.domain.PointTrans;
+import com.spharos.pointapp.userpoint.trans.dto.PointTransResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
@@ -36,6 +39,7 @@ public class PointGiftServiceImple implements PointGiftService {
      * 3. 포인트 대기 조회
      * 4. 포인트 선물 수락
      * 5. 포인트 선물 거절
+     * 6. 포인트 선물 조회
      *
      */
 
@@ -43,6 +47,8 @@ public class PointGiftServiceImple implements PointGiftService {
     private final UserRepository userRepository;
     private final UserPointListRepository userPointListRepository;
     private final PointRepository pointRepository;
+    private final JPAQueryFactory queryFactory;
+
 
     // 1. 포인트 선물 생성
     @Transactional(rollbackFor = Exception.class) // 롤백 설정 추가
@@ -114,7 +120,7 @@ public class PointGiftServiceImple implements PointGiftService {
 
     // 2. 포인트 선물 유저 확인
     @Override
-    public String getreceiverUser(String userName, String phoneNumber, String uuid) throws BaseException {
+    public String getReceiverUser(String userName, String phoneNumber, String uuid) throws BaseException {
         User senderUser = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
         log.info("senderUser : {}", senderUser);
@@ -136,7 +142,7 @@ public class PointGiftServiceImple implements PointGiftService {
         PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
         log.info("pointGiftType {} ", pointGiftType);
 
-        Optional<PointGift> pointGiftReceiver = pointGiftRepository.findTopByreceiverUuidAndPointGiftTypeOrderByIdDesc(receiverUuid, pointGiftType);
+        Optional<PointGift> pointGiftReceiver = pointGiftRepository.findTopByReceiverUuidAndPointGiftTypeOrderByIdDesc(receiverUuid, pointGiftType);
         log.info("pointGiftSenderUser {} ", pointGiftReceiver);
 
         // 대기중인 선물포인트가 없다면 null
@@ -171,7 +177,7 @@ public class PointGiftServiceImple implements PointGiftService {
         PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
         log.info("pointGiftType {} ", pointGiftType);
 
-        PointGift pointGiftReceiver = pointGiftRepository.findTopByreceiverUuidAndPointGiftTypeOrderByIdDesc(receiverUuid, pointGiftType)
+        PointGift pointGiftReceiver = pointGiftRepository.findTopByReceiverUuidAndPointGiftTypeOrderByIdDesc(receiverUuid, pointGiftType)
                         .orElseThrow(() -> new BaseException(GIFT_NO_HISTORY_FAILED));
         log.info("pointGiftReceiver {} ", pointGiftReceiver);
 
@@ -211,16 +217,6 @@ public class PointGiftServiceImple implements PointGiftService {
                         .pointGiftType(PointGiftType.ACCEPT)
                         .build()
         );
-
-        userPointListRepository.save(
-                UserPointList.builder()
-                        .point(point)
-                        .uuid(userPointList.getUuid())
-                        .pointType(PointType.GIFT)
-                        .build()
-
-        );
-
     }
 
     // 5. 포인트 선물 거절
@@ -232,7 +228,7 @@ public class PointGiftServiceImple implements PointGiftService {
         PointGiftType pointGiftType = new PointGiftTypeConverter().convertToEntityAttribute(PointGiftType.WAIT.getCode());
         log.info("pointGiftType {} ", pointGiftType);
 
-        PointGift pointGiftReceiver = pointGiftRepository.findTopByreceiverUuidAndPointGiftTypeOrderByIdDesc(receiverUuid, pointGiftType)
+        PointGift pointGiftReceiver = pointGiftRepository.findTopByReceiverUuidAndPointGiftTypeOrderByIdDesc(receiverUuid, pointGiftType)
                 .orElseThrow(() -> new BaseException(GIFT_NO_HISTORY_FAILED));
         log.info("pointGiftReceiver {} ", pointGiftReceiver);
 
@@ -272,13 +268,50 @@ public class PointGiftServiceImple implements PointGiftService {
                         .build()
         );
 
-        userPointListRepository.save(
-                UserPointList.builder()
-                        .point(point)
-                        .uuid(userPointList.getUuid())
-                        .pointType(PointType.GIFT)
-                        .build()
-
-        );
     }
+
+//    // 6. 포인트 선물 조회
+//    @Transactional(rollbackFor = Exception.class) // 롤백 설정 추가
+//    @Override
+//    public List<PointGiftHistoryDto> getGiftHistory(String uuid) throws BaseException {
+//        String receiverUuid = uuid;
+//
+//
+//        /**
+//         *
+//         포인트 선물 받은 기록은 포인트 선물에서 receiver uuid와 ACCEPT로 찾음
+//
+//         포인트 선물 거절과 보낸거는 유저 포인트 리스트에서
+//         giver uuid를 가지고 포인트 타입을 찾고
+//         포인트 선물에서 해당 포인트 타입에서 WAIT와 REFUSE 리스트 가져오기
+//
+//         */
+//        PointGiftType AcceptType = PointGiftType.ACCEPT;
+//        PointGiftType RefuseType = PointGiftType.REFUSE;
+//
+//        Predicate predicate = PointGift.receiverUuid.eq(receiverUuid)
+//                .and(PointGift.pointGiftType.in(pointGiftTypes));
+//
+//
+//        List<PointGift> acceptedOrRefusedGifts = pointGiftRepository.findByToUserUuidAndGiftStatusIn(toUserUuid,
+//                Arrays.asList(PointGiftStatus.WAIT, PointGiftStatus.REFUSE));
+//
+//        if (acceptedOrRefusedGifts.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//
+//        List<PointGiftEntityDto> dtoPointGifts = acceptedOrRefusedGifts.stream()
+//                .map(pointGift ->
+//                        modelMapper.map(pointGift, PointGiftEntityDto.class))
+//                .collect(Collectors.toList());
+
+//        PointTrans pointTrans = pointGiftRepository.findById(pointTransId).orElse(null);
+//        PointTransResDto pointTransResDto = PointTransResDto.builder()
+//                .id(pointTrans.getId())
+//                .point(pointRepository.findById(pointTrans.getPoint().getId()).get())
+//                .extra(extraRepository.findById(pointTrans.getExtra().getId()).get())
+//                .build();
+//        return pointTransResDto;
+
+
 }
