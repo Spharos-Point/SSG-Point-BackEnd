@@ -22,7 +22,6 @@ public class BranchController {
     private final BrandService brandService;
 
 //    계열사 등록
-    @Operation(summary = "지점 등록", description = "계열사의 지점을 등록합니다.", tags = { "Branch Controller" })
     @PostMapping("/branch")
     public void addBranch(@RequestBody BranchAddInput branchAddInput) {
         log.info("branchAddInput: {}", branchAddInput);
