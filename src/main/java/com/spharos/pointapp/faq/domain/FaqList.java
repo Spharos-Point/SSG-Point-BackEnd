@@ -1,5 +1,6 @@
 package com.spharos.pointapp.faq.domain;
 
+import com.spharos.pointapp.admin.administrator.domain.Administrator;
 import com.spharos.pointapp.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,8 @@ public class FaqList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "administator_id")
+    private Administrator administrator;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faq_id")
     private Faq faq;

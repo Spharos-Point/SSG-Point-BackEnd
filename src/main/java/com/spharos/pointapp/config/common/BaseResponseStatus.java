@@ -25,7 +25,7 @@ public enum BaseResponseStatus {
     NO_LOOKUP_VALUE(false, 3001, "조회된 데이터가 없습니다."),
     JWT_CREATE_FAILED(false, 3002, "토큰 생성에 실패했습니다."),
     NO_EXIST_USER(false, 3003, "존재하지 않는 유저 정보입니다."),
-
+    NO_POINT_HISTORY(false, 3004, "포인트 내역 조회에 실패했습니다."),
 
     // User
     USER_INSERT_FAILED(false, 4000, "사용자 회원가입에 실패했습니다."),

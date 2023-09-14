@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 80
 
 spring:
   application:
@@ -14,10 +14,10 @@ spring:
 
 
   datasource:
-        url: ${DATASOURCE_URL}
-        username: ${DATASOURCE_USER}
-        password: ${DATASOURCE_PASS}
-        driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USER}
+    password: ${DATASOURCE_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 JWT:
   SECRET_KEY: ${JWT_SECRET_KEY}

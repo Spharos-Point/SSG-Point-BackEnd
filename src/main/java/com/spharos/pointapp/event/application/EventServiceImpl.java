@@ -98,13 +98,17 @@ public class EventServiceImpl implements EventService{
         List<EventList> eventListList = eventListRepository.findAllByUserId(userId);
         List<EventListGetDto> eventListGetDtoList = eventListList.stream().map(item -> {
             Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
-            User user = userRepository.findById(item.getUser().getId()).orElseThrow();
 
             return EventListGetDto.builder()
                     .id(item.getId())
-                    .eventId(event.getId())
-                    .userId(user.getId())
-                    .prize(item.getPrize())
+                    .eventName(event.getEventName())
+                    .img(event.getImg())
+                    .endDate(event.getEndDate())
+                    .eventType(event.getEventType())
+                    .eventDesc(event.getEventDesc())
+                    .expired(event.getExpired())
+                    .regDate(event.getRegDate())
+                    .prizeType(event.getPrizeType())
                     .build();
         }).toList();
         return eventListGetDtoList;
@@ -113,7 +117,7 @@ public class EventServiceImpl implements EventService{
     //    종료 이벤트 조회
     @Override
     public List<EventGetDto> getEventByExpired() {
-        List<Event> eventList = eventRepository.findAllByExpired();
+        List<Event> eventList = eventRepository.findAllByExpiredAndEventType();
         List<EventGetDto> eventGetDtoList = new ArrayList<>();
         ModelMapper mapper = new ModelMapper();
         eventList.forEach(

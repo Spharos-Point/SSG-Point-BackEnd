@@ -1,13 +1,11 @@
 package com.spharos.pointapp.config.security;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
@@ -57,6 +55,7 @@ public class SecurityConfiguration {
                 )
                 .authenticationProvider(authenticationProvider) //등록할때 사용하는 키는 authenticationProvider를 사용
                 .addFilterBefore(jwtTokenProvider, UsernamePasswordAuthenticationFilter.class); //내가 만든 필터 추가
+
 
 // 기존에 쓰던 형식
 //        http

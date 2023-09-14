@@ -52,3 +52,5 @@ public class BoardController {
         return boardGetOutList;
     }
 }
+
+
