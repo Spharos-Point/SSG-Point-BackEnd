@@ -21,5 +21,4 @@ public abstract class BaseTimeEntity {
 
     @LastModifiedDate  // 마지막 변경 시점
     private LocalDateTime updateAt;
-
 }

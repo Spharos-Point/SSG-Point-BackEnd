@@ -8,7 +8,7 @@ import java.util.List;
 public interface BrandService {
 
     void addStore(BrandAddDto brandAddDto);
-    BrandGetDto getBrandById(Integer id);
+    BrandGetDto getBrandById(Long id);
     List<BrandGetDto> getAllBrandList();
     List<BrandGetDto> getBrandByBrandName(String brandName);
 
