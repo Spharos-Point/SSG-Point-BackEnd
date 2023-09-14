@@ -7,7 +7,7 @@ Spharos Academy 3기 뉴비 5인방의 신세계 포인트 앱 클론코딩프�
 <h4> 뉴비 5인방의 신세계 포인트 앱 클론 코딩</h4>
 
 <h5> 🐣 시스템 아키텍쳐</h5>
-<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Git-hub&logoColor=white"/>
+<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Git-hub&logoColor=white"/> <img src="https://img.shields.io/badge/SpingBoot-ABF200style=flat&logo=Git&logoColor=white"/>
 <img src="https://img.shields.io/badge/JAVA-6E6E6E?style=flat-square&logo=Java&logoColor=white"/>
 
 <h4> Point, event, cupon 위주 개발 </h4>
@@ -17,9 +17,12 @@ Spharos Academy 3기 뉴비 5인방의 신세계 포인트 앱 클론코딩프�
 <br>❗ 주요 기능으로 Point, event, coupon이 있습니다.
 <br>❗ Git을 처음 사용해 보는 5인의 Git이라 미숙할 수 있습니다.
 <br>❗ JAVA를 처음 다뤄보는 4명의(1명제외) 생존기로 봐주시면 감사하겠습니다.
-   
 
-
+<h4> Point, event, cupon 위주 개발 </h4>
+<h5> ✔ 이벤트 스토밍 </h5>
+https://miro.com/app/board/uXjVMyZzdT4=/?share_link_id=356913328141
+<h5> ✔ ERD CROUD </h5>
+https://www.erdcloud.com/d/myQufkJ2niWb5uzXN
 
 <h4> 🐥 역할 </h4>
 <h5> 🦒 조장 양창민 - BackEnd </h5>
