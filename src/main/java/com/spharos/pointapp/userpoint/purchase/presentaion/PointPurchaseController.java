@@ -1,12 +1,10 @@
-package com.spharos.pointapp.userpoint.purchase.application;
+package com.spharos.pointapp.userpoint.purchase.presentaion;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.config.security.TokenUtils;
-import com.spharos.pointapp.event.vo.EventListRes;
-import com.spharos.pointapp.user.dto.UserUpdateInfoDto;
+import com.spharos.pointapp.userpoint.purchase.application.PointPurchaseService;
 import com.spharos.pointapp.userpoint.purchase.dto.*;
-import com.spharos.pointapp.userpoint.purchase.presentaion.PointPurchaseService;
 import com.spharos.pointapp.userpoint.purchase.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor

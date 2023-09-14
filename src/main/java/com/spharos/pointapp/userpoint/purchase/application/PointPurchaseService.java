@@ -1,4 +1,4 @@
-package com.spharos.pointapp.userpoint.purchase.presentaion;
+package com.spharos.pointapp.userpoint.purchase.application;
 
 import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.userpoint.purchase.dto.PointPurchaseDto;

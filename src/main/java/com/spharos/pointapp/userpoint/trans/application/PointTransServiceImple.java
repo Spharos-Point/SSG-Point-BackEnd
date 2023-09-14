@@ -1,4 +1,4 @@
-package com.spharos.pointapp.userpoint.trans.presentation;
+package com.spharos.pointapp.userpoint.trans.application;
 
 import com.spharos.pointapp.brand.infrastructure.BranchRepository;
 import com.spharos.pointapp.config.common.BaseException;
@@ -8,6 +8,7 @@ import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
+import com.spharos.pointapp.userpoint.trans.application.PointTransService;
 import com.spharos.pointapp.userpoint.trans.domain.PointTrans;
 import com.spharos.pointapp.userpoint.trans.dto.PointTransDto;
 import com.spharos.pointapp.userpoint.trans.dto.PointTransResDto;

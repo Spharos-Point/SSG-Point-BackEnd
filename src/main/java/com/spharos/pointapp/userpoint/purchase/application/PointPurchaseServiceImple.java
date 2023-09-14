@@ -1,12 +1,12 @@
-package com.spharos.pointapp.userpoint.purchase.presentaion;
+package com.spharos.pointapp.userpoint.purchase.application;
 
 import com.spharos.pointapp.brand.infrastructure.BranchRepository;
-import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
 import com.spharos.pointapp.point.domain.PointType;
 import com.spharos.pointapp.point.infrastructure.PointRepository;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
+import com.spharos.pointapp.userpoint.purchase.application.PointPurchaseService;
 import com.spharos.pointapp.userpoint.purchase.domain.PointPurchase;
 import com.spharos.pointapp.userpoint.purchase.dto.PointPurchaseDto;
 import com.spharos.pointapp.userpoint.purchase.infrastructure.PointPurchaseRepository;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PointPurchaseServiceImple implements PointPurchaseService{
+public class PointPurchaseServiceImple implements PointPurchaseService {
 
     private final PointPurchaseRepository pointPurchaseRepository;
     private final UserPointListRepository userPointListRepository;
