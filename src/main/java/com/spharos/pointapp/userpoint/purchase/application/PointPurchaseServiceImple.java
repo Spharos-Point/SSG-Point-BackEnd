@@ -101,6 +101,7 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
                             .purchaseMount(pointPurchase.getPurchaseMount())
                             .purchasePrice(pointPurchase.getPurchasePrice())
                             .purchasePoint(point.get().getPoint())
+                            .purchaseCreateAt(pointPurchase.getCreateAt().toString())
                             .build();
                 }
             }

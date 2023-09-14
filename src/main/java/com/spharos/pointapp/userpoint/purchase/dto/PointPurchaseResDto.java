@@ -20,5 +20,6 @@ public class PointPurchaseResDto {
     private Integer purchaseMount;
     private Integer purchasePrice;
     private Integer purchasePoint;
+    private String purchaseCreateAt;
 
 }
