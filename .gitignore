@@ -41,5 +41,6 @@ master/
 slave/
 replication/
 
-#### yml ###
-#*.yml
+#### yml ###`
+application-local.yml
+application-prod.yml
