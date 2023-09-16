@@ -26,5 +26,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT e FROM Event e where e.eventType = '참여' AND e.expired = true")
     List<Event> findByEventTypeAndExpired();
 
-
 }

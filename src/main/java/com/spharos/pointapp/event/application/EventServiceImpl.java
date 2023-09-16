@@ -92,10 +92,10 @@ public class EventServiceImpl implements EventService{
         eventRepository.deleteById(eventId);
     }
 
-//    사용자가 참여한 이벤트 조회
+//    사용자가 참여한 이벤트 조회(당첨X)
     @Override
     public List<EventListGetDto> getEventByUser(Long userId) {
-        List<EventList> eventListList = eventListRepository.findAllByUserId(userId);
+        List<EventList> eventListList = eventListRepository.findAllByUserIdAndPrizeFalse(userId);
         List<EventListGetDto> eventListGetDtoList = eventListList.stream().map(item -> {
             Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
 
@@ -170,5 +170,26 @@ public class EventServiceImpl implements EventService{
         return eventGetDtoList;
     }
 
+//    사용자가 당첨된 이벤트 조회
+    @Override
+    public List<EventListGetDto> getEventByPrize(Long userId) {
+        List<EventList> eventListList = eventListRepository.findAllByUserIdAndPrizeTrue(userId);
+        List<EventListGetDto> eventListGetDtoList = eventListList.stream().map(item -> {
+            Event event = eventRepository.findById(item.getEvent().getId()).orElseThrow();
 
+            return EventListGetDto.builder()
+                    .id(item.getId())
+                    .eventName(event.getEventName())
+                    .img(event.getImg())
+                    .endDate(event.getEndDate())
+                    .eventType(event.getEventType())
+                    .eventDesc(event.getEventDesc())
+                    .expired(event.getExpired())
+                    .regDate(event.getRegDate())
+                    .prizeType(event.getPrizeType())
+                    .build();
+        }).toList();
+        return eventListGetDtoList;
+
+    }
 }

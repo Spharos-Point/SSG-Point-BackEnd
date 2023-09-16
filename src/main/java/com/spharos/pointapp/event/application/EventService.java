@@ -41,8 +41,8 @@ public interface EventService {
 //    종료된 이벤트를 제외한 이벤트 조회
     List<EventGetDto> getEventByNotExpired();
 
-
-
+//    사용자가 당첨된 이벤트 조회
+    List<EventListGetDto> getEventByPrize(Long userId);
 }
 
 

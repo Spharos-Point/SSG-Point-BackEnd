@@ -3,10 +3,7 @@ package com.spharos.pointapp.coupon.presentation;
 import com.spharos.pointapp.config.security.TokenUtils;
 import com.spharos.pointapp.coupon.application.CouponService;
 import com.spharos.pointapp.coupon.domain.Coupon;
-import com.spharos.pointapp.coupon.dto.CouponCreateDto;
-import com.spharos.pointapp.coupon.dto.CouponDownDto;
-import com.spharos.pointapp.coupon.dto.CouponGetDto;
-import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
+import com.spharos.pointapp.coupon.dto.*;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
 import com.spharos.pointapp.coupon.vo.CouponCreate;
 import com.spharos.pointapp.coupon.vo.CouponDown;
@@ -106,7 +103,7 @@ public class CouponController {
 
 //    사용자가 보유한 쿠폰 조회
     @Operation(summary = "사용자가 보유한 쿠폰 조회", description = "기간에 상관없이 사용자가 보유한 모든 쿠폰을 조회합니다.", tags = { "Coupon Controller" })
-    @Transactional(readOnly = true)
+    @SecurityRequirement(name = "Bearer Auth")
     @GetMapping("/benefits/myCoupon")
     public List<CouponGetOut> getCouponByUser(@RequestHeader("Authorization") String token) {
         String uuid = tokenUtils.extractUuidFromToken(token);
@@ -155,4 +152,35 @@ public class CouponController {
         return couponGetOutList;
     }
 
+    //    사용완료 또는 기간만료 쿠폰 조회
+    @Operation(summary = "사용불가 쿠폰 조회", description = "사용할 수 없는 쿠폰을 조회합니다.", tags = { "Coupon Controller" })
+    @SecurityRequirement(name = "Bearer Auth")
+    @GetMapping("/benefits/endCoupon")
+    public List<CouponGetOut> getCouponByUserAndStat(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        log.info("{}", uuid);
+        User user = userRepository.findByUuid(uuid).get();
+        ModelMapper mapper = new ModelMapper();
+        List<CouponGetDto> couponGetDtoList = couponService.getCouponByUserAndStat(user.getId());
+        log.info("{}", couponGetDtoList);
+        List<CouponGetOut> couponGetOutList = new ArrayList<>();
+        couponGetDtoList.forEach(
+                couponGetDto -> couponGetOutList.add(
+                        mapper.map(couponGetDto, CouponGetOut.class)
+                ));
+        return couponGetOutList;
+    }
 }
+//        String uuid = tokenUtils.extractUuidFromToken(token);
+//        ModelMapper mapper = new ModelMapper();
+//        List<CouponGetListDto> couponGetDtoList = couponService.getCouponByUserAndStat();
+//        log.info("{}", couponGetDtoList);
+//        List<CouponGetOut> couponGetOutList = new ArrayList<>();
+//        couponGetDtoList.forEach(
+//                coupon -> couponGetDtoList.add(
+//                        mapper.map(Coupon, CouponListGetDto.class)
+//                ));
+//        return couponGetDtoList;
+//    }
+
+

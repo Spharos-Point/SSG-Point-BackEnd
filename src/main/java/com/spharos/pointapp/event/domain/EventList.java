@@ -31,5 +31,6 @@ public class EventList {
     @Column(nullable = false, name = "prize", columnDefinition = "boolean default false")
     private Boolean prize;
 
+
 }
 

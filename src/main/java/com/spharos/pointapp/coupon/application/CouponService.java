@@ -29,4 +29,9 @@ public interface CouponService {
 
 //    마감 임박순 쿠폰 조회
     List<CouponGetDto> getCouponByAsc();
+
+//    사용완료 또는 기간만료 쿠폰 조회
+//    uuid로 유저를 찾아서 사용여부가 true인 것을 조회
+    List<CouponGetDto> getCouponByUserAndStat(Long userId);
+
 }

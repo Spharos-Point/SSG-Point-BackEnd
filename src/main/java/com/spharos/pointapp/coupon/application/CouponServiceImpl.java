@@ -1,14 +1,12 @@
 package com.spharos.pointapp.coupon.application;
 
 import com.spharos.pointapp.coupon.domain.*;
-import com.spharos.pointapp.coupon.dto.CouponCreateDto;
-import com.spharos.pointapp.coupon.dto.CouponDownDto;
-import com.spharos.pointapp.coupon.dto.CouponGetDto;
-import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
+import com.spharos.pointapp.coupon.dto.*;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
 import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventListGetDto;
 import com.spharos.pointapp.partner.domain.Partner;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
@@ -161,4 +159,29 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
         return couponGetDtoList;
     }
 
+    //    사용완료 또는 기간만료 쿠폰 조회
+    @Override
+    public List<CouponGetDto> getCouponByUserAndStat(Long userId) {
+        List<CouponList> couponListList = couponListRepository.findAllByUserIdAndCouponStatFalse(userId);
+        List<CouponGetDto> couponGetDtoList = couponListList.stream().map(item -> {
+        Coupon coupon = couponRepository.findById(item.getId()).orElseThrow();
+        String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
+        return CouponGetDto.builder()
+                .id(coupon.getId())
+                .couponName(coupon.getCouponName())
+                .couponDesc(coupon.getCouponDesc())
+                .regDate(coupon.getRegDate())
+                .endDate(coupon.getEndDate())
+                .partnerId(coupon.getPartner().getId())
+                .partnerName(coupon.getPartner().getPartnerName())
+                .couponNum(coupon.getCouponNum())
+                .couponType(couponType)
+                .couponImg(coupon.getCouponImg())
+                .couponLogoImg(coupon.getCouponLogoImg())
+                .couponValue(coupon.getCouponValue())
+                .couponValueImg(coupon.getCouponValueImg())
+                .build();
+    }).toList();
+        return couponGetDtoList;
+    }
 }

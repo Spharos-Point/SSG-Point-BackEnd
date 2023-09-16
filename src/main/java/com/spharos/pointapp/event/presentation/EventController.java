@@ -14,6 +14,7 @@ import com.spharos.pointapp.event.vo.EventUpdate;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -87,7 +88,6 @@ public class EventController {
 
 //    사용자가 참여한 이벤트 조회
     @Operation(summary = "사용자 이벤트 조회", description = "사용자가 참여한 이벤트를 조회합니다.", tags = { "Event Controller" })
-    @Transactional(readOnly = true)
     @GetMapping("/benefits/myEvent")
     public List<EventListRes> getEventByUser(@RequestHeader("Authorization") String token) {
         String uuid = tokenUtils.extractUuidFromToken(token);
@@ -181,6 +181,26 @@ public class EventController {
                         mapper.map(eventGetDto, EventGetOut.class)
                 ));
         return eventGetOutList;
+    }
+
+//    사용자가 당첨된 이벤트 조회
+    @Operation(summary = "사용자 당첨 이벤트 조회", description = "사용자가 당첨된 이벤트를 조회합니다.", tags = { "Event Controller" })
+    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
+    @GetMapping("/benefits/winEvent")
+    public List<EventListRes> getEventByPrize(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("{}", user);
+        List<EventListGetDto> eventGetDtoList = eventService.getEventByPrize(user.getId());
+        ModelMapper mapper = new ModelMapper();
+        log.info("{}", eventGetDtoList);
+        List<EventListRes> eventListResList = new ArrayList<>();
+        eventGetDtoList.forEach(
+                EventListGetDto -> eventListResList.add(
+                        mapper.map(EventListGetDto, EventListRes.class)
+                )
+        );
+        return eventListResList;
     }
 
 }
