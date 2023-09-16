@@ -8,5 +8,6 @@ import java.util.List;
 public interface UserPointListService {
 
     List<UserPointListResDto> getUserPointListByUuid(String uuid) throws BaseException;
+    Integer getTotalPointByUuid(String uuid) throws BaseException;
 
 }

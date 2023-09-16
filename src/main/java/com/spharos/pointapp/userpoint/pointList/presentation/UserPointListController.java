@@ -50,4 +50,17 @@ public class UserPointListController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    @Operation(summary = "유저 포인트 조회", description = "유저별 최종 포인트 합계")
+    @SecurityRequirement(name = "Bearer Auth")
+    @GetMapping("/userPointList/total")
+    public BaseResponse<Integer> getUserPointTotal(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        try {
+            Integer totalPoint = userPointListService.getTotalPointByUuid(uuid);
+            return new BaseResponse<>(totalPoint);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

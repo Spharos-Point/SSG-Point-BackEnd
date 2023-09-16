@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -52,5 +53,17 @@ public class UserPointListServiceImple implements UserPointListService {
         }).toList();
         log.info("userPointList : {}", userPointListResDtoList);
         return userPointListResDtoList;
+    }
+
+    @Override
+    public Integer getTotalPointByUuid(String uuid) throws BaseException {
+        Optional<UserPointList> userPointList = userPointListRepository.findTopByUuidOrderByCreateAtDesc(uuid);
+
+        if (userPointList.isPresent()) {
+            Point userLastPoint = pointRepository.findById(userPointList.get().getPoint().getId()).get();
+            return userLastPoint.getTotalPoint();
+        } else {
+            return 0;
+        }
     }
 }
