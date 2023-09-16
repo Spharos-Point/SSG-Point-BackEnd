@@ -10,8 +10,10 @@ import com.spharos.pointapp.user.infrastructure.UserRepository;
 import com.spharos.pointapp.userpoint.gift.domain.PointGift;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftType;
 import com.spharos.pointapp.userpoint.gift.domain.PointGiftTypeConverter;
+import com.spharos.pointapp.userpoint.gift.domain.QPointGift;
 import com.spharos.pointapp.userpoint.gift.dto.*;
 import com.spharos.pointapp.userpoint.gift.infrastructure.PointGiftRepository;
+import com.spharos.pointapp.userpoint.pointList.domain.QUserPointList;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.spharos.pointapp.config.common.BaseResponseStatus.*;
@@ -44,8 +47,7 @@ public class PointGiftServiceImple implements PointGiftService {
     private final UserRepository userRepository;
     private final UserPointListRepository userPointListRepository;
     private final PointRepository pointRepository;
-    private final JPAQueryFactory queryFactory;
-
+    private final JPAQueryFactory query;
 
     // 1. 포인트 선물 생성
     @Transactional(rollbackFor = Exception.class) // 롤백 설정 추가
@@ -76,6 +78,11 @@ public class PointGiftServiceImple implements PointGiftService {
             setTotalPoint = 0;
         } else {
             setTotalPoint = pointRepository.findById(lastPoint.getPoint().getId()).get().getTotalPoint();
+        }
+
+        // 포인트 선물 가능 금액 확인
+        if (setTotalPoint == 0) {
+            throw new BaseException(NO_POINT_FAILED);
         }
 
         // 포인트 차감
@@ -233,15 +240,26 @@ public class PointGiftServiceImple implements PointGiftService {
             .pointType(PointType.GIFT)
             .build());
 
+        // uuid 위치 변경 및 타입 변경
         pointGiftRepository.save(
                 PointGift.builder()
                         .id(pointGiftReceiver.getId())
-                        .receiverUuid(pointGiftReceiver.getReceiverUuid())
+                        .receiverUuid(userPointList.getUuid())
                         .giftPoint(pointGiftReceiver.getGiftPoint())
                         .giftMessage(pointGiftReceiver.getGiftMessage())
                         .giftImage(pointGiftReceiver.getGiftImage())
                         .point(pointGiftReceiver.getPoint())
                         .pointGiftType(PointGiftType.REFUSE)
+                        .build()
+        );
+
+        // 유저 포인트 중간 테이블
+        userPointListRepository.save(
+                UserPointList.builder()
+                        .id(userPointList.getId())
+                        .point(pointGiftReceiver.getPoint())
+                        .uuid(receiverUuid)
+                        .pointType(PointType.GIFT)
                         .build()
         );
 
