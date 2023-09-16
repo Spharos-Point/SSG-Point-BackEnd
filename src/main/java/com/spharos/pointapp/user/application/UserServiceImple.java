@@ -115,7 +115,7 @@ public class UserServiceImple implements UserService{
     public void userLeavePwd(String password, String uuid) throws BaseException{
         User user = userRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
-        if(new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+        if(!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
             throw new BaseException(PASSWORD_RETRIEVE_FAILED);
         }
     }
