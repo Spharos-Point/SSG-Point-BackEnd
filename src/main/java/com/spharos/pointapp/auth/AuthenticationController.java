@@ -6,7 +6,6 @@ import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.config.common.BaseResponse;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +28,7 @@ public class AuthenticationController {
 
     }
 
-    @Operation(summary = "로그인", description = "로그인")
+    @Operation(summary = "로그인", description = "로그인", tags = { "User Sign" })
     @PostMapping("/login")
     public BaseResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
