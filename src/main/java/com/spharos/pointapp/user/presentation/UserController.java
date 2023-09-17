@@ -33,6 +33,8 @@ public class UserController {
      * 6. 유저 탈퇴 (상태변경)
      * 7. 회원가입 시 로그인 중복 확인
      * 8. 유저 이름, 유저 휴대폰 번호로 조회
+     * 9. 비밀번호 찾기(유저 아이디, 유저 이름, 유저 휴대폰 번호 조회)
+     * 10. 유저 정보 조회
      *
      */
 
@@ -103,7 +105,6 @@ public class UserController {
         String uuid = tokenUtils.extractUuidFromToken(token);
 
         UserUpdatePointPwdDto updatePointPwDto = modelMapper.map(userUpdatePointPwdVo, UserUpdatePointPwdDto.class);
-
 
         try {
             userService.updateUserPointPwd(updatePointPwDto, uuid);
@@ -181,6 +182,22 @@ public class UserController {
         try {
             userService.getUserByIdAndNameAndPhoneNumber(loginId, userName, phoneNumber);
             return new BaseResponse<>("비밀번호 찾기를 성공했습니다.");
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // 10. 유저 정보 조회
+    @Operation(summary = "유저 정보 조회", description = "토큰으로 해당 유저 정보 조회", tags = { "User Controller" })
+    @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
+    @GetMapping("/user")
+    public BaseResponse<UserGetOutVo> UserInfo(@RequestHeader("Authorization") String token) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+
+        try {
+            UserGetDto userGetDto = userService.getUserInfo(uuid);
+            UserGetOutVo userGetOutVo = modelMapper.map(userGetDto, UserGetOutVo.class);
+            return new BaseResponse<>(userGetOutVo);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }

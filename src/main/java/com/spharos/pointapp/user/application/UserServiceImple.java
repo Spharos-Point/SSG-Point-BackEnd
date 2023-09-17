@@ -30,6 +30,8 @@ public class UserServiceImple implements UserService{
      * 6. 유저 탈퇴 (상태변경)
      * 7. 회원가입 시 로그인 중복 확인
      * 8. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
+     * 9. 비밀번호 찾기(유저 아이디, 유저 이름, 유저 휴대폰 번호 조회)
+     * 10. 유저 정보 조회
      *
      */
 
@@ -67,17 +69,20 @@ public class UserServiceImple implements UserService{
         String middleNum = phoneNum.substring(3, 7);
         String lastNum = phoneNum.substring(phoneNum.length() - 4);
 
-        if (new BCryptPasswordEncoder().matches(passWord, user.getPassword())) {
+        if (new BCryptPasswordEncoder().matches(newPassword, user.getPassword())) {
             throw new BaseException(PASSWORD_SAME_FAILED);
         } else if (newPassword.contains(user.getLoginId())) {
             throw new BaseException(PASSWORD_UPDATE_FAILED);
         } else if (newPassword.contains(middleNum) || newPassword.contains(lastNum)) {
             throw new BaseException(PASSWORD_CONTAIN_NUM_FAILED);
+        } else if (new BCryptPasswordEncoder().matches(passWord, user.getPassword())) {
+            user.hashPassword(newPassword);
         }
+
     }
 
     //  3. 유저 패스워드 찾기 및 변경
-    public void searchUserPwd(String loginId,String newPassword) throws BaseException {
+    public void searchUserPwd(String loginId, String newPassword) throws BaseException {
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new BaseException(NO_EXIST_USER));
 
@@ -94,12 +99,10 @@ public class UserServiceImple implements UserService{
             throw new BaseException(PASSWORD_UPDATE_FAILED);
         } else if (newPassword.contains(middleNum) || newPassword.contains(lastNum)) {
             throw new BaseException(PASSWORD_CONTAIN_NUM_FAILED);
-        }else
-            // 새로운 패스워드를 시큐리티 패스워드 인코더로 암호화하여 저장
+        } else {
             user.hashPassword(newPassword);
+        }
     }
-
-
 
     //  4. 유저 포인트 패스워드 변경
     @Override
@@ -152,20 +155,22 @@ public class UserServiceImple implements UserService{
             throw new BaseException(PASSWORD_RETRIEVE_FAILED);
         }
     }
+
+    // 10. 유저 정보 조회
+    @Override
+    public UserGetDto getUserInfo(String uuid) throws BaseException {
+
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(()-> new BaseException(NO_EXIST_USER));
+        return UserGetDto.builder()
+                .loginId(user.getLoginId())
+                .userName(user.getName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .build();
+    }
+
 }
 
-////    강사님 코드 로그인 id 참고
-//    @Override
-//    public UserGetDto getUserByLoginId(String loginId) {
-//
-//        User user = userRepository.findByLoginId(loginId).get();
-//        log.info("user is : {}" , user);
-//        UserGetDto userGetDto = UserGetDto.builder()
-//                .loginId(user.getLoginId())
-//                .userName(user.getUsername())
-//                .email(user.getEmail())
-//                .phone(user.getPhone())
-//                .address(user.getAddress())
-//                .build();
-//        return userGetDto;
-//    }
+
