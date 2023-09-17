@@ -42,5 +42,6 @@ slave/
 replication/
 
 #### yml ###`
+*.yml
 application-local.yml
 application-prod.yml

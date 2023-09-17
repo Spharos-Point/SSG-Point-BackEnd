@@ -1,6 +1,8 @@
 package com.spharos.pointapp.point.application;
 
+import com.spharos.pointapp.config.common.BaseException;
 import com.spharos.pointapp.point.domain.Point;
+import com.spharos.pointapp.point.dto.PointGetDto;
 import com.spharos.pointapp.userpoint.pointList.domain.UserPointList;
 import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
 import jakarta.transaction.Transactional;
@@ -44,6 +46,24 @@ public class PointServiceImple implements PointService{
         }
     }
 
+    @Override
+    public PointGetDto getPointByPointId(Long pointId) {
+        Optional<UserPointList> userPointList = userPointListRepository.findById(pointId);
+        if (userPointList.isPresent()) {
+            UserPointList latestUserPointList = userPointList.get();
+            Point point = latestUserPointList.getPoint();
+            PointGetDto pointGetDto = PointGetDto.builder()
+                    .point(point.getPoint())
+                    .totalPoint(point.getTotalPoint())
+                    .pointType(point.getPointType().getValue())
+                    .used(point.getUsed())
+                    .createdAt(point.getCreateAt().toString())
+                    .updatedAt(point.getUpdateAt().toString())
+                    .build();
+            return pointGetDto;
+        }
+        return null;
+    }
 
 
 //    //  전체조회 강사님 코드

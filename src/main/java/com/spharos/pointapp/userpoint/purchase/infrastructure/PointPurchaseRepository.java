@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface PointPurchaseRepository extends JpaRepository<PointPurchase, Long> {
     Optional<PointPurchase> findByPointId(Long pointId);
+    Optional<PointPurchase> findById(Long id);
 }
