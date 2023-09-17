@@ -63,4 +63,36 @@ public class UserPointListController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    @Operation(summary = "유저 포인트 내역 조회", description = "유저별 포인트 내역 조회 ")
+    @SecurityRequirement(name = "Bearer Auth")
+    @GetMapping("/userPointList/history")
+    public BaseResponse<?> getUserPointHistory(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(value = "pointType", required = false) String pointType,
+            @RequestParam(value = "range", required = false) String range)
+    {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        try {
+            List<UserPointListResDto> userPointList = userPointListService.getUserPointListByUuidSortByPointTypeAndRange(uuid, pointType, range);
+            log.info("userPointList : {}", userPointList);
+            List<UserPointResVo> userPointResVoList = new ArrayList<>();
+            userPointList.forEach(
+                    userPointListResDto -> {
+                        userPointResVoList.add(
+                        UserPointResVo.builder()
+                                .id(userPointListResDto.getId())
+                                .pointType(userPointListResDto.getPointType())
+                                .pointId(userPointListResDto.getPointId())
+                                .pointTypeById(userPointListResDto.getPointTypeById())
+                                .createAt(userPointListResDto.getCreateAt())
+                                .updateAt(userPointListResDto.getUpdateAt())
+                                .build());
+                    });
+
+            return new BaseResponse<>(userPointResVoList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

@@ -7,25 +7,47 @@
 * [백엔드](https://github.com/Spharos-Point/SSG-Point-BackEnd)
 * [프론트엔트](https://github.com/Spharos-Point/SSG-Point-FrontEnd)
   
-## 🐣 [Notion](https://www.notion.so/13b814c832cd4f14aaec612deb998995)
-## 🐣 시스템 아키텍쳐
-<img src="https://img.shields.io/badge/Github-000000?style=flat-square&logo=Git-hub&logoColor=white"/> <img src="https://img.shields.io/badge/SpingBoot-ABF200style=flat&logo=Git&logoColor=white"/>
-<img src="https://img.shields.io/badge/JAVA-6E6E6E?style=flat-square&logo=Java&logoColor=white"/>
-<img src="https://img.shields.io/badge/swagger-85EA2D?style=flat&logo=swagger&logoColor=white"/>
+## 🐥 시스템 아키텍쳐
 
-<h5> Point </h5>
-    ❗ 기존 point 앱의 이미지 스토밍부터 DB설계까지 따로 하여 약 1개월 간(프론트 2, 백3)으로 진행되었습니다.
-<br>❗ 클론코딩의 취지에 맞게 최대한 모든 기능을 구현해보고 뉴비인만큼 배우는 자세로 임했습니다.
-<br>❗ 주요 기능으로 Point, event, coupon이 있습니다.
-<br>❗ Git을 처음 사용해 보는 5인의 Git이라 미숙할 수 있습니다.
-<br>❗ JAVA를 처음 다뤄보는 4명의(1명제외) 생존기로 봐주시면 감사하겠습니다.
 
-## 🐥 사용 기술 
+1. 기존 point 앱의 이미지 스토밍부터 DB설계까지 따로 하여 약 1개월 간(프론트 2, 백3)으로 진행되었습니다.
+2. 클론코딩의 취지에 맞게 최대한 모든 기능을 구현해보고 뉴비인만큼 배우는 자세로 임했습니다.
+3. 주요 기능으로 Point, event, coupon이 있습니다.
+
 
 ## 개발 산출물
-#### ✔ [이벤트 스토밍](https://miro.com/app/board/uXjVMyZzdT4=/?share_link_id=356913328141)
+#### ✔ [Notion](https://www.notion.so/13b814c832cd4f14aaec612deb998995)
 #### ✔ [ERD CROUD](https://www.erdcloud.com/d/myQufkJ2niWb5uzXN)
-#### ✔ [산출물](https://docs.google.com/spreadsheets/d/1ly0NZpbDh9l765SZtVk5hCj8VdMdVH37fPYFGsK9xpw/edit#gid=0)
+#### ✔ [API, 요구사항 정의서, WBS](https://docs.google.com/spreadsheets/d/1ly0NZpbDh9l765SZtVk5hCj8VdMdVH37fPYFGsK9xpw/edit#gid=0)
+
+## 개발환경
+```
+> OS : Windows 10
+> Infra : AWS EC2
+> DB : MySQL
+> Storage : GCP
+> Backend : Spring Boot 3.1.4, Gradle(빌드), JPA(DB접근)
+```
+
+## 설치 및 실행
+1. applicatiom.yml 파일의 datasource, security.oauth2, cloud.aws) 수정 => 사용자 계정, Secret Key 등 입력
+2. SsgBeApplication.java main 실행
+
+## 🐥 기술 스택
+### Frontend
+* <img src="https://img.shields.io/badge/Vscode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=white"/> <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/> <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white"/> <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white"/>
+
+### Backend
+* <img src="https://img.shields.io/badge/Springboot-6DB33F?style=flat-square&logo=Springboot&logoColor=white"/> <img src="https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat-square&logo=Mysql&logoColor=white"/> <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/> 
+
+### Deploy
+* <img src="https://img.shields.io/badge/Amazon-Ec2-FF9900?style=flat-square&logo=Amazon-Ec2&logoColor=white"/>
+
+### CI/CI
+* <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/> <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat-square&logo=Jenkins&logoColor=white"/>
+
+### Etc
+* <img src="https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=Swagger&logoColor=white"/> <img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/Apachejmeter-64BC4B?style=flat&logo=Apachejmeter&logoColor=white"/>
 
 ## 🐥 역할 
 <h5> 🦒 조장 양창민 - BackEnd </h5>
