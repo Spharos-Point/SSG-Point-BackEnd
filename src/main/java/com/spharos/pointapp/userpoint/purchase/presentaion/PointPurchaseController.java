@@ -48,7 +48,7 @@ public class PointPurchaseController {
     }
 
 
-    @Operation(summary = "포인트 일반 적립 조회", description = "구매한 포인트 적립 조회")
+    @Operation(summary = "포인트 일반 적립 리스트 조회", description = "구매한 포인트 적립 리스트 조회")
     @SecurityRequirement(name = "Bearer Auth") // 토큰이 필요한 보안 요구 사항 추가
     @GetMapping("/point/PurchaseUserHistory")
     public BaseResponse<List<PointPurchaseResponse>> getPointPurchase(@RequestHeader("Authorization") String token) {
@@ -71,4 +71,13 @@ public class PointPurchaseController {
         }
     }
 
+    @Operation(summary = "포인트 일반 적립 조회 ", description = "구매한 포인트 적립 조회")
+    @GetMapping("/point/PurchaseUserHistory/{pointPurchaseId}")
+    public BaseResponse<PointPurchaseResponse> getPointPurchaseById(
+            @PathVariable("pointPurchaseId") Long pointPurchaseId)
+    {
+        PointPurchaseResDto pointPurchaseResDto = pointPurchaseService.getPointPurchaseById(pointPurchaseId);
+        PointPurchaseResponse pointPurchaseResponse = modelMapper.map(pointPurchaseResDto, PointPurchaseResponse.class);
+        return new BaseResponse<>(pointPurchaseResponse);
+    }
 }

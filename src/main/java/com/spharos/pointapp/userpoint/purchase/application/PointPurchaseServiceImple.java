@@ -118,4 +118,28 @@ public class PointPurchaseServiceImple implements PointPurchaseService{
 
     }
 
+    @Override
+    public PointPurchaseResDto getPointPurchaseById(Long pointPurchaseId) {
+        PointPurchase pointPurchase = pointPurchaseRepository.findById(pointPurchaseId).orElse(null);
+        if (pointPurchase != null) {
+            Optional<Point> point = pointRepository.findById(pointPurchase.getPoint().getId());
+            Branch branch = branchRepository.findById(pointPurchase.getBranch().getId()).orElse(null);
+            assert branch != null;
+            assert point.isPresent();
+            return PointPurchaseResDto.builder()
+                    .id(pointPurchase.getId())
+                    .pointId(pointRepository.findById(pointPurchase.getPoint().getId()).orElse(null).getId())
+                    .branchName(branch.getBranchName())
+                    .brandName(brandRepository.findById(branch.getBrand().getId()).orElse(null).getBrandName())
+                    .pointType("RE")
+                    .used(point.get().getUsed())
+                    .purchaseMount(pointPurchase.getPurchaseMount())
+                    .purchasePrice(pointPurchase.getPurchasePrice())
+                    .purchasePoint(point.get().getPoint())
+                    .purchaseCreateAt(pointPurchase.getCreateAt().toString())
+                    .build();
+        }
+        return null;
+    }
+
 }
