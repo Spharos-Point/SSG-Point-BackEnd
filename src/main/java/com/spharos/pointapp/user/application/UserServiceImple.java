@@ -30,6 +30,8 @@ public class UserServiceImple implements UserService{
      * 6. 유저 탈퇴 (상태변경)
      * 7. 회원가입 시 로그인 중복 확인
      * 8. 아이디 찾기(유저 이름, 유저 휴대폰 번호로 조회)
+     * 9. 비밀번호 찾기(유저 아이디, 유저 이름, 유저 휴대폰 번호 조회)
+     * 10. 유저 정보 조회
      *
      */
 
@@ -102,8 +104,6 @@ public class UserServiceImple implements UserService{
         }
     }
 
-
-
     //  4. 유저 포인트 패스워드 변경
     @Override
     public void updateUserPointPwd(UserUpdatePointPwdDto userUpdatePointPwdDto, String uuid) throws BaseException{
@@ -155,20 +155,22 @@ public class UserServiceImple implements UserService{
             throw new BaseException(PASSWORD_RETRIEVE_FAILED);
         }
     }
+
+    // 10. 유저 정보 조회
+    @Override
+    public UserGetDto getUserInfo(String uuid) throws BaseException {
+
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(()-> new BaseException(NO_EXIST_USER));
+        return UserGetDto.builder()
+                .loginId(user.getLoginId())
+                .userName(user.getName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .build();
+    }
+
 }
 
-////    강사님 코드 로그인 id 참고
-//    @Override
-//    public UserGetDto getUserByLoginId(String loginId) {
-//
-//        User user = userRepository.findByLoginId(loginId).get();
-//        log.info("user is : {}" , user);
-//        UserGetDto userGetDto = UserGetDto.builder()
-//                .loginId(user.getLoginId())
-//                .userName(user.getUsername())
-//                .email(user.getEmail())
-//                .phone(user.getPhone())
-//                .address(user.getAddress())
-//                .build();
-//        return userGetDto;
-//    }
+
