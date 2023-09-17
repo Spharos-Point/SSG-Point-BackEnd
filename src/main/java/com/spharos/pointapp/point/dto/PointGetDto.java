@@ -13,4 +13,6 @@ public class PointGetDto {
     private Integer point;
     private String pointType;
     private Boolean used;
+    private String createdAt;
+    private String updatedAt;
 }

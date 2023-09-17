@@ -11,4 +11,5 @@ public interface PointPurchaseService {
 
     void purchasePoint(PointPurchaseDto pointPurchaseDto, String uuid) throws BaseException;
     List<PointPurchaseResDto> getPointPurchaseByUuid(String uuid) throws BaseException;
+    PointPurchaseResDto getPointPurchaseById(Long pointPurchaseId);
 }

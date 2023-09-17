@@ -13,5 +13,7 @@ public class PointOutVo {
     private Integer totalPoint;
     private String pointType;
     private Boolean used;
+    private String createdAt;
+    private String updatedAt;
 
 }

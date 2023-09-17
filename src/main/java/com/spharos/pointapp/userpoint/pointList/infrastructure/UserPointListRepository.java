@@ -20,9 +20,4 @@ public interface UserPointListRepository extends JpaRepository<UserPointList, Lo
     Optional<UserPointList> findByPointId(Long pointId);
     List<UserPointList> findByUuid(String uuid);
 
-    List<UserPointList> findByUuidAndPointTypeAndCreateAtBetween(
-            String uuid,
-            PointType pointType,
-            LocalDateTime startDate, LocalDateTime endDate);
-
 }
