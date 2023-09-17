@@ -13,5 +13,7 @@ public interface UserService {
     void validateLoginInd(String loginId) throws BaseException;
     String getUserLoginIdByNameAndPhoneNumber(String userName, String phoneNumber) throws BaseException;
     void getUserByIdAndNameAndPhoneNumber(String loginId, String userName, String phoneNumber) throws BaseException;
+    UserGetDto getUserInfo(String uuid) throws BaseException;
+
 }
 
