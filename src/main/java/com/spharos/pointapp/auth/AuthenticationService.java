@@ -10,6 +10,7 @@ import com.spharos.pointapp.user.domain.Roll;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.dto.UserSignUpDto;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
+import com.spharos.pointapp.userpoint.pointList.infrastructure.UserPointListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,7 @@ public class AuthenticationService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final PointCardRepository pointCardRepository;
+    private final UserPointListRepository userPointListRepository;
 
     /**
      *
