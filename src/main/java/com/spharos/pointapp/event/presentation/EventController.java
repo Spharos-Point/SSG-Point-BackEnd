@@ -1,16 +1,14 @@
 package com.spharos.pointapp.event.presentation;
 
 import com.spharos.pointapp.config.security.TokenUtils;
+import com.spharos.pointapp.coupon.domain.Coupon;
+import com.spharos.pointapp.coupon.dto.CouponDownDto;
+import com.spharos.pointapp.coupon.vo.CouponDown;
 import com.spharos.pointapp.event.application.EventService;
 import com.spharos.pointapp.event.domain.Event;
-import com.spharos.pointapp.event.dto.EventCreateDto;
-import com.spharos.pointapp.event.dto.EventGetDto;
-import com.spharos.pointapp.event.dto.EventListGetDto;
-import com.spharos.pointapp.event.dto.EventUpdateDto;
-import com.spharos.pointapp.event.vo.EventCreate;
-import com.spharos.pointapp.event.vo.EventGetOut;
-import com.spharos.pointapp.event.vo.EventListRes;
-import com.spharos.pointapp.event.vo.EventUpdate;
+import com.spharos.pointapp.event.dto.*;
+import com.spharos.pointapp.event.infrastructure.EventRepository;
+import com.spharos.pointapp.event.vo.*;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +30,7 @@ public class EventController {
     private final EventService eventService;
     private final UserRepository userRepository;
     private final TokenUtils tokenUtils;
+    private final EventRepository eventRepository;
 //    이벤트 생성
     @Operation(summary = "이벤트 생성", description = "새로운 이벤트를 등록합니다.", tags = { "Event Controller" })
     @PostMapping("/event")
@@ -201,6 +200,23 @@ public class EventController {
                 )
         );
         return eventListResList;
+    }
+
+//    이벤트 참여
+    @Operation(summary = "이벤트 참여", description = "이벤트에 참여합니다.", tags = { "Event Controller" })
+    @SecurityRequirement(name = "Bearer Auth")
+    @PostMapping("/ingevents")
+    public void partiEvent(@RequestHeader("Authorization") String token,
+                           @RequestBody EventParti eventParti) {
+        String uuid = tokenUtils.extractUuidFromToken(token);
+        User user = userRepository.findByUuid(uuid).get();
+        log.info("{}", uuid);
+        Event event = eventRepository.findById(eventParti.getEventId()).get();
+        EventPartiDto eventPartiDto = EventPartiDto.builder()
+                .user(user)
+                .event(event)
+                .build();
+        eventService.partiEvent(eventPartiDto, uuid);
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
@@ -25,5 +26,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 //    종료된 참여 이벤트
     @Query(value = "SELECT e FROM Event e where e.eventType = '참여' AND e.expired = true")
     List<Event> findByEventTypeAndExpired();
+
+    Optional<Event> findById(Long Id);
 
 }
