@@ -107,14 +107,13 @@ public class CouponController {
     @GetMapping("/benefits/myCoupon")
     public List<CouponGetOut> getCouponByUser(@RequestHeader("Authorization") String token) {
         String uuid = tokenUtils.extractUuidFromToken(token);
-        log.info("{}", uuid);
-        User user = userRepository.findByUuid(uuid).get();
+        User user = userRepository.findByUuid(uuid).get();log.info("{}", uuid);
         ModelMapper mapper = new ModelMapper();
         List<CouponGetDto> couponGetDtoList = couponService.getCouponByUser(user.getId());
         List<CouponGetOut> couponGetOutList = new ArrayList<>();
         couponGetDtoList.forEach(
-                couponGetDto -> couponGetOutList.add(
-                        mapper.map(couponGetDto, CouponGetOut.class)
+                CouponGetDto -> couponGetOutList.add(
+                        mapper.map(CouponGetDto, CouponGetOut.class)
                 )
         );
         return couponGetOutList;
