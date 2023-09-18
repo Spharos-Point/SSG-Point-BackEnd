@@ -1,14 +1,12 @@
 package com.spharos.pointapp.coupon.application;
 
 import com.spharos.pointapp.coupon.domain.*;
-import com.spharos.pointapp.coupon.dto.CouponCreateDto;
-import com.spharos.pointapp.coupon.dto.CouponDownDto;
-import com.spharos.pointapp.coupon.dto.CouponGetDto;
-import com.spharos.pointapp.coupon.dto.CouponUpdateDto;
+import com.spharos.pointapp.coupon.dto.*;
 import com.spharos.pointapp.coupon.infrastructure.CouponListRepository;
 import com.spharos.pointapp.coupon.infrastructure.CouponRepository;
 import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.dto.EventGetDto;
+import com.spharos.pointapp.event.dto.EventListGetDto;
 import com.spharos.pointapp.partner.domain.Partner;
 import com.spharos.pointapp.user.domain.User;
 import com.spharos.pointapp.user.infrastructure.UserRepository;
@@ -19,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.spharos.pointapp.coupon.domain.QCoupon.coupon;
 import static com.spharos.pointapp.user.domain.QUser.user;
@@ -93,34 +93,35 @@ public class CouponServiceImpl implements CouponService {
     }
 
 //    사용자가 보유한 쿠폰 조회
-@Override
-@Convert(converter = CouponTypeConverter.class)
-public List<CouponGetDto> getCouponByUser(Long userId) {
-    List<CouponList> couponListList = couponListRepository.findAllByUserId(userId);
-    log.info("{}", couponListList);
-    List<CouponGetDto> couponGetDtoList = couponListList.stream().map(item -> {
-        Coupon coupon = couponRepository.findById(item.getId()).orElseThrow();
-        String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
-        return CouponGetDto.builder()
-                .id(coupon.getId())
-                .couponName(coupon.getCouponName())
-                .couponDesc(coupon.getCouponDesc())
-                .regDate(coupon.getRegDate())
-                .endDate(coupon.getEndDate())
-                .partnerId(coupon.getPartner().getId())
-                .partnerName(coupon.getPartner().getPartnerName())
-                .couponNum(coupon.getCouponNum())
-                .couponType(couponType)
-                .couponImg(coupon.getCouponImg())
-                .couponLogoImg(coupon.getCouponLogoImg())
-                .couponValue(coupon.getCouponValue())
-                .couponValueImg(coupon.getCouponValueImg())
-                .build();
-    }).toList();
+    @Override
+    @Convert(converter = CouponTypeConverter.class)
+    public List<CouponGetDto> getCouponByUser(Long userId) {
+        List<CouponList> couponListList = couponListRepository.findAllByUserId(userId);
+        log.info("{}", couponListList);
+        List<CouponGetDto> couponGetDtoList = couponListList.stream().map(item -> {
+            Coupon coupon = couponRepository.findById(item.getCoupon().getId()).get();
+            String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
+            return CouponGetDto.builder()
+                    .id(coupon.getId())
+                    .couponName(coupon.getCouponName())
+                    .couponDesc(coupon.getCouponDesc())
+                    .regDate(coupon.getRegDate())
+                    .endDate(coupon.getEndDate())
+                    .partnerId(coupon.getPartner().getId())
+                    .partnerName(coupon.getPartner().getPartnerName())
+                    .couponNum(coupon.getCouponNum())
+                    .couponType(couponType)
+                    .couponImg(coupon.getCouponImg())
+                    .couponLogoImg(coupon.getCouponLogoImg())
+                    .couponValue(coupon.getCouponValue())
+                    .couponValueImg(coupon.getCouponValueImg())
+                    .build();
+        }).toList();
 
-    log.info("Coupon List is : {}", couponGetDtoList);
-    return couponGetDtoList;
-}
+        log.info("Coupon List is : {}", couponGetDtoList);
+        return couponGetDtoList;
+    }
+
 
 //    쿠폰 삭제
 
@@ -161,4 +162,29 @@ public List<CouponGetDto> getCouponByUser(Long userId) {
         return couponGetDtoList;
     }
 
+    //    사용완료 또는 기간만료 쿠폰 조회
+    @Override
+    public List<CouponGetDto> getCouponByUserAndStat(Long userId) {
+        List<CouponList> couponListList = couponListRepository.findAllByUserIdAndCouponStatFalse(userId);
+        List<CouponGetDto> couponGetDtoList = couponListList.stream().map(item -> {
+        Coupon coupon = couponRepository.findById(item.getId()).orElseThrow();
+        String couponType = new CouponTypeConverter().convertToDatabaseColumn(coupon.getCouponType());
+        return CouponGetDto.builder()
+                .id(coupon.getId())
+                .couponName(coupon.getCouponName())
+                .couponDesc(coupon.getCouponDesc())
+                .regDate(coupon.getRegDate())
+                .endDate(coupon.getEndDate())
+                .partnerId(coupon.getPartner().getId())
+                .partnerName(coupon.getPartner().getPartnerName())
+                .couponNum(coupon.getCouponNum())
+                .couponType(couponType)
+                .couponImg(coupon.getCouponImg())
+                .couponLogoImg(coupon.getCouponLogoImg())
+                .couponValue(coupon.getCouponValue())
+                .couponValueImg(coupon.getCouponValueImg())
+                .build();
+    }).toList();
+        return couponGetDtoList;
+    }
 }

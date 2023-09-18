@@ -12,7 +12,12 @@ public interface EventListRepository extends JpaRepository<EventList, Long> {
     @Query(value = "select * from event_list e LEFT JOIN user u on e.user_id = u.id where uuid = :uuid", nativeQuery = true)
     List<EventList> findAllByUuid(@Param("uuid")String uuid);
 
-    List<EventList> findAllByUserId(Long userId);
+    List<EventList> findAllByUserIdAndPrizeFalse(Long userId);
 
-    List<EventList> findByUserId(Long userId);
+    List<EventList> findAllByUserIdAndPrizeTrue(Long userId);
+
+    //    사용자가 당첨된 이벤트 조회
+    @Query(value = "select * from event_list e LEFT JOIN user u on e.user_id = u.id where e.prize != false", nativeQuery = true)
+    List<EventList> findAllByUserIdAndNotPrize(@Param("user_id")Long userId);
+
 }
