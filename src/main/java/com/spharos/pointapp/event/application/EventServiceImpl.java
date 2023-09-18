@@ -2,10 +2,7 @@ package com.spharos.pointapp.event.application;
 
 import com.spharos.pointapp.event.domain.Event;
 import com.spharos.pointapp.event.domain.EventList;
-import com.spharos.pointapp.event.dto.EventCreateDto;
-import com.spharos.pointapp.event.dto.EventGetDto;
-import com.spharos.pointapp.event.dto.EventListGetDto;
-import com.spharos.pointapp.event.dto.EventUpdateDto;
+import com.spharos.pointapp.event.dto.*;
 import com.spharos.pointapp.event.infrastructure.EventListRepository;
 import com.spharos.pointapp.event.infrastructure.EventRepository;
 import com.spharos.pointapp.user.domain.User;
@@ -191,5 +188,19 @@ public class EventServiceImpl implements EventService{
         }).toList();
         return eventListGetDtoList;
 
+    }
+
+//    이벤트 참여
+    @Override
+    public void partiEvent(EventPartiDto eventPartiDto, String uuid) {
+        if (uuid != null && eventPartiDto.getEvent() != null) {
+            EventList eventList = EventList.builder()
+                    .user(eventPartiDto.getUser())
+                    .event(eventPartiDto.getEvent())
+                    .prize(false)
+                    .build();
+
+            eventListRepository.save(eventList);
+        }
     }
 }
