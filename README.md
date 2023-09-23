@@ -1,6 +1,6 @@
 <img src="https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=Newbie%fifive🐣&fontSize=90" />
 
-## 프로젝트 소개
+## 🐥 프로젝트 소개
 > Spharos Academy 3기 뉴비 5인방의 신세계 포인트 앱 클론코딩프로젝트입니다.
 1. 기존 point 앱의 이미지 스토밍부터 DB설계까지 따로 하여 약 1개월 간(프론트 2, 백3)으로 진행되었습니다.
 2. 클론코딩의 취지에 맞게 최대한 모든 기능을 구현해보고 뉴비인만큼 배우는 자세로 임했습니다.
@@ -14,15 +14,12 @@
 ![image](https://github.com/Spharos-Point/SSG-Point-BackEnd/assets/94760980/ecadd9e7-5370-4170-8343-03ef271a8a29)
 
 
-
-
-
-## 개발 산출물
+## 🐥 개발 산출물
 #### ✔ [Notion](https://www.notion.so/13b814c832cd4f14aaec612deb998995)
 #### ✔ [ERD CROUD](https://www.erdcloud.com/d/myQufkJ2niWb5uzXN)
 #### ✔ [API, 요구사항 정의서, WBS](https://docs.google.com/spreadsheets/d/1ly0NZpbDh9l765SZtVk5hCj8VdMdVH37fPYFGsK9xpw/edit#gid=0)
 
-## 개발환경
+## 🐥 개발환경
 ```
 > OS : Windows 10
 > Infra : AWS EC2
@@ -31,7 +28,7 @@
 > Backend : Spring Boot 3.1.4, Gradle(빌드), JPA(DB접근)
 ```
 
-## 설치 및 실행
+## 🐥 설치 및 실행
 1. applicatiom.yml 파일의 datasource, security.oauth2, cloud.aws) 수정 => 사용자 계정, Secret Key 등 입력
 2. SsgBeApplication.java main 실행
 
