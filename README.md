@@ -2,17 +2,19 @@
 
 ## 프로젝트 소개
 > Spharos Academy 3기 뉴비 5인방의 신세계 포인트 앱 클론코딩프로젝트입니다.
-
+1. 기존 point 앱의 이미지 스토밍부터 DB설계까지 따로 하여 약 1개월 간(프론트 2, 백3)으로 진행되었습니다.
+2. 클론코딩의 취지에 맞게 최대한 모든 기능을 구현해보고 뉴비인만큼 배우는 자세로 임했습니다.
+3. 주요 기능으로 Point, event, coupon이 있습니다.
+   
 ### Project Repositories
 * [백엔드](https://github.com/Spharos-Point/SSG-Point-BackEnd)
 * [프론트엔트](https://github.com/Spharos-Point/SSG-Point-FrontEnd)
   
 ## 🐥 시스템 아키텍쳐
+![image](https://github.com/Spharos-Point/SSG-Point-BackEnd/assets/94760980/ecadd9e7-5370-4170-8343-03ef271a8a29)
 
 
-1. 기존 point 앱의 이미지 스토밍부터 DB설계까지 따로 하여 약 1개월 간(프론트 2, 백3)으로 진행되었습니다.
-2. 클론코딩의 취지에 맞게 최대한 모든 기능을 구현해보고 뉴비인만큼 배우는 자세로 임했습니다.
-3. 주요 기능으로 Point, event, coupon이 있습니다.
+
 
 
 ## 개발 산출물
