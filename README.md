@@ -42,7 +42,7 @@
 ### Deploy
 * <img src="https://img.shields.io/badge/Amazon-Ec2-FF9900?style=flat-square&logo=Amazon-Ec2&logoColor=white"/>
 
-### CI/CI
+### CI/CD
 * <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/> <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat-square&logo=Jenkins&logoColor=white"/>
 
 ### Etc
